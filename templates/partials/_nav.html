@@ -1,0 +1,38 @@
+{% load static %}
+<header>
+  <div class="logo">RPGMaker</div>
+  <nav>
+    <div class="person">
+      <a href="">
+        <i class="fa-solid fa-house"></i>
+        Home
+      </a>
+      <a href="{% url 'characters' %}">
+        <i class="fa-solid fa-user"></i>
+        Personagens
+      </a>
+      <a href="">
+        <i class="fa-solid fa-shield-virus"></i>
+        Classes
+      </a>
+      <a href="">
+        <i class="fa-solid fa-skull"></i>
+        Raças
+      </a>
+    </div>
+    <div class="about-page">
+      <a href="">
+        <i class="fa-solid fa-gear"></i>
+        Configurações
+      </a>
+      <a href="">
+        <i class="fa-solid fa-circle-exclamation"></i>
+        Sobre
+      </a>
+      <a href="{% url 'login' %}">
+        <i class="fa-solid fa-right-from-bracket"></i>
+        Desconectar
+      </a>
+    </div>
+  </nav>
+</header>

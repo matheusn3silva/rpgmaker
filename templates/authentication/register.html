@@ -1,0 +1,31 @@
+{% extends 'authentication/template.html' %}
+{% load static %}
+{% block title %}Cadastre-se - RPGMaker{% endblock %}
+{% block content %}
+    <div class="container">
+        <h1>Cadastre-se</h1>
+        <form action="">
+            <label for="email">
+                Email:
+                <input type="email" name="email" id="email" placeholder="Digite seu email" required>
+            </label>
+            <label for="user">
+                Usuário:
+                <input type="text" name="user" id="user" placeholder="Digite seu usuário" required>
+            </label>
+            <label for="password">
+                Senha:
+                <input type="password" name="password" id="password" placeholder="Digite sua senha" required>
+            </label>
+            <label for="confirm-password">
+                Confirme sua senha:
+                <input type="password" name="confirm-password" id="confirm-password" placeholder="Digite sua senha novamente" required>
+            </label>
+            <input class="myButton" type="submit" value="Cadastrar">
+        </form>
+        <div class="login">
+            <p>Já possui uma conta? Faça seu login:</p>
+            <a href="{% url 'login' %}">Login</a>
+        </div>
+    </div>
+{% endblock %}

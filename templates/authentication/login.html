@@ -1,0 +1,25 @@
+{% extends 'authentication/template.html' %}
+{% load static %}
+{% block title %}Login - RPGMaker{% endblock %}
+{% block content %}
+    <div class="container">
+        <h1>Entrar</h1>
+        <form action="">
+            <label for="user">
+                Usuário:
+                <input type="text" name="user" id="user" placeholder="Digite seu usuário" required>
+            </label>
+            <label for="password">
+                Senha:
+                <input type="password" name="password" id="password" placeholder="Digite sua senha" required>
+            </label>
+            <p class="login-error">Usuário ou senha inválido</p>
+            <input class="myButton" type="submit" value="Entrar">
+        </form>
+        
+        <div class="register">
+            <p>Não possui uma conta? Faça seu cadastro:</p>
+            <a href="{% url 'register' %}">Cadastrar</a>
+        </div>
+    </div>
+{% endblock %}
