@@ -2,10 +2,9 @@
 {% load static %} 
 {% block title %}Personagens{% endblock %} 
 {% block content %}
-<main class="container">
   <h1>Seus Personagens</h1>
 
-  <a href="" class="link-create"><button class="create">Criar Novo</button></a>
+  <a href="{% url 'create' %}" class="link-create"><button class="create">Criar Novo</button></a>
 
   <div class="display">
 
@@ -54,6 +53,5 @@
     </div>
 
   </div>
-</main>
 
 {% endblock %}

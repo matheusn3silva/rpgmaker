@@ -1,0 +1,67 @@
+{% extends 'template.html' %} 
+{% load static %} 
+{% block title %}Crie seu Persongem{% endblock %} 
+{% block content %}
+    <a class="return" href="{% url 'characters' %}">
+        <i class="fa-solid fa-arrow-left"></i>
+        Voltar
+    </a>
+    <form class="create-character" action="">
+        <label for="name-character">
+            Nome do personagem:
+            <input type="text" name="name-character" id="name-character">
+        </label>
+        <label for="age-character">
+            Idade:
+            <input type="number" name="age-character" id="age-character">
+        </label>
+        <label for="personality-character">
+            Personalidade:
+            <input type="text" name="personality-character" id="personality-character">
+        </label>
+        <label for="data-character">
+            Data de Nascimento:
+            <input type="date" name="data-character" id="data-character">
+        </label>
+        <label for="birth-local-character">
+            Local de Nascimento:
+            <input type="text" name="birth-local-character" id="birth-local-character">
+        </label>
+        <label for="live-local-character">
+            Local onde Reside:
+            <input type="text" name="live-local-character" id="live-local-character">
+        </label>
+        <label for="hobby-character">
+            Hobby:
+            <input type="text" name="hobby-character" id="hobby-character">
+        </label>
+        <label for="strong-point-character">
+            Ponto Forte:
+            <input type="text" name="strong-point-character" id="strong-point-character">
+        </label>
+        <label for="weak-point-character">
+            Ponto Fraco:
+            <input type="text" name="weak-point-character" id="weak-point-character">
+        </label>
+        <label for="landmark-item-character">
+            Item Marcante:
+            <input type="text" name="landmark-item-character" id="landmark-item-character">
+        </label>
+        <label for="motivation-character">
+            Motivação:
+            <input type="text" name="motivation-character" id="motivation-character">
+        </label>
+        <label for="striking-trait-character">
+            Traço Marcante:
+            <input type="text" name="striking-trait-character" id="striking-trait-character">
+        </label>
+        <label for="history-character">
+            História:
+            <textarea name="history-character" id="history-character"></textarea>
+        </label>
+
+        <button class="save-character">
+            Salvar
+        </button>
+    </form>
+{% endblock %}

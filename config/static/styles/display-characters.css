@@ -46,7 +46,7 @@ a.link-create {
 button {
     display: block;
     cursor: pointer;
-    padding: .8rem;
+    padding: .8rem 1rem;
     border-radius: .2rem;
     color: var(--white);
     user-select: none;

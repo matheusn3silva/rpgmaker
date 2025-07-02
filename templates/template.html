@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="{% static '/styles/container.css' %}" />
     <link rel="stylesheet" href="{% static '/styles/dashboard.css' %}" />
     <link rel="stylesheet" href="{% static '/styles/display-characters.css' %}" />
+    <link rel="stylesheet" href="{% static '/styles/create-character.css' %}" />
     <script
       src="https://kit.fontawesome.com/48d683c70b.js"
       crossorigin="anonymous"
@@ -19,7 +20,10 @@
   <body>
     
     {% include 'partials/_nav.html' %}
-    {% block content %}{% endblock %}
+    
+    <main class="container">
+      {% block content %}{% endblock %}
+    </main>
 
   </body>
 </html>

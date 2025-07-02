@@ -1,6 +1,7 @@
 .container {
     margin-left: 20rem;
     padding: 8rem;
+    min-height: 100vh;
 
     .description {
         margin: 3rem 0;
