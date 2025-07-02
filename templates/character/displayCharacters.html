@@ -1,0 +1,59 @@
+{% extends 'template.html' %} 
+{% load static %} 
+{% block title %}Personagens{% endblock %} 
+{% block content %}
+<main class="container">
+  <h1>Seus Personagens</h1>
+
+  <a href="" class="link-create"><button class="create">Criar Novo</button></a>
+
+  <div class="display">
+
+    <div class="item">
+      <div class="informations-character">
+        <div class="name-character"><span>Nome:</span> Arthur Morgan</div>
+        <div class="class-character"><span>Classe:</span> Atirador</div>
+      </div>
+
+      <div class="buttons">
+        <button class="download">
+          <i class="fa-solid fa-download"></i>
+          Download
+        </button>
+        <button class="edit">
+          <i class="fa-solid fa-pen-to-square"></i>
+          Editar
+        </button>
+        <button class="delete">
+          <i class="fa-solid fa-trash"></i>
+          Excluir
+        </button>
+      </div>
+    </div>
+
+    <div class="item">
+      <div class="informations-character">
+        <div class="name-character"><span>Nome:</span> Arthur Morgan</div>
+        <div class="class-character"><span>Classe:</span> Atirador</div>
+      </div>
+
+      <div class="buttons">
+        <button class="download">
+          <i class="fa-solid fa-download"></i>
+          Download
+        </button>
+        <button class="edit">
+          <i class="fa-solid fa-pen-to-square"></i>
+          Editar
+        </button>
+        <button class="delete">
+          <i class="fa-solid fa-trash"></i>
+          Excluir
+        </button>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+{% endblock %}

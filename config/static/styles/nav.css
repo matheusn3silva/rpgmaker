@@ -13,7 +13,7 @@ header {
     display: flex;
     flex-direction: column;
     gap: 1.6rem;
-    border-radius: 0 3rem 0 0;
+    border-radius: 0 .5rem 0 0;
     background-color: var(--dark-gray);
     border-right: 5px solid var(--vine);
 }
@@ -54,28 +54,7 @@ nav {
 
 
 
-/* MAIN CONTENT */
 
-main {
-    margin-left: 20rem;
-    padding: 8rem;
-
-    .description {
-        margin: 3rem 0;
-        font-size: 1.6rem;
-    }
-}
-
-h1 {
-    font-family: "Saira Stencil One", sans-serif;
-    font-size: 5.2rem;
-    font-weight: bolder;
-    color: var(--dark);
-}  
-
-.logo, h1, p, a {
-    user-select: none;
-}
 
 
 

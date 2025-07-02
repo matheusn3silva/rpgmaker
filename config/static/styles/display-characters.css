@@ -1,0 +1,73 @@
+@import url('./pallete-color.css');
+
+.display {
+    margin-top: 2.4rem;
+    padding: 1.6rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, max (280px, 1fr));
+    gap: 2rem;
+    border: 1px dashed var(--rose);
+    border-radius: .2rem;
+}
+
+a.link-create {
+    display: inline;
+
+    button.create {
+        background-color: var(--blue);
+    }
+}
+
+.item {
+    width: 100%;
+    padding: 1.2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    border: 1px solid var(--blue);
+    border-radius: .4rem;
+
+    div.name-character {
+        font-size: 1.8rem;
+        margin-bottom: .8rem;
+    }
+
+    div.class-character {
+        font-size: 1.8rem;
+    }
+
+    span {
+        font-weight: bold;
+        user-select: none;
+    }
+
+}
+
+button {
+    display: block;
+    cursor: pointer;
+    padding: .8rem;
+    border-radius: .2rem;
+    color: var(--white);
+    user-select: none;
+}
+
+.buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+
+    button.download {
+        background-color: var(--green);
+    }
+
+    button.edit {
+        background-color: var(--blue);
+    }
+
+    button.delete {
+        background-color: var(--rose);
+    }
+}
+
+

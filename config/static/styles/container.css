@@ -1,0 +1,23 @@
+.container {
+    margin-left: 20rem;
+    padding: 8rem;
+
+    .description {
+        margin: 3rem 0;
+        font-size: 1.6rem;
+    }
+}
+
+h1 {
+    font-family: "Saira Stencil One", sans-serif;
+    font-size: 5.2rem;
+    font-weight: bolder;
+    margin-bottom: 3.2rem;
+    color: var(--dark);
+}  
+
+.logo, h1, p, a {
+    user-select: none;
+}
+
+
