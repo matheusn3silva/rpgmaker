@@ -2,12 +2,9 @@
 
 .display {
     margin-top: 2.4rem;
-    padding: 1.6rem;
     display: grid;
     grid-template-columns: repeat(auto-fit, max (280px, 1fr));
     gap: 2rem;
-    border: 1px dashed var(--rose);
-    border-radius: .2rem;
 }
 
 a.link-create {
@@ -24,7 +21,7 @@ a.link-create {
     display: flex;
     flex-direction: column;
     gap: 2rem;
-    border: 1px solid var(--blue);
+    border: 4px solid var(--blue);
     border-radius: .4rem;
 
     div.name-character {
