@@ -15,20 +15,25 @@ a.return {
 }
 
 form.create-character {
+    margin: 0 auto;
+    max-width: 78rem;
     display: grid;
-    
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
     border: 1px dashed var(--rose);
-    padding: 1.2rem;
-    border-radius: .2rem;
+    padding: 4rem;
 
     label {
+        width: 100%;
         display: block;
         margin-bottom: 1.2rem;
         font-size: 1.4rem;
         font-weight: bold;
+        user-select: none;
     }
 
     input, textarea {
+        width: 100%;
         display: block;
         margin-top: .6rem;
         outline: 1px solid var(--dark-gray);
@@ -36,14 +41,57 @@ form.create-character {
         padding: .8rem 1.2rem;
     }
 
-    textarea {
-        width: 100%;
-        padding: 1.6rem;
-        min-height: 40rem;
+    label.history-character {
+        grid-column: span 2;
+
+        textarea {
+            width: 100%;
+            padding: 1.6rem;
+            resize: none;
+            font-family: monospace;
+        }
     }
 
     button.save-character {
         background-color: var(--green);
         font-size: 1.6rem;
+        grid-column: span 2;
+    }
+}
+
+div#preview-markdown {
+    max-width: 78rem;
+    height: 100rem;
+    margin: 2rem auto 0;
+    padding: 4rem;
+    max-height: 100rem;
+    overflow-y: auto;
+    font-size: 1.6rem;
+    border: 1px solid var(--dark);
+
+    h1, p {
+        user-select: all;
+    }
+
+    h1 {
+        padding: 0;
+        font-size: 4.4rem;
+        margin-bottom: 1.6rem;
+    }
+
+    h2 {
+        padding: 0;
+        font-size: 1.8rem;
+        margin-bottom: 2rem;
+    }
+
+    p {
+        word-wrap: break-word;
+        margin-bottom: 1.6rem;
+        line-height: 150%;
+    }
+
+    li {
+        margin-bottom: 1.2rem;
     }
 }

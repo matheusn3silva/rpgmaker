@@ -11,10 +11,13 @@
     <link rel="stylesheet" href="{% static '/styles/dashboard.css' %}" />
     <link rel="stylesheet" href="{% static '/styles/display-characters.css' %}" />
     <link rel="stylesheet" href="{% static '/styles/create-character.css' %}" />
-    <script
-      src="https://kit.fontawesome.com/48d683c70b.js"
-      crossorigin="anonymous"
-    ></script>
+
+    <!-- ICONS -->
+    <script src="https://kit.fontawesome.com/48d683c70b.js" crossorigin="anonymous"></script>
+
+    <!-- MARKDOWN -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
     <title>{% block title %}{% endblock %}</title>
   </head>
   <body>
@@ -25,5 +28,6 @@
       {% block content %}{% endblock %}
     </main>
 
+    <script src="{% static '/js/markdown.js' %}"></script>
   </body>
 </html>
