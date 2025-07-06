@@ -1,0 +1,47 @@
+section.display-class {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(24rem, 1fr));
+    gap: 2rem;
+
+    div.item-class {
+        width: 100%;
+        min-height: 20rem;
+        padding: 1.2rem;
+        display: flex;
+        flex-direction: column;
+        gap: 1.2rem;
+        border: 3px solid var(--dark);
+        cursor: pointer;
+
+        div.name-class {
+            font-weight: bold;
+            font-size: 2.4rem;
+        }
+
+        p.description-class {
+            font-size: 1.2rem;
+        }
+    }
+
+
+    .modal {
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 2;
+        
+        width: 100dvw;
+        height: 100dvh;
+        display: none;
+        justify-content: center;
+        align-items: center;
+        background-color: #33333392;
+
+        .container-modal {
+            position: relative;
+            z-index: 10;
+            padding: 1.2rem;
+            background-color: var(--white);
+        }
+    }
+}

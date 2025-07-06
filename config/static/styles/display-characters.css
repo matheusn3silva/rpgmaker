@@ -1,9 +1,9 @@
 @import url('./pallete-color.css');
 
-.display {
+section.display-characters {
     margin-top: 2.4rem;
     display: grid;
-    grid-template-columns: repeat(auto-fit, max (280px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(28rem, 1fr));
     gap: 2rem;
 }
 
@@ -15,7 +15,7 @@ a.link-create {
     }
 }
 
-.item {
+div.item-character {
     width: 100%;
     padding: 1.2rem;
     display: flex;

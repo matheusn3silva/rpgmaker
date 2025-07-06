@@ -36,6 +36,7 @@ form {
     display: flex;
     flex-direction: column;
     justify-content: center;
+    gap: 1.6rem;
     align-content: space-between;
     color: var(--white);
 }
@@ -49,7 +50,7 @@ input {
     display: block;
     width: 100%;
     padding: .8rem;
-    margin: .6rem 0 1.2rem;
+    margin: .6rem 0 0;
     font-size: 1.6rem;
     border: 1px solid var(--dark-gray);
     border-radius: .2rem;
@@ -100,4 +101,10 @@ a:hover {
 
 .input-error {
     border-color: var(--rose);
+}
+
+span.message-error {
+    display: none;
+    font-size: 1rem;
+    color: var(--red);
 }

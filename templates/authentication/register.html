@@ -8,10 +8,12 @@
             <label for="email">
                 Email:
                 <input type="email" name="email" id="email" placeholder="Digite seu email" required>
+                <span id="email-error-register" class="message-error">Email inválido - Por favor, digite um email válido</span>
             </label>
             <label for="user">
                 Usuário:
                 <input type="text" name="user" id="user" placeholder="Digite seu usuário" required>
+                <span id="user-error-register" class="message-error">Usuário já em uso.</span>
             </label>
             <label for="password">
                 Senha:
@@ -20,6 +22,7 @@
             <label for="confirm-password">
                 Confirme sua senha:
                 <input type="password" name="confirm-password" id="confirm-password" placeholder="Digite sua senha novamente" required>
+                <span id="password-error-register" class="message-error">Senhas não coincidem</span>
             </label>
             <input class="myButton" type="submit" value="Cadastrar">
         </form>
