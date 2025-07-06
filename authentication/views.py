@@ -6,3 +6,6 @@ def login(request):
 
 def register(request):
     return render(request, 'authentication/register.html')
+
+def registerUser(request):
+    pass
