@@ -5,6 +5,7 @@
     <div class="container">
         <h1>Entrar</h1>
         <form action="" method="POST">
+            {% csrf_token %}
             <label for="user">
                 Usuário:
                 <input type="text" name="user" id="user" placeholder="Digite seu usuário" required>

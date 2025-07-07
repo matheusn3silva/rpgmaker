@@ -4,26 +4,31 @@
 {% block content %}
     <div class="container">
         <h1>Cadastre-se</h1>
-        <form method="POST">
+        <form acion="{% url 'createUser' %}" method="POST">
+            {% csrf_token %}
             <!-- <label for="email">
                 Email:
                 <input type="email" name="email" id="email" placeholder="Digite seu email" required>
                 <span id="email-error-register" class="message-error">Email inválido - Por favor, digite um email válido</span>
             </label> -->
+
             <label for="user">
                 Usuário:
                 <input type="text" name="user" id="user" placeholder="Digite seu usuário" required>
                 <span id="user-error-register" class="message-error">Usuário já em uso.</span>
             </label>
+
             <label for="password">
                 Senha:
                 <input type="password" name="password" id="password" placeholder="Digite sua senha" required>
             </label>
+
             <label for="confirm-password">
                 Confirme sua senha:
                 <input type="password" name="confirm-password" id="confirm-password" placeholder="Digite sua senha novamente" required>
                 <span id="password-error-register" class="message-error">Senhas não coincidem</span>
             </label>
+
             <input class="myButton" type="submit" value="Cadastrar">
         </form>
         <div class="login">
