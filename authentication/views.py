@@ -5,7 +5,7 @@ from rest_framework.response import Response
 from rest_framework import status
 
 from authentication.models import User
-from authentication.serializers import UserSerizalizer
+from authentication.serializers import UserSerializer
 
 # Create your views here.
 def login(request):
@@ -17,13 +17,14 @@ def register(request):
 
 @api_view(['POST'])
 def createUser(request):
-    if request.method == "POST":
-        user = request.POST.get('user')
-        password = request.POST.get('password')
-        confirmPassword = request.POST.get('confirm-password')
+    
+    serializer = UserSerializer(data=request.data)
 
-        print(user, password, confirmPassword)
+    if serializer.is_valid():
+        
+        serializer.save()
 
         return redirect('login')
-    else:
-        return redirect('register')
+
+    
+    return redirect('register')

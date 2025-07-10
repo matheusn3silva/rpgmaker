@@ -4,7 +4,7 @@
 {% block content %}
     <div class="container">
         <h1>Cadastre-se</h1>
-        <form acion="{% url 'createUser' %}" method="POST">
+        <form action="{% url 'createUser' %}" method="POST">
             {% csrf_token %}
             <!-- <label for="email">
                 Email:
@@ -14,18 +14,18 @@
 
             <label for="user">
                 Usuário:
-                <input type="text" name="user" id="user" placeholder="Digite seu usuário" required>
-                <span id="user-error-register" class="message-error">Usuário já em uso.</span>
+                <input type="text" name="user" id="user" placeholder="Digite seu usuário" minlength="5" required>
+                <span id="user-error-register" class="message-error">Usuário já existe.</span>
             </label>
 
             <label for="password">
                 Senha:
-                <input type="password" name="password" id="password" placeholder="Digite sua senha" required>
+                <input type="password" name="password" id="password" placeholder="Digite sua senha" minlength="7" required>
             </label>
 
             <label for="confirm-password">
                 Confirme sua senha:
-                <input type="password" name="confirm-password" id="confirm-password" placeholder="Digite sua senha novamente" required>
+                <input type="password" name="confirm_password" id="confirm-password" placeholder="Digite sua senha novamente" minlength="7" required>
                 <span id="password-error-register" class="message-error">Senhas não coincidem</span>
             </label>
 
