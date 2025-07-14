@@ -1,0 +1,30 @@
+@import url('./pallete-color.css');
+
+div.sucess-create-user {
+    display: none;
+    position: fixed;
+    top: 2rem;
+    right: 2rem;
+    padding: 1.6rem;
+    font-size: 1.2rem;
+    border: 2px solid var(--dark-green);
+    border-radius: 0.4rem;
+    background-color: var(--light-green);
+
+    span {
+        color: var(--green);
+    }
+}
+
+.fade-in {
+    opacity: 0;
+    transform: translateX(-5px);
+    transition: opacity .3s ease, transform .3s ease;
+}
+
+@keyframes fadeIn {
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
