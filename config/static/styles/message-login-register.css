@@ -1,18 +1,23 @@
 @import url('./pallete-color.css');
 
-div.sucess-create-user {
-    display: none;
+div.container-message {
     position: fixed;
     top: 2rem;
     right: 2rem;
     padding: 1.6rem;
-    font-size: 1.2rem;
     border: 2px solid var(--dark-green);
     border-radius: 0.4rem;
     background-color: var(--light-green);
 
-    span {
-        color: var(--green);
+    p {
+        font-size: 1.4rem;
+        span.sucess {
+            color: var(--green);
+        }
+
+        span.error {
+            color: var(--rose);
+        }
     }
 }
 

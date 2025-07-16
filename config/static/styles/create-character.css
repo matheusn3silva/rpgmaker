@@ -64,6 +64,7 @@ div#preview-markdown {
     height: 100rem;
     margin: 2rem auto 0;
     padding: 4rem;
+    padding-left: 6rem;
     max-height: 100rem;
     overflow-y: auto;
     font-size: 1.6rem;

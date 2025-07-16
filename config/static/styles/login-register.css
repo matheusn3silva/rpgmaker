@@ -46,6 +46,10 @@ label {
     user-select: none;
 }
 
+label > input:hover {
+    cursor: text;
+}
+
 input {
     display: block;
     width: 100%;
@@ -101,10 +105,4 @@ a:hover {
 
 .input-error {
     border-color: var(--rose);
-}
-
-span.message-error {
-    display: none;
-    font-size: 1rem;
-    color: var(--red);
 }

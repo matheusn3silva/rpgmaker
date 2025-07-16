@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+    {% load static %}
     <link rel="stylesheet" href="{% static '/styles/main.css' %}">
     <link rel="stylesheet" href="{% static '/styles/login-register.css' %}">
     <link rel="stylesheet" href="{% static '/styles/message-login-register.css' %}">
@@ -14,8 +15,24 @@
 
     {% block content %}{% endblock %}
 
-    <div id="sucess-message" class="sucess-create-user">
-        <span>✔</span> Usúario criado com sucesso!
+    <div id="container-message" class="container-message">
+        <!-- MESSAGES LOGIN DISPLAY -->
+        <p class="sucess">
+            <span>✔</span> Usúario criado com sucesso!
+        </p>
+
+        <p class="error">
+            <span>❌</span> Usuário ou Senha inválidos!
+        </p>
+
+        <!-- MESSAGES REGISTER DISPLAY -->
+        <p class="error">
+            <span>❌</span> Senhas não coincidem!
+        </p>
+
+        <p class="error">
+            <span>❌</span> Usuário já existe!
+        </p>
     </div>
 
     <script src="{% static '/js/messages.js' %}"></script>
