@@ -8,10 +8,13 @@
 
   <section class="display-characters">
 
-    <div class="item-character">
+    {% if characters %}
+    
+    {% for character in characters %}
+    <div class="item-character" name="{{ character.id }}" >
       <div class="informations-character">
-        <div class="name-character"><span>Nome:</span> Arthur Morgan</div>
-        <div class="class-character"><span>Classe:</span> Atirador</div>
+        <div class="name-character"><span>Nome:</span> {{ character.name }}</div>
+        <div class="class-character"><span>Personalidade:</span> {{ character.personality }}</div>
       </div>
 
       <div class="buttons">
@@ -29,29 +32,21 @@
         </button>
       </div>
     </div>
-
-    <div class="item-character">
-      <div class="informations-character">
-        <div class="name-character"><span>Nome:</span> Arthur Morgan</div>
-        <div class="class-character"><span>Classe:</span> Atirador</div>
-      </div>
-
-      <div class="buttons">
-        <button class="download">
-          <i class="fa-solid fa-download"></i>
-          Download
-        </button>
-        <button class="edit">
-          <i class="fa-solid fa-pen-to-square"></i>
-          Editar
-        </button>
-        <button class="delete">
-          <i class="fa-solid fa-trash"></i>
-          Excluir
-        </button>
-      </div>
-    </div>
-
+    {% endfor %}
+    {% else %}
+      <p>Você não possui nenhum personagem criado.</p>
+    {% endif %}
   </section>
+
+  <div class="modal-delete">
+    <div class="popup-confirm">
+      <h2>Tem certeza que deseja excluir este personagem?</h2>
+
+      <div class="popup-buttons">
+        <button id="confirm-delete" class="confirm-button">Sim</button>
+        <button id="cancel-delete" class="cancel-button">Cancelar</button>
+      </div>
+    </div>
+  </div>
 
 {% endblock %}

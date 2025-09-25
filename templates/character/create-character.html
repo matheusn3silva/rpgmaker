@@ -6,7 +6,8 @@
         <i class="fa-solid fa-arrow-left"></i>
         Voltar
     </a>
-    <form class="create-character" action="">
+    <form class="create-character" method="POST" action="{% url 'create' %}">
+        {% csrf_token %}
         <label for="name-character">
             Nome do personagem:
             <input type="text" name="name-character" id="name-character">
@@ -19,13 +20,13 @@
             Personalidade:
             <input type="text" name="personality-character" id="personality-character">
         </label>
-        <label for="data-character">
+        <label for="birth-date-character">
             Data de Nascimento:
-            <input type="date" name="data-character" id="data-character">
+            <input type="date" name="birth-date-character" id="birth-date-character">
         </label>
-        <label for="birth-local-character">
+        <label for="birth-place-character">
             Local de Nascimento:
-            <input type="text" name="birth-local-character" id="birth-local-character">
+            <input type="text" name="birth-place-character" id="birth-place-character">
         </label>
         <label for="live-local-character">
             Local onde Reside:
@@ -35,14 +36,6 @@
             Hobby:
             <input type="text" name="hobby-character" id="hobby-character">
         </label>
-        <label for="strong-point-character">
-            Ponto Forte:
-            <input type="text" name="strong-point-character" id="strong-point-character">
-        </label>
-        <label for="weak-point-character">
-            Ponto Fraco:
-            <input type="text" name="weak-point-character" id="weak-point-character">
-        </label>
         <label for="landmark-item-character">
             Item Marcante:
             <input type="text" name="landmark-item-character" id="landmark-item-character">
@@ -50,10 +43,6 @@
         <label for="motivation-character">
             Motivação:
             <input type="text" name="motivation-character" id="motivation-character">
-        </label>
-        <label for="striking-trait-character">
-            Traço Marcante:
-            <input type="text" name="striking-trait-character" id="striking-trait-character">
         </label>
         <label class="history-character" for="history-character">
             História:

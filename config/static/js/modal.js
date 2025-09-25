@@ -12,3 +12,20 @@ modal.addEventListener('click', () => {
 
     return
 })
+
+
+/* DELETE CHARACTER MODAL */
+const deleteBtnCharacter = document.querySelectorAll('.delete')
+
+const modalDelete = document.querySelector('.modal-delete')
+const confirmBtn = document.getElementById('confirm-delete')
+const cancelBtn = document.getElementById('cancel-delete')
+
+const idCharacterDelete = null
+
+deleteBtnCharacter.forEach(button => {
+    button.addEventListener('click', () => {
+        
+    })
+})
+

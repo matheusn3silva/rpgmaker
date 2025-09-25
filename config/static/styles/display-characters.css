@@ -67,4 +67,44 @@ button {
     }
 }
 
+/* POPUP */
 
+div.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100dvh;
+    background-color: rgba(0, 0, 0, 0.7)
+}
+
+div.popup-confirm {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    background-color: var(--white);
+    padding: 2rem;
+    border-radius: .4rem;
+}
+
+div.popup-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1.2rem;
+
+    button {
+        min-width: 8rem;
+        display: block;
+    }
+
+    button.confirm-button {
+        background-color: var(--rose);
+    }
+
+    button.cancel-button {
+        background-color: var(--blue);
+    }
+}

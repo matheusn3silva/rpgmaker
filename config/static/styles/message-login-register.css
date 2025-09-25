@@ -1,6 +1,7 @@
 @import url('./pallete-color.css');
 
 div.container-message {
+    display: none;
     position: fixed;
     top: 2rem;
     right: 2rem;
