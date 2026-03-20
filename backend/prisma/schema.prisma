@@ -1,0 +1,147 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id       Int    @id @default(autoincrement())
+  name     String @db.VarChar(150)
+  email    String @unique @db.VarChar(254)
+  password String @db.VarChar(100)
+
+  verified          Boolean @default(false)
+  verificationToken String? @db.VarChar(255)
+
+  resetPasswordToken   String? @db.VarChar(255)
+  resetPasswordExpires DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  characters Character[]
+}
+
+model RPGClass {
+  id          Int    @id @default(autoincrement())
+  name        String @db.VarChar(50)
+  description String
+
+  skills     Skill[]
+  characters Character[]
+}
+
+enum SkillType {
+  PASSIVA       
+  ATIVA_ACAO    
+  ATIVA_BONUS   
+  ATIVA_REACAO  
+}
+
+model Skill {
+  id          Int       @id @default(autoincrement())
+  name        String    @db.VarChar(100) 
+  type        SkillType
+  description String
+
+  psCost Int @default(0)
+  peCost Int @default(0)
+
+  classId Int
+  class   RPGClass @relation(fields: [classId], references: [id])
+  
+  @@unique([classId, name])
+}
+
+model Character {
+  id           Int    @id @default(autoincrement())
+  name         String @db.VarChar(50)
+  age          Int @default(0)
+  personality  String? @db.VarChar(50)
+  birthDate    DateTime?
+  birthPlace   String? @db.VarChar(50)
+  residence    String? @db.VarChar(50)
+  occupation   String? @db.VarChar(50)
+  race         String @db.VarChar(30)
+
+  level        Int @default(1)
+  experience   Int @default(0)
+
+  // Relação de Usuário
+  userId       Int
+  user  User     @relation(fields: [userId], references: [id])
+
+  // Relação de Classe
+  classId      Int
+  class RPGClass @relation(fields: [classId], references: [id])
+
+  attributes CharacterAttributes?
+  status     CharacterStatus?
+  proficiencies CharacterProficiency[]
+
+  createdAt DateTime @default(now())
+}
+
+model CharacterAttributes {
+  id Int @id @default(autoincrement())
+  // --- Atributos Principais ---
+  strength        Int      @default(10)
+  dexterity       Int      @default(10)
+  constitution    Int      @default(10)
+  intelligence    Int      @default(10)
+  education       Int      @default(10)
+  presence        Int      @default(10)
+  power           Int      @default(10)
+  size            String?  @db.VarChar(30)
+
+  characterId Int @unique
+  character   Character @relation(fields: [characterId], references: [id], onDelete: Cascade)
+}
+
+model CharacterStatus {
+  id Int @id @default(autoincrement())
+  // --- Atributos Secundários ---
+  lifePoints      Int      @default(20)
+  effortPoints    Int      @default(1)
+  energyPoints    Int      @default(1)
+  exposureLevel   Int      @default(5)
+  initiative      Int      @default(0)
+  luck            Int      @default(0)
+  movement        Int      @default(1)
+  typeEnergy      String?   @db.VarChar(20)
+
+  characterId Int @unique
+  character   Character @relation(fields: [characterId], references: [id], onDelete: Cascade)
+}
+
+model Proficiency {
+  id   Int    @id @default(autoincrement())
+  name String @unique @db.VarChar(50)
+
+  characters CharacterProficiency[]
+}
+
+model CharacterProficiency {
+  id Int @id @default(autoincrement())
+
+  value Int @default(0)
+
+  characterId   Int
+  proficiencyId Int
+
+  character   Character   @relation(fields: [characterId], references: [id], onDelete: Cascade)
+  proficiency Proficiency @relation(fields: [proficiencyId], references: [id])
+
+  @@unique([characterId, proficiencyId])
+  @@index([characterId])
+  @@index([proficiencyId])
+}
