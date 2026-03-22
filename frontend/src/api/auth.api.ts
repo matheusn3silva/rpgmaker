@@ -29,5 +29,9 @@ export const authApi = {
 
   resendVerificationEmail(email: string) {
     return api.post('/auth/resend-verification', { email })
-  }
+  },
+
+  verifyEmail(token: string) {
+    return api.get('/auth/verify-email', { params: { token } })
+  },
 }
