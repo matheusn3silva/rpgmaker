@@ -1,7 +1,7 @@
 export interface CharacterAttributes {
     strength: number
     dexterity: number
-    consitution: number
+    constitution: number
     intelligence: number
     education: number
     presence: number
@@ -12,7 +12,7 @@ export interface CharacterAttributes {
 export interface CharacterStatus {
     lifePoints: number
     effortPoints: number
-    energeyPoints: number
+    energyPoints: number
     exposureLevel: number
     initiative: number
     luck: number
