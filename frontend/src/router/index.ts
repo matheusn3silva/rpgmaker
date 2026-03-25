@@ -40,13 +40,13 @@ const router = createRouter({
     {
       path: '/characters',
       name: 'characters',
-      component: () => import('@/views/characters/CharactersListView.vue'),
+      component: () => import('@/views/characters/CharacterListView.vue'),
       meta: { requiresAuth: true }
     },
     {
       path: '/characters/:id',
       name: 'character-details',
-      component: () => import('@/views/characters/CharacterDetailsView.vue'),
+      component: () => import('@/views/characters/CharacterDetailView.vue'),
       meta: { requiresAuth: true }
     },
     {
