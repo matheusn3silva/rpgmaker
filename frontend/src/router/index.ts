@@ -50,6 +50,18 @@ const router = createRouter({
       meta: { requiresAuth: true }
     },
     {
+      path: '/characters/:id/edit',
+      name: 'character-edit',
+      component: () => import('@/views/characters/CharacterEditView.vue'),
+      meta: { requiresAuth: true },
+    },
+    {
+      path: '/characters/new',
+      name: 'character-new',
+      component: () => import('@/views/characters/CharacterEditView.vue'),
+      meta: { requiresAuth: true },
+    },
+    {
       path: '/settings',
       name: 'settings',
       component: () => import('@/views/settings/AccountSettingsView.vue'),
