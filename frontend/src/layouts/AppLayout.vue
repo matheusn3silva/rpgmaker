@@ -6,6 +6,10 @@
             </RouterLink>
 
             <div class="flex items-center gap-4">
+                <span class="text-gray-600 text-sm hidden sm:block">
+                    {{ authStore.user?.name }}
+                </span>
+
                 <RouterLink to="/settings" class="text-gray-400 hover:text-gray-100 text-sm transition-colors">
                     Configurações
                 </RouterLink>
@@ -28,6 +32,7 @@
 <script setup lang="ts">
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/auth.store'
+
 
 const router = useRouter()
 const authStore = useAuthStore()
