@@ -21,7 +21,7 @@
 
         <div class="flex gap-2 mt-4" @click.stop>
             <RouterLink 
-                :to="`/character/${character.id}/edit`"
+                :to="`/characters/${character.id}/edit`"
                 class="flex-1 text-center text-xs py-1.5 rounded-lg border border-gray-700
                     text-gray-400 hover:text-gray-100 hover:border-gray-500 transition-colors"
             >
