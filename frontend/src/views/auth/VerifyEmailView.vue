@@ -31,6 +31,9 @@ import { ref, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import AuthLayout from '@/layouts/AuthLayout.vue'
 import { authApi } from '@/api/auth.api'
+import { useToast } from '@/composables/useToast'
+
+const toast = useToast()
 
 const route = useRoute()
 const loading = ref(true)
@@ -45,8 +48,10 @@ onMounted(async () => {
   try {
     await authApi.verifyEmail(token)
     success.value = true
+    toast.success('Email verificado com sucesso!')
   } catch {
     success.value = false
+    toast.error('Link inválido ou expirado.')
   } finally {
     loading.value = false
   }

@@ -80,12 +80,15 @@
 import { ref } from 'vue'
 import AuthLayout from '@/layouts/AuthLayout.vue'
 import { useAuthStore } from '@/stores/auth.store'
+import { useToast } from '@/composables/useToast'
+
+const toast = useToast()
 
 const authStore = useAuthStore()
 
 const form = ref({ name: '', email: '', password: '' })
 const errorMessage = ref('')
-const success =ref(false)
+const success = ref(false)
 
 async function handleSubmit() {
   errorMessage.value = ''
@@ -93,8 +96,9 @@ async function handleSubmit() {
   try {
     await authStore.register(form.value)
     success.value = true
+    toast.success('Conta criada com sucesso! Verifique seu email para confirmar o cadastro.')
   } catch (err) {
-    errorMessage.value = (err as Error).message  
+    toast.error((err as Error).message)
   }
 }
  

@@ -116,6 +116,9 @@ import { ref, onMounted } from 'vue'
 import CharacterCard from '@/components/character/CharacterCard.vue';
 import AppLayout from '@/layouts/AppLayout.vue';
 import { useCharacterStore } from '@/stores/character.store'
+import { useToast } from '@/composables/useToast'
+
+const toast = useToast()
 
 const store = useCharacterStore()
 
@@ -140,6 +143,9 @@ async function confirmDelete() {
   try {
     await store.deleteCharacter(deleteTargetId.value)
     deleteTargetId.value = null
+    toast.success('Personagem excluído com sucesso!')
+  } catch {
+    toast.error('Erro ao excluir personagem.')
   } finally {
     deleting.value = false
   }

@@ -149,6 +149,9 @@ import AppLayout from '@/layouts/AppLayout.vue';
 import { useAuthStore } from '@/stores/auth.store'
 import { useThemeStore } from '@/stores/theme.store'
 import { userApi } from '@/api/user.api'
+import { useToast } from '@/composables/useToast'
+
+const toast = useToast()
 
 const authStore = useAuthStore()
 const themeStore = useThemeStore()
@@ -176,8 +179,9 @@ async function handleUpdateName() {
     await authStore.fetchMe()
     nameSuccess.value = true
     nameForm.value.name = ''
+    toast.success('Nome atualizado com sucesso!')
   } catch (err) {
-    nameError.value = (err as Error).message
+    toast.error((err as Error).message || 'Erro ao atualizar nome.')
   } finally {
     nameLoading.value = false
   }
@@ -198,8 +202,9 @@ async function handleUpdatePassword() {
     await userApi.updatePassword(passwordForm.value.current, passwordForm.value.new)
     passwordSuccess.value = true
     passwordForm.value = { current: '', new: '' }
+    toast.success('Senha atualizada com sucesso!')
   } catch (err) {
-    passwordError.value = (err as Error).message
+    toast.error((err as Error).message || 'Erro ao atualizar senha.')
   } finally {
     passwordLoading.value = false
   }
