@@ -52,6 +52,9 @@
 import { ref } from 'vue'
 import AuthLayout from '@/layouts/AuthLayout.vue'
 import { authApi } from '@/api/auth.api'
+import { useToast } from '@/composables/useToast'
+
+const toast = useToast()
 
 const email = ref('')
 const loading = ref(false)
@@ -62,6 +65,7 @@ async function handleSubmit() {
   
   try {
     await authApi.forgotPassword(email.value)
+    toast.success('Instruções enviadas com sucesso!')
   } finally {
     loading.value = false
     submitted.value = true

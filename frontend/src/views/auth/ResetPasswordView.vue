@@ -55,6 +55,9 @@ import { ref } from 'vue'
 import { useRoute } from 'vue-router'
 import AuthLayout from '@/layouts/AuthLayout.vue'
 import { authApi } from '@/api/auth.api'
+import { useToast } from '@/composables/useToast'
+
+const toast = useToast()
 
 const route = useRoute()
 
@@ -73,8 +76,9 @@ async function handleSubmit() {
   try {
     await authApi.resetPassword(token, password.value)
     success.value = true
+    toast.success('Senha alterada com sucesso! Faça login com sua nova senha.')
   } catch (err) {
-    errorMessage.value = (err as Error).message
+    toast.error((err as Error).message)
   } finally {
     loading.value = false
   }

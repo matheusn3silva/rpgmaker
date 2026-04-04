@@ -285,6 +285,9 @@ import NumberField from '@/components/ui/NumberField.vue'
 import { charactersApi } from '@/api/characters.api'
 import { classesApi } from '@/api/classes.api'
 import type { RPGClass } from '@/types/character.types'
+import { useToast } from '@/composables/useToast'
+
+const toast = useToast()
 
 const route = useRoute()
 const router = useRouter()
@@ -432,12 +435,14 @@ async function handleSubmit() {
     if (isEditing.value && characterId) {
       await charactersApi.update(characterId, payload)
       router.push(`/characters/${characterId}`)
+      toast.success('Personagem atualizado com sucesso!')
     } else {
       const { data } = await charactersApi.create(payload)
       router.push(`/characters/${data.id}`)
+      toast.success('Personagem criado com sucesso!')
     }
   } catch (err) {
-    errorMessage.value = (err as Error).message
+    toast.error((err as Error).message || 'Erro ao salvar personagem.')
   } finally {
     submitting.value = false
   }

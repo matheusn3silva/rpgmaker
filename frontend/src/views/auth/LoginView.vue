@@ -84,6 +84,9 @@ import { useRouter, useRoute } from 'vue-router'
 import AuthLayout from '@/layouts/AuthLayout.vue'
 import { useAuthStore } from '@/stores/auth.store'
 import { authApi } from '@/api/auth.api'
+import { useToast } from '@/composables/useToast'
+
+const toast = useToast()
 
 const router = useRouter()
 const route = useRoute() // accesses the current route (to get query parameters)
@@ -112,8 +115,9 @@ async function handleSubmit() {
 
     if (message === 'Email não verificado.') {
       showVerificationWarning.value = true
+      toast.info('Seu email ainda não foi verificado. Por favor, verifique sua caixa de entrada.')
     } else {
-      errorMessage.value = message
+      toast.error(message)
     }
   }
 }
@@ -121,9 +125,9 @@ async function handleSubmit() {
 async function resendVerification() {
   try {
     await authApi.resendVerificationEmail(form.value.email)
-    errorMessage.value = 'E-mail de verificação reenviado! Verifique sua caixa de entrada.'
+    toast.success('E-mail de verificação reenviado! Verifique sua caixa de entrada.')
   } catch {
-    errorMessage.value = 'Erro ao reenviar e-mail de verificação.'
+    toast.error('Erro ao reenviar e-mail de verificação.')
   }
 }
 </script>
