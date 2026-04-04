@@ -1,6 +1,6 @@
 import { defineStore } from "pinia"
 import { ref } from 'vue'
-import { characterApi } from "@/api/character.api"
+import { charactersApi } from "@/api/characters.api"
 import type { Character, CharacterSummary, PaginatedCharacters } from '@/types/character.types'
 
 
@@ -19,7 +19,7 @@ export const useCharacterStore = defineStore('character', () => {
         error.value = null
 
         try {
-            const { data } = await characterApi.getAll(page)
+            const { data } = await charactersApi.getAll(page)
             characters.value = data.data
             pagination.value = data.pagination
         } catch (err) {
@@ -30,7 +30,7 @@ export const useCharacterStore = defineStore('character', () => {
     }
 
     async function deleteCharacter(id: number) {
-        await characterApi.delete(id)
+        await charactersApi.delete(id)
 
         characters.value = characters.value.filter(char => char.id !== id)
 
@@ -46,7 +46,7 @@ export const useCharacterStore = defineStore('character', () => {
         error.value = null
         currentCharacter.value = null
         try {
-            const { data } = await characterApi.getById(id)
+            const { data } = await charactersApi.getById(id)
             currentCharacter.value = data
         } catch (err) {
             error.value = (err as Error).message

@@ -53,3 +53,9 @@ export interface PaginatedCharacters {
         totalPages: number
     }
 }
+
+export interface RPGClass {
+    id: number,
+    name: string,
+    description: string
+}

@@ -206,7 +206,12 @@ router.get('/:id', authMiddleware, async (req, res) => {
       },
       include: {
         attributes: true,
-        status: true
+        status: true,
+        class: {
+          select: {
+            name: true
+          }
+        }
       }
     })
 
@@ -214,7 +219,7 @@ router.get('/:id', authMiddleware, async (req, res) => {
       return res.status(404).json({ message: 'Personagem não encontrado' })
     }
 
-    return res.json(character)
+    return res.json({ ...character, class_name: character.class.name })
   } catch (error) {
     console.error(error)
     return res.status(500).json({ message: 'Erro no servidor' })
