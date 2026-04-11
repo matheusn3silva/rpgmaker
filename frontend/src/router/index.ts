@@ -82,9 +82,7 @@ const router = createRouter({
 
 // ── Navigation Guard global ───────────────────────────────
 router.beforeEach(async (to) => {
-  if (!to.meta.requiresAuth) return true
 
-  // If route requires auth, check if user is authenticated
   const authStore = useAuthStore()
 
   // Only call fetchMe if we don't already have the user.
@@ -92,7 +90,17 @@ router.beforeEach(async (to) => {
     await authStore.fetchMe()
   }
 
-  if (!authStore.isAuthenticated) {
+  const isAuth = authStore.isAuthenticated
+
+  if (!to.meta.requiresAuth && isAuth) {
+    const allowedWhenAuth = ['/verify-email', 'reset-password']
+    
+    if (!allowedWhenAuth.includes(to.path)) {
+      return { name: 'characters' }
+    }
+  }
+
+  if (to.meta.requiresAuth && !isAuth) {
     return {
       name: 'login',
       query: { redirect: to.fullPath }
