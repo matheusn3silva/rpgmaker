@@ -1,35 +1,35 @@
 <template>
   <AuthLayout>
-    <div class="bg-gray-900 border border-gray-800 rounded-xl p-8">
-      <h2 class="text-xl font-semibold text-gray-100 mb-6">Faça seu login!</h2>
+    <div class="bg-slate-800 border border-slate-700 rounded-xl p-8">
+      <h2 class="text-xl font-semibold text-slate-100 mb-6">Faça seu login!</h2>
 
       <form @submit.prevent="handleSubmit" class="space-y-4">
         <!-- E-mail Field -->
         <div>
-          <label class="block text-sm text-gray-400 mb-1" for="email">E-mail:</label>
+          <label class="block text-sm text-slate-400 mb-1" for="email">E-mail:</label>
           <input
             id="email"
             v-model="form.email"
             type="email"
             placeholder="seu@email.com"
             required
-            class="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2.5
-                    text-gray-100 placeholder-gray-600 text-sm
+            class="w-full bg-slate-700 border border-slate-600 rounded-lg px-4 py-2.5
+                    text-slate-100 placeholder-slate-500 text-sm
                     focus:outline-none focus:border-amber-500 transition-colors"
           >
         </div>
 
         <!-- Password Field -->
         <div>
-          <label class="block text-sm text-gray-400 mb-1" for="password">Senha:</label>
+          <label class="block text-sm text-slate-400 mb-1" for="password">Senha:</label>
           <input 
             id="password"
             v-model="form.password"
             type="password" 
             placeholder="••••••••"
             required
-            class="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2.5
-                   text-gray-100 placeholder-gray-600 text-sm
+            class="w-full bg-slate-700 border border-slate-600 rounded-lg px-4 py-2.5
+                   text-slate-100 placeholder-slate-500 text-sm
                    focus:outline-none focus:border-amber-500 transition-colors"
           >
         </div>
@@ -68,17 +68,17 @@
 
       <div class="mt-4">
         <div class="relative flex items-center gap-3 mb-4">
-          <div class="flex-1 h-px bg-gray-800" />
-          <span class="text-xs text-gray-600">ou</span>
-          <div class="flex-1 h-px bg-gray-800" />
+          <div class="flex-1 h-px bg-slate-700" />
+          <span class="text-xs text-slate-500">ou</span>
+          <div class="flex-1 h-px bg-slate-700" />
         </div>
 
         <button
           type="button"
           @click="loginWithGoogle"
           class="w-full flex items-center justify-center gap-3 py-2.5 rounded-lg
-           border border-gray-700 text-gray-500 text-sm hover:border-gray-500
-           hover:text-gray-100 transition-colors"
+           border border-slate-600 text-slate-400 text-sm hover:border-slate-400
+           hover:text-slate-100 transition-colors"
         >
           <svg width="18" height="18" viewBox="0 0 18 18">
             <path fill="#4285F4" d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.717v2.258h2.908c1.702-1.567 2.684-3.874 2.684-6.615z"/>
@@ -90,11 +90,11 @@
         </button>
       </div>
 
-      <div class="mt-6 space-y-2 text-center text-sm text-gray-500">
-        <RouterLink to="/forgot-password" class="block hover:text-gray-300 transition-colors">
+      <div class="mt-6 space-y-2 text-center text-sm text-slate-400">
+        <RouterLink to="/forgot-password" class="block hover:text-slate-300 transition-colors">
           Esqueceu a senha?
         </RouterLink>
-        <RouterLink to="/register" class="block hover:text-gray-300 transition-colors">
+        <RouterLink to="/register" class="block hover:text-slate-300 transition-colors">
           Não tem conta? <span class="text-amber-400">Cadastre-se</span>
         </RouterLink>
       </div>

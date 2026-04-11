@@ -8,7 +8,7 @@
                 :class="{
                     'bg-green-900 border border-green-700 text-green-200': toast.type === 'success',
                     'bg-red-900 border border-red-700 text-red-200':       toast.type === 'error',
-            'bg-gray-800 border border-gray-700 text-gray-200':    toast.type === 'info',
+                    'bg-slate-700 border border-slate-600 text-slate-200':    toast.type === 'info',
                 }"
             >
                 {{ toast.message }}

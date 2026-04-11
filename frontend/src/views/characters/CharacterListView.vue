@@ -1,7 +1,7 @@
 <template>
   <AppLayout>
     <div class="flex items-center justify-between mb-6">
-      <h1 class="text-2xl font-bold text-gray-100">Meus Personagens</h1>
+      <h1 class="text-2xl font-bold text-slate-100">Meus Personagens</h1>
       <RouterLink 
         to="/characters/new"
         class="bg-amber-600 hover:bg-amber-500 text-white text-sm font-medium
@@ -12,7 +12,7 @@
     </div>
 
     <!-- State loading -->
-    <div v-if="store.loading" class="text-center py-12 text-gray-600">
+    <div v-if="store.loading" class="text-center py-12 text-slate-500">
       Carregando personagens...
     </div>
 
@@ -29,7 +29,7 @@
       v-else-if="store.characters.length === 0"
       class="text-center py-12"
     >
-      <p class="text-gray-600 mb-4">Nenhum personagem criado ainda.</p>
+      <p class="text-slate-500 mb-4">Nenhum personagem criado ainda.</p>
       <RouterLink 
         to="/characters/new"
         class="text-amber-400 hover:text-amber-300 text-sm transition-colors"
@@ -57,22 +57,22 @@
           <button
             @click="changePage(store.pagination!.page - 1)"
             :disabled="store.pagination.page === 1"
-            class="px-3 py-1.5 text-sm rounded-lg border border-gray-800 text-gray-400
-                    hover:text-gray-100 hover:border-gray-600 disabled:opacity-30
+            class="px-3 py-1.5 text-sm rounded-lg border border-slate-700 text-slate-400
+                    hover:text-slate-100 hover:border-slate-500 disabled:opacity-30
                     disabled:cursor-not-allowed transition-colors"
           >
             Anterior
           </button>
 
-          <span class="text-gray-500 text-sm">
+          <span class="text-slate-400 text-sm">
             {{ store.pagination.page }} / {{ store.pagination.totalPages }}
           </span>
 
           <button
             @click="changePage(store.pagination!.page + 1)"
             :disabled="store.pagination.page === store.pagination.totalPages"
-            class="px-3 py-1.5 text-sm rounded-lg border border-gray-800 text-gray-400
-                    hover:text-gray-100 hover:border-gray-600 disabled:opacity-30
+            class="px-3 py-1.5 text-sm rounded-lg border border-slate-700 text-slate-400
+                    hover:text-slate-100 hover:border-slate-500 disabled:opacity-30
                     disabled:cursor-not-allowed transition-colors"
           >
             Próxima
@@ -86,14 +86,14 @@
       class="fixed inset-0 bg-black/60 flex items-center justify-center px-4 z-50"
       @click.self="deleteTargetId = null"
     >
-      <div class="-gray-900 border border-gray-800 rounded-xl p-6 w-full max-w-sm">
-        <h3 class="text-gray-100 font-semibold mb-2">Excluir personagem</h3>
-        <p class="text-gray-500 text-sm mb-6">Tem certeza? Essa ação não pode ser desfeita.</p>
+      <div class="-slate-800 border border-slate-700 rounded-xl p-6 w-full max-w-sm">
+        <h3 class="text-slate-100 font-semibold mb-2">Excluir personagem</h3>
+        <p class="text-slate-400 text-sm mb-6">Tem certeza? Essa ação não pode ser desfeita.</p>
         <div class="flex gap-3">
           <button
             @click="deleteTargetId = null"
-            class="flex-1 py-2 text-sm rounded-lg border border-gray-700
-                   text-gray-400 hover:text-gray-100 transition-colors"
+            class="flex-1 py-2 text-sm rounded-lg border border-slate-600
+                   text-slate-400 hover:text-slate-100 transition-colors"
           >
             Cancelar
           </button>

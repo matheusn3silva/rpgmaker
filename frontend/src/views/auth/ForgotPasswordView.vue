@@ -1,22 +1,22 @@
 <template>
   <AuthLayout>
-    <div class="bg-gray-900 border border-gray-800 rounded-xl p-8">
-      <h2 class="text-xl font-semibold text-gray-100 mb-2">Recuperar senha</h2>
-      <p class="text-gray-500 text-sm mb-6">
+    <div class="bg-slate-800 border border-slate-700 rounded-xl p-8">
+      <h2 class="text-xl font-semibold text-slate-100 mb-2">Recuperar senha</h2>
+      <p class="text-slate-400 text-sm mb-6">
         Informe seu email e enviaremos as instruções.
       </p>
 
       <form @submit.prevent="handleSubmit" class="space-y-4">
         <div>
-          <label for="email" class="block text-sm text-gray-400 mb-1">Email:</label>
+          <label for="email" class="block text-sm text-slate-400 mb-1">Email:</label>
           <input
             id="email"
             v-model="email"
             type="email"
             placeholder="seu@email.com"
             required
-            class="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2.5
-                   text-gray-100 placeholder-gray-600 text-sm
+            class="w-full bg-slate-700 border border-slate-600 rounded-lg px-4 py-2.5
+                   text-slate-100 placeholder-slate-500 text-sm
                    focus:outline-none focus:border-amber-500 transition-colors"
           />
         </div>
@@ -40,7 +40,7 @@
       </form>
 
       <div class="mt-6 text-center">
-        <RouterLink to="/login" class="text-sm text-gray-500 hover:text-gray-300 transition-colors">
+        <RouterLink to="/login" class="text-sm text-slate-400 hover:text-slate-300 transition-colors">
           Voltar para o login
         </RouterLink>
       </div>

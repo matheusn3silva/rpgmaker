@@ -1,10 +1,10 @@
 <template>
   <AppLayout>
     <div class="max-w-lg mx-auto">
-      <h1 class="text-2xl font-bold text-gray-100 mb-6">Configurações</h1>
+      <h1 class="text-2xl font-bold text-slate-100 mb-6">Configurações</h1>
 
       <!-- Tabs -->
-      <div class="flex border-b border-gray-800 mb-6">
+      <div class="flex border-b border-slate-700 mb-6">
         <button
           v-for="tab in tabs"
           :key="tab.id"
@@ -12,7 +12,7 @@
           class="px-4 py-2.5 text-sm font-medium transition-colors border-b-2 -mb-px"
           :class="activeTab === tab.id
             ? 'text-amber-400 border-amber-400'
-            : 'text-gray-500 border-transparent hover:text-gray-300'"
+            : 'text-slate-400 border-transparent hover:text-slate-300'"
         >
           {{  tab.label }}
         </button>
@@ -22,24 +22,24 @@
       <div v-if="activeTab === 'account'" class="space-y-6">
 
         <!-- Alter name -->
-        <div class="bg-gray-900 border border-gray-800 rounded-xl p-6">
-          <h2 class="text-gray-100 font-medium mb-4">Alterar Nome</h2>
+        <div class="bg-slate-800 border border-slate-700 rounded-xl p-6">
+          <h2 class="text-slate-100 font-medium mb-4">Alterar Nome</h2>
 
           <form @submit.prevent="handleUpdateName" class="space-y-4">
             <div>
-              <label class="block text-sm text-gray-400 mb-1">Nome atual</label>
-              <p class="text-gray-500 text-sm">{{ authStore.user?.name }}</p>
+              <label class="block text-sm text-slate-400 mb-1">Nome atual</label>
+              <p class="text-slate-400 text-sm">{{ authStore.user?.name }}</p>
             </div>
 
             <div>
-              <label class="block text-sm text-gray-400 mb-1" for="name">Novo nome</label>
+              <label class="block text-sm text-slate-400 mb-1" for="name">Novo nome</label>
               <input 
                 id="name"
                 v-model="nameForm.name"
                 type="text"
                 required
-                class="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2.5
-                       text-gray-100 text-sm focus:outline-none focus:border-amber-500 transition-colors"
+                class="w-full bg-slate-700 border border-slate-600 rounded-lg px-4 py-2.5
+                       text-slate-100 text-sm focus:outline-none focus:border-amber-500 transition-colors"
               />
             </div>
 
@@ -58,12 +58,12 @@
         </div>
 
         <!-- Alter password -->
-        <div class="bg-gray-900 border border-gray-800 rounded-xl p-6">
-          <h2 class="text-gray-100 font-medium mb-4">Alterar senha</h2>
+        <div class="bg-slate-800 border border-slate-700 rounded-xl p-6">
+          <h2 class="text-slate-100 font-medium mb-4">Alterar senha</h2>
 
           <form @submit.prevent="handleUpdatePassword" class="space-y-4">
             <div>
-              <label for="current-password" class="block text-sm text-gray-400 mb-1">
+              <label for="current-password" class="block text-sm text-slate-400 mb-1">
                 Senha atual
               </label>
               <input 
@@ -71,13 +71,13 @@
                 v-model="passwordForm.current"
                 type="password"
                 required
-                class="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2.5
-                       text-gray-100 text-sm focus:outline-none focus:border-amber-500 transition-colors"
+                class="w-full bg-slate-700 border border-slate-600 rounded-lg px-4 py-2.5
+                       text-slate-100 text-sm focus:outline-none focus:border-amber-500 transition-colors"
               />
             </div>
 
             <div>
-              <label class="block text-sm text-gray-400 mb-1" for="new-password">
+              <label class="block text-sm text-slate-400 mb-1" for="new-password">
                 Nova senha
               </label>
               <input
@@ -86,8 +86,8 @@
                 type="password"
                 required
                 minlength="6"
-                class="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2.5
-                       text-gray-100 text-sm focus:outline-none focus:border-amber-500 transition-colors"
+                class="w-full bg-slate-700 border border-slate-600 rounded-lg px-4 py-2.5
+                       text-slate-100 text-sm focus:outline-none focus:border-amber-500 transition-colors"
               />
             </div>
 
@@ -108,8 +108,8 @@
 
       <!-- Tab: Theme -->
       <div v-else-if="activeTab === 'theme'">
-        <div class="bg-gray-900 border border-gray-800 rounded-xl p-6">
-          <h2 class="text-gray-100 font-medium mb-4">Tema</h2>
+        <div class="bg-slate-800 border border-slate-700 rounded-xl p-6">
+          <h2 class="text-slate-100 font-medium mb-4">Tema</h2>
 
           <div class="grid grid-cols-2 gap-3">
 
@@ -117,24 +117,24 @@
               @click="themeStore.setTheme('dark')"
               class="p-4 rounded-xl border-2 transition-colors text-left"
               :class="themeStore.theme === 'dark'
-                ? 'border-amber-500 bg-gray-800'
-                : 'border-gray-800 hover:border-gray-600'"
+                ? 'border-amber-500 bg-slate-700'
+                : 'border-slate-700 hover:border-slate-500'"
             >
-              <div class="w-full h-16 bg-gray-950 rounded-lg mb-3 border border-gray-800" />
-              <p class="text-sm font-medium text-gray-200">Escuro</p>
-              <p class="text-xs text-gray-600">Tema padrão</p>
+              <div class="w-full h-16 bg-slate-900 rounded-lg mb-3 border border-slate-700" />
+              <p class="text-sm font-medium text-slate-200">Escuro</p>
+              <p class="text-xs text-slate-500">Tema padrão</p>
             </button>
 
             <button
               @click="themeStore.setTheme('light')"
               class="p-4 rounded-xl border-2 transition-colors text-left"
               :class="themeStore.theme === 'light'
-                ? 'border-amber-500 bg-gray-800'
-                : 'border-gray-800 hover:border-gray-600'"
+                ? 'border-amber-500 bg-slate-700'
+                : 'border-slate-700 hover:border-slate-500'"
             >
-              <div class="w-full h-16 bg-gray-100 rounded-lg mb-3 border border-gray-200" />
-              <p class="text-sm font-medium text-gray-200">Claro</p>
-              <p class="text-xs text-gray-600">Em desenvolvimento</p>
+              <div class="w-full h-16 bg-slate-100 rounded-lg mb-3 border border-slate-200" />
+              <p class="text-sm font-medium text-slate-200">Claro</p>
+              <p class="text-xs text-slate-500">Em desenvolvimento</p>
             </button>
           </div>
         </div>

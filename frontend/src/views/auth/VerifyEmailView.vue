@@ -1,7 +1,7 @@
 <template>
   <AuthLayout>
-    <div class="bg-gray-900 border border-gray-800 rounded-xl p-8 text-center">
-      <div v-if="loading" class="text-gray-400 text-sm">Verificando...</div>
+    <div class="bg-slate-800 border border-slate-700 rounded-xl p-8 text-center">
+      <div v-if="loading" class="text-slate-400 text-sm">Verificando...</div>
 
       <div v-else-if="success">
         <p class="text-green-400 font-medium mb-4">Email verificado com sucesso!</p>

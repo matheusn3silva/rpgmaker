@@ -6,24 +6,24 @@
       <div class="flex items-center gap-4 mb-6">
         <RouterLink
           to="/characters"
-          class="text-gray-600 hover:text-gray-400 transition-colors text-sm"
+          class="text-slate-500 hover:text-slate-400 transition-colors text-sm"
         >
           ←
         </RouterLink>
 
-        <h1 class="text-2xl font-bold text-gray-100">
+        <h1 class="text-2xl font-bold text-slate-100">
           {{ isEditing ? 'Editar personagem' : 'Novo Personagem' }}
         </h1>
       </div>
 
       <!-- Inicial loading edit character -->
-       <div v-if="initialLoading" class="text-center py-12 text-gray-600">
+       <div v-if="initialLoading" class="text-center py-12 text-slate-500">
         Carregando personagem...
        </div>
 
        <template v-else>
         <!-- Tabs Navigation -->
-        <div class="flex border-b border-gray-800 mb-6">
+        <div class="flex border-b border-slate-700 mb-6">
           <button
             v-for="tab in tabs"
             :key="tab.id"
@@ -31,7 +31,7 @@
             class="px-4 py-2.5 text-sm font-medium transition-colors border-b-2 -mb-px flex items-center gap-2"
             :class="activeTab === tab.id
               ? 'text-amber-400 border-amber-400'
-              : 'text-gray-500 border-transparent hover:text-gray-300'"
+              : 'text-slate-400 border-transparent hover:text-slate-300'"
           >
             {{ tab.label }}
             <!-- Required fields indicator -->
@@ -43,22 +43,22 @@
         </div>
 
         <!-- Tabs Content -->
-        <div class="bg-gray-900 border border-gray-800 rounded-xl p-6 mb-6">
+        <div class="bg-slate-800 border border-slate-700 rounded-xl p-6 mb-6">
 
           <!-- Tab 1: General Data -->
           <div v-if="activeTab === 'general'" class="space-y-4">
 
             <!-- Name (Required) -->
             <div>
-              <label class="block text-sm text-gray-400 mb-1">
+              <label class="block text-sm text-slate-400 mb-1">
                 Nome <span class="text-red-500">*</span>
               </label>
               <input
                 v-model="form.name"
                 type="text"
                 placeholder="Nome do personagem"
-                class="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2.5
-                       text-gray-100 text-sm focus:outline-none focus:border-amber-500 transition-colors"
+                class="w-full bg-slate-700 border border-slate-600 rounded-lg px-4 py-2.5
+                       text-slate-100 text-sm focus:outline-none focus:border-amber-500 transition-colors"
                 :class="{ 'border-red-700': submitAttempted && !form.name }"
               />
             </div>
@@ -66,26 +66,26 @@
             <!-- Race and Class -->
             <div class="grid grid-cols-2 gap-4">
               <div>
-                <label class="block text-sm text-gray-400 mb-1">
+                <label class="block text-sm text-slate-400 mb-1">
                   Raça <span class="text-red-500">*</span>
                 </label>
                 <input
                   v-model="form.race"
                   type="text"
                   placeholder="Ex: Humano, Elfo"
-                  class="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2.5
-                         text-gray-100 text-sm focus:outline-none focus:border-amber-500 transition-colors"
+                  class="w-full bg-slate-700 border border-slate-600 rounded-lg px-4 py-2.5
+                         text-slate-100 text-sm focus:outline-none focus:border-amber-500 transition-colors"
                   :class="{ 'border-red-700': submitAttempted && !form.race }"
                 />
               </div>
               <div>
-                <label class="block text-sm text-gray-400 mb-1">
+                <label class="block text-sm text-slate-400 mb-1">
                   Classe <span class="text-red-500">*</span>
                 </label>
                 <select
                   v-model="form.classId"
-                  class="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2.5
-                         text-gray-100 text-sm focus:outline-none focus:border-amber-500 transition-colors"
+                  class="w-full bg-slate-700 border border-slate-600 rounded-lg px-4 py-2.5
+                         text-slate-100 text-sm focus:outline-none focus:border-amber-500 transition-colors"
                   :class="{ 'border-red-700': submitAttempted && !form.classId }"
                 >
                   <option :value="0" disabled>Selecione uma classe</option>
@@ -99,23 +99,23 @@
             <!-- Level and Experience -->
             <div class="grid grid-cols-2 gap-4">
               <div>
-                <label class="block text-sm text-gray-400 mb-1">Nível</label>
+                <label class="block text-sm text-slate-400 mb-1">Nível</label>
                 <input
                   v-model.number="form.level"
                   type="number"
                   min="1"
-                  class="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2.5
-                         text-gray-100 text-sm focus:outline-none focus:border-amber-500 transition-colors"
+                  class="w-full bg-slate-700 border border-slate-600 rounded-lg px-4 py-2.5
+                         text-slate-100 text-sm focus:outline-none focus:border-amber-500 transition-colors"
                 />
               </div>
               <div>
-                <label class="block text-sm text-gray-400 mb-1">Experiência</label>
+                <label class="block text-sm text-slate-400 mb-1">Experiência</label>
                 <input
                   v-model.number="form.experience"
                   type="number"
                   min="0"
-                  class="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2.5
-                         text-gray-100 text-sm focus:outline-none focus:border-amber-500 transition-colors"
+                  class="w-full bg-slate-700 border border-slate-600 rounded-lg px-4 py-2.5
+                         text-slate-100 text-sm focus:outline-none focus:border-amber-500 transition-colors"
                 />
               </div>
             </div>
@@ -123,71 +123,71 @@
             <!-- Age and personality -->
             <div class="grid grid-cols-2 gap-4">
               <div>
-                <label class="block text-sm text-gray-400 mb-1">Idade</label>
+                <label class="block text-sm text-slate-400 mb-1">Idade</label>
                 <input
                   v-model.number="form.age"
                   type="number"
                   min="0"
-                  class="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2.5
-                         text-gray-100 text-sm focus:outline-none focus:border-amber-500 transition-colors"
+                  class="w-full bg-slate-700 border border-slate-600 rounded-lg px-4 py-2.5
+                         text-slate-100 text-sm focus:outline-none focus:border-amber-500 transition-colors"
                 />
               </div>
               <div>
-                <label class="block text-sm text-gray-400 mb-1">Personalidade</label>
+                <label class="block text-sm text-slate-400 mb-1">Personalidade</label>
                 <input
                   v-model="form.personality"
                   type="text"
                   placeholder="Ex: Corajoso, Sarcástico"
-                  class="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2.5
-                         text-gray-100 text-sm focus:outline-none focus:border-amber-500 transition-colors"
+                  class="w-full bg-slate-700 border border-slate-600 rounded-lg px-4 py-2.5
+                         text-slate-100 text-sm focus:outline-none focus:border-amber-500 transition-colors"
                 />
               </div>
             </div>
 
             <!-- BirthDate -->
             <div>
-              <label class="block text-sm text-gray-400 mb-1">Data de nascimento</label>
+              <label class="block text-sm text-slate-400 mb-1">Data de nascimento</label>
               <input
                 v-model="form.birthDate"
                 type="date"
-                class="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2.5
-                       text-gray-100 text-sm focus:outline-none focus:border-amber-500 transition-colors"
+                class="w-full bg-slate-700 border border-slate-600 rounded-lg px-4 py-2.5
+                       text-slate-100 text-sm focus:outline-none focus:border-amber-500 transition-colors"
               />
             </div>
 
             <!-- BirthPlace and Residence -->
             <div class="grid grid-cols-2 gap-4">
               <div>
-                <label class="block text-sm text-gray-400 mb-1">Local de nascimento</label>
+                <label class="block text-sm text-slate-400 mb-1">Local de nascimento</label>
                 <input
                   v-model="form.birthPlace"
                   type="text"
                   placeholder="Ex: Vila dos Ventos"
-                  class="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2.5
-                         text-gray-100 text-sm focus:outline-none focus:border-amber-500 transition-colors"
+                  class="w-full bg-slate-700 border border-slate-600 rounded-lg px-4 py-2.5
+                         text-slate-100 text-sm focus:outline-none focus:border-amber-500 transition-colors"
                 />
               </div>
               <div>
-                <label class="block text-sm text-gray-400 mb-1">Residência</label>
+                <label class="block text-sm text-slate-400 mb-1">Residência</label>
                 <input
                   v-model="form.residence"
                   type="text"
                   placeholder="Ex: Capital do Reino"
-                  class="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2.5
-                         text-gray-100 text-sm focus:outline-none focus:border-amber-500 transition-colors"
+                  class="w-full bg-slate-700 border border-slate-600 rounded-lg px-4 py-2.5
+                         text-slate-100 text-sm focus:outline-none focus:border-amber-500 transition-colors"
                 />
               </div>
             </div>
 
             <!-- Occupation -->
             <div>
-              <label class="block text-sm text-gray-400 mb-1">Ocupação</label>
+              <label class="block text-sm text-slate-400 mb-1">Ocupação</label>
               <input
                 v-model="form.occupation"
                 type="text"
                 placeholder="Ex: Mercenário, Estudante de magia"
-                class="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2.5
-                       text-gray-100 text-sm focus:outline-none focus:border-amber-500 transition-colors"
+                class="w-full bg-slate-700 border border-slate-600 rounded-lg px-4 py-2.5
+                       text-slate-100 text-sm focus:outline-none focus:border-amber-500 transition-colors"
               />
             </div>
 
@@ -195,7 +195,7 @@
 
           <!-- Tab 2: Attributes -->
           <div v-else-if="activeTab === 'attributes'" class="space-y-4">
-            <p class="text-xs text-gray-600 mb-4">Valor padrão: 10. Ajuste conforme a ficha do personagem.</p>
+            <p class="text-xs text-slate-500 mb-4">Valor padrão: 10. Ajuste conforme a ficha do personagem.</p>
 
             <div class="grid grid-cols-2 gap-4">
               <NumberField label="Força" v-model="form.strength" />
@@ -208,13 +208,13 @@
             </div>
 
             <div>
-              <label class="block text-sm text-gray-400 mb-1">Tamanho</label>
+              <label class="block text-sm text-slate-400 mb-1">Tamanho</label>
               <input
                 v-model="form.size"
                 type="text"
                 placeholder="Ex: Médio, Grande"
-                class="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2.5
-                       text-gray-100 text-sm focus:outline-none focus:border-amber-500 transition-colors"
+                class="w-full bg-slate-700 border border-slate-600 rounded-lg px-4 py-2.5
+                       text-slate-100 text-sm focus:outline-none focus:border-amber-500 transition-colors"
               />
             </div>
           </div>
@@ -233,13 +233,13 @@
             </div>
 
             <div>
-              <label class="block text-sm text-gray-400 mb-1">Tipo de Energia</label>
+              <label class="block text-sm text-slate-400 mb-1">Tipo de Energia</label>
               <input
                 v-model="form.typeEnergy"
                 type="text"
                 placeholder="Ex: Arcana, Divina"
-                class="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2.5
-                       text-gray-100 text-sm focus:outline-none focus:border-amber-500 transition-colors"
+                class="w-full bg-slate-700 border border-slate-600 rounded-lg px-4 py-2.5
+                       text-slate-100 text-sm focus:outline-none focus:border-amber-500 transition-colors"
               />
             </div>
           </div>
@@ -258,8 +258,8 @@
         <div class="flex gap-3">
           <RouterLink
             to="/characters"
-            class="flex-1 text-center py-2.5 text-sm border border-gray-700 text-gray-400
-                   hover:text-gray-100 hover:border-gray-500 rounded-lg transition-colors"
+            class="flex-1 text-center py-2.5 text-sm border border-slate-600 text-slate-400
+                   hover:text-slate-100 hover:border-slate-400 rounded-lg transition-colors"
           >
             Cancelar
           </RouterLink>
