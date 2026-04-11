@@ -1,7 +1,7 @@
 <template>
   <AuthLayout>
-    <div class="bg-gray-900 border border-gray-800 rounded-xl p-8">
-      <h2 class="text-xl font-semibold text-gray-100 mb-6">Altere a sua senha!</h2>
+    <div class="bg-slate-800 border border-slate-700 rounded-xl p-8">
+      <h2 class="text-xl font-semibold text-slate-100 mb-6">Altere a sua senha!</h2>
 
       <div
         v-if="!token"
@@ -12,7 +12,7 @@
 
       <form v-else @submit.prevent="handleSubmit" class="space-y-4">
         <div>
-          <label for="password" class="block text-sm text-gray-400 mb-1">Nova Senha.</label>
+          <label for="password" class="block text-sm text-slate-400 mb-1">Nova Senha.</label>
           <input 
             id="password"
             v-model="password"
@@ -20,8 +20,8 @@
             placeholder="Mínimo 6 caracteres"
             required
             minlength="6"
-            class="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2.5
-                   text-gray-100 placeholder-gray-600 text-sm
+            class="w-full bg-slate-700 border border-slate-600 rounded-lg px-4 py-2.5
+                   text-slate-100 placeholder-slate-500 text-sm
                    focus:outline-none focus:border-amber-500 transition-colors"
           />
         </div>

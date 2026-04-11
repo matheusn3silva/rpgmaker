@@ -3,7 +3,7 @@
 
     <!-- Main attributes -->
     <div v-if="character.attributes">
-      <h3 class="text-xs text-gray-600 uppercase tracking-wider mb-3">Atributos principais</h3>
+      <h3 class="text-xs text-slate-500 uppercase tracking-wider mb-3">Atributos principais</h3>
       <div class="grid grid-cols-2 gap-3">
         <AttributeBar label="Força" :value="character.attributes.strength" />
         <AttributeBar label="Destreza" :value="character.attributes.dexterity" />
@@ -17,7 +17,7 @@
 
     <!-- Status -->
     <div v-if="character.status">
-      <h3 class="text-xs text-gray-600 uppercase tracking-wider mb-3">Status</h3>
+      <h3 class="text-xs text-slate-500 uppercase tracking-wider mb-3">Status</h3>
       <div class="grid grid-cols-2 gap-3">
         <InfoField label="Pontos de Vida" :value="String(character.status.lifePoints)" />
         <InfoField label="Pontos de Esforço" :value="String(character.status.effortPoints)" />
@@ -34,7 +34,7 @@
       </div>
     </div>
 
-    <p v-if="!character.attributes && !character.status" class="text-gray-600 text-sm">
+    <p v-if="!character.attributes && !character.status" class="text-slate-500 text-sm">
       Nenhum atributo registrado.
     </p>
   </div>

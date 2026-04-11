@@ -1,22 +1,22 @@
 <template>
-    <div class="min-h-screen bg-gray-950 text-gray-100">
-        <nav class="border-b border-gray-800 px-4 py-3 flex items-center justify-between">
+    <div class="min-h-screen bg-slate-900 text-slate-100">
+        <nav class="border-b border-slate-700 px-4 py-3 flex items-center justify-between">
             <RouterLink to="/characters" class="text-amber-400 font-bold tracking-widest uppercase text-sm">
                 RPG Maker
             </RouterLink>
 
             <div class="flex items-center gap-4">
-                <span class="text-gray-600 text-sm hidden sm:block">
+                <span class="text-slate-500 text-sm hidden sm:block">
                     {{ authStore.user?.name }}
                 </span>
 
-                <RouterLink to="/settings" class="text-gray-400 hover:text-gray-100 text-sm transition-colors">
+                <RouterLink to="/settings" class="text-slate-400 hover:text-slate-100 text-sm transition-colors">
                     Configurações
                 </RouterLink>
 
                 <button 
                     @click="handleLogout"
-                    class="text-gray-400 hover:text-red-400 text-sm transition-colors"    
+                    class="text-slate-400 hover:text-red-400 text-sm transition-colors"    
                 >
                     Desconectar
                 </button>
