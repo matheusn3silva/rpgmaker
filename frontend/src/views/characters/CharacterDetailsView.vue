@@ -2,7 +2,7 @@
   <AppLayout>
 
     <!-- Loading -->
-    <div v-if="store.loading" class="text-center py-12 text-gray-600">
+    <div v-if="store.loading" class="text-center py-12 text-slate-500">
       Carregando personagem...
     </div>
 
@@ -16,10 +16,10 @@
       <!-- Character header -->
       <div class="flex items-start justify-between mb-6">
         <div>
-          <h1 class="text-3xl font-bold text-gray-100">
+          <h1 class="text-3xl font-bold text-slate-100">
             {{ store.currentCharacter.name }}
           </h1>
-          <p class="text-gray-500 mt-1">
+          <p class="text-slate-400 mt-1">
             {{ store.currentCharacter.race }} ·
             {{ store.currentCharacter.class_name }} ·
             Nível {{ store.currentCharacter.level }}
@@ -28,15 +28,15 @@
 
         <RouterLink
           :to="`/characters/${store.currentCharacter.id}/edit`"
-          class="text-sm border border-gray-700 text-gray-400 hover:text-gray-100
-                 hover:border-gray-500 px-4 py-2 rounded-lg transition-colors"
+          class="text-sm border border-slate-600 text-slate-400 hover:text-slate-100
+                 hover:border-slate-400 px-4 py-2 rounded-lg transition-colors"
         >
           Editar
         </RouterLink>
       </div>
 
       <!-- Tab navigation -->
-      <div class="flex border-b border-gray-800 mb-6">
+      <div class="flex border-b border-slate-700 mb-6">
         <button
           v-for="tab in tabs"
           :key="tab.id"
@@ -44,14 +44,14 @@
           class="px-4 py-2.5 text-sm font-medium transition-colors border-b-2 -mb-px"
           :class="activeTab === tab.id
             ? 'text-amber-400 border-amber-400'
-            : 'text-gray-500 border-transparent hover:text-gray-300'"
+            : 'text-slate-400 border-transparent hover:text-slate-300'"
         >
           {{ tab.label }}
         </button>
       </div>
 
       <!-- Active tab content -->
-      <div class="bg-gray-900 border border-gray-800 rounded-xl p-6">
+      <div class="bg-slate-800 border border-slate-700 rounded-xl p-6">
         <TabGeneralData
           v-if="activeTab === 'general'"
           :character="store.currentCharacter"
@@ -69,7 +69,7 @@
       <div class="mt-4">
         <RouterLink
           to="/characters"
-          class="text-sm text-gray-600 hover:text-gray-400 transition-colors"
+          class="text-sm text-slate-500 hover:text-slate-400 transition-colors"
         >
           ← Voltar para personagens
         </RouterLink>
