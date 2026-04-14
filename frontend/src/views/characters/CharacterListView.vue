@@ -1,7 +1,7 @@
 <template>
   <AppLayout>
     <div class="flex items-center justify-between mb-6">
-      <h1 class="text-2xl font-bold text-slate-100">Meus Personagens</h1>
+      <h1 class="text-2xl font-bold" style="color: var(--text-primary);">Meus Personagens</h1>
       <RouterLink 
         to="/characters/new"
         class="bg-amber-600 hover:bg-amber-500 text-white text-sm font-medium

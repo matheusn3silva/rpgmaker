@@ -1,16 +1,19 @@
 <template>
     <div 
-        class="bg-slate-800 border border-slate-700 rounded-xl p-5
-            hover:border-amber-700 transition-colors cursor-pointer group"
-            @click="$router.push(`/characters/${character.id}`)"
+        class="rounded-xl p-5 cursor-pointer group transition-colors"
+        style="background-color: var(--bg-surface); border: 1px solid var(--border);"
+        @click="$router.push(`/characters/${character.id}`)"
     >
         <!-- Header -->
         <div class="flex items-start justify-between mb-3">
             <div>
-                <h3 class="text-slate-100 font-semibold group-hover:text-amber-400 transition-colors">
+                <h3 
+                    class="font-semibold group-hover:text-amber-400 transition-colors"
+                    style="color: var(--text-primary);"    
+                >
                     {{ character.name }}
                 </h3>
-                <p class="text-slate-400 text-xs mt-0.5">
+                <p class="text-xs mt-0.5" style="color: var(--text-faint);">
                     {{ character.race }} · {{ character.class_name }}
                 </p>
             </div>
@@ -22,15 +25,15 @@
         <div class="flex gap-2 mt-4" @click.stop>
             <RouterLink 
                 :to="`/characters/${character.id}/edit`"
-                class="flex-1 text-center text-xs py-1.5 rounded-lg border border-slate-600
-                    text-slate-400 hover:text-slate-100 hover:border-slate-400 transition-colors"
+                class="flex-1 text-center text-xs py-1.5 rounded-lg transition-colors"
+                style="border: 1px solid var(--border); color: var(--text-muted);"
             >
                 Editar
             </RouterLink>
             <button
                 @click="$emit('delete', character.id)"
-                class="flex-1 text-xs py-1.5 rounded-lg border border-slate-700
-                    text-slate-500 hover:text-red-400 hover:border-red-900 transition-colors"
+                class="flex-1 text-xs py-1.5 rounded-lg transition-colors hover:text-red-400"
+                style="border: 1px solid var(--border); color: var(--text-faint);"
             >
                 Excluir
             </button>
