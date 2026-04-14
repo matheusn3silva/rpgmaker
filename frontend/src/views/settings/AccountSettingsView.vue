@@ -1,20 +1,15 @@
 <template>
   <AppLayout>
     <div class="max-w-lg mx-auto">
-      <h1 class="text-2xl font-bold text-slate-100 mb-6">Configurações</h1>
+      <h1 class="text-2xl font-bold mb-6" style="color: var(--text-primary);">Configurações</h1>
 
       <!-- Tabs -->
       <div class="flex border-b border-slate-700 mb-6">
-        <button
-          v-for="tab in tabs"
-          :key="tab.id"
-          @click="activeTab = tab.id"
-          class="px-4 py-2.5 text-sm font-medium transition-colors border-b-2 -mb-px"
-          :class="activeTab === tab.id
+        <button v-for="tab in tabs" :key="tab.id" @click="activeTab = tab.id"
+          class="px-4 py-2.5 text-sm font-medium transition-colors border-b-2 -mb-px" :class="activeTab === tab.id
             ? 'text-amber-400 border-amber-400'
-            : 'text-slate-400 border-transparent hover:text-slate-300'"
-        >
-          {{  tab.label }}
+            : 'text-slate-400 border-transparent hover:text-slate-300'">
+          {{ tab.label }}
         </button>
       </div>
 
@@ -22,8 +17,11 @@
       <div v-if="activeTab === 'account'" class="space-y-6">
 
         <!-- Alter name -->
-        <div class="bg-slate-800 border border-slate-700 rounded-xl p-6">
-          <h2 class="text-slate-100 font-medium mb-4">Alterar Nome</h2>
+        <div 
+          class="rounded-xl p-6"
+          style="background-color: var(--bg-surface); border: 1px solid var(--border);"
+        >
+          <h2 class="font-medium mb-4" style="color: var(--text-primary);">Alterar Nome</h2>
 
           <form @submit.prevent="handleUpdateName" class="space-y-4">
             <div>
@@ -34,32 +32,32 @@
             <div>
               <label class="block text-sm text-slate-400 mb-1" for="name">Novo nome</label>
               <input 
-                id="name"
-                v-model="nameForm.name"
-                type="text"
-                required
+                id="name" 
+                v-model="nameForm.name" 
+                placeholder="Digite seu novo nick"
+                type="text" 
+                required 
                 class="w-full bg-slate-700 border border-slate-600 rounded-lg px-4 py-2.5
-                       text-slate-100 text-sm focus:outline-none focus:border-amber-500 transition-colors"
+                       text-slate-100 text-sm focus:outline-none focus:border-amber-500 transition-colors" 
               />
             </div>
 
             <p v-if="nameSuccess" class="text-green-400 text-sm">Nome atualizado!</p>
             <p v-if="nameError" class="text-red-400 text-sm">{{ nameError }}</p>
 
-            <button
-              type="submit"
-              :disabled="nameLoading"
-              class="bg-amber-600 hover:bg-amber-500 disabled:opacity-50 text-white
-                     text-sm font-medium px-4 py-2 rounded-lg transition-colors"
-            >
+            <button type="submit" :disabled="nameLoading" class="bg-amber-600 hover:bg-amber-500 disabled:opacity-50 text-white
+                     text-sm font-medium px-4 py-2 rounded-lg transition-colors">
               {{ nameLoading ? 'Salvando...' : 'Salvar nome' }}
             </button>
           </form>
         </div>
 
         <!-- Alter password -->
-        <div class="bg-slate-800 border border-slate-700 rounded-xl p-6">
-          <h2 class="text-slate-100 font-medium mb-4">Alterar senha</h2>
+        <div 
+          class="rounded-xl p-6"
+          style="background-color: var(--bg-surface); border: 1px solid var(--border);"
+        >
+          <h2 class="font-medium mb-4" style="color: var(--text-primary);">Alterar senha</h2>
 
           <form @submit.prevent="handleUpdatePassword" class="space-y-4">
             <div>
@@ -67,39 +65,35 @@
                 Senha atual
               </label>
               <input 
-                id="current-password"
-                v-model="passwordForm.current"
-                type="password"
-                required
+                id="current-password" 
+                v-model="passwordForm.current" 
+                placeholder="Digite sua nova senha"
+                type="password" 
+                required 
                 class="w-full bg-slate-700 border border-slate-600 rounded-lg px-4 py-2.5
-                       text-slate-100 text-sm focus:outline-none focus:border-amber-500 transition-colors"
-              />
+                       text-slate-100 text-sm focus:outline-none focus:border-amber-500 transition-colors" />
             </div>
 
             <div>
               <label class="block text-sm text-slate-400 mb-1" for="new-password">
                 Nova senha
               </label>
-              <input
-                id="new-password"
-                v-model="passwordForm.new"
-                type="password"
-                required
-                minlength="6"
+              <input 
+                id="new-password" 
+                v-model="passwordForm.new" 
+                placeholder="Repita a senha"
+                type="password" 
+                required 
+                minlength="6" 
                 class="w-full bg-slate-700 border border-slate-600 rounded-lg px-4 py-2.5
-                       text-slate-100 text-sm focus:outline-none focus:border-amber-500 transition-colors"
-              />
+                       text-slate-100 text-sm focus:outline-none focus:border-amber-500 transition-colors" />
             </div>
 
             <p v-if="passwordSuccess" class="text-green-400 text-sm">Senha alterada!</p>
             <p v-if="passwordError" class="text-red-400 text-sm">{{ passwordError }}</p>
 
-            <button
-              type="submit"
-              :disabled="passwordLoading"
-              class="bg-amber-600 hover:bg-amber-500 disabled:opacity-50 text-white
-                     text-sm font-medium px-4 py-2 rounded-lg transition-colors"
-            >
+            <button type="submit" :disabled="passwordLoading" class="bg-amber-600 hover:bg-amber-500 disabled:opacity-50 text-white
+                     text-sm font-medium px-4 py-2 rounded-lg transition-colors">
               {{ passwordLoading ? 'Salvando...' : 'Alterar senha' }}
             </button>
           </form>
@@ -108,34 +102,34 @@
 
       <!-- Tab: Theme -->
       <div v-else-if="activeTab === 'theme'">
-        <div class="bg-slate-800 border border-slate-700 rounded-xl p-6">
-          <h2 class="text-slate-100 font-medium mb-4">Tema</h2>
-
+        <div class="rounded-xl p-6" style="background-color: var(--bg-surface); border: 1px solid var(--border);">
+          <h2 class="font-medium mb-4" style="color: var(--text-primary);">Aparência</h2>
           <div class="grid grid-cols-2 gap-3">
 
-            <button
-              @click="themeStore.setTheme('dark')"
-              class="p-4 rounded-xl border-2 transition-colors text-left"
-              :class="themeStore.theme === 'dark'
-                ? 'border-amber-500 bg-slate-700'
-                : 'border-slate-700 hover:border-slate-500'"
-            >
-              <div class="w-full h-16 bg-slate-900 rounded-lg mb-3 border border-slate-700" />
-              <p class="text-sm font-medium text-slate-200">Escuro</p>
-              <p class="text-xs text-slate-500">Tema padrão</p>
+            <button @click="themeStore.setTheme('dark')" class="p-4 rounded-xl border-2 transition-colors text-left"
+              :style="themeStore.theme === 'dark'
+                ? 'border-color: #f59e0b; background-color: var(--bg-input);'
+                : 'border-color: var(--border);'">
+              <!-- Preview do dark -->
+              <div class="w-full h-16 rounded-lg mb-3 border" style="background: #0f172a; border-color: #1e293b;">
+                <div class="h-4 rounded-t-lg" style="background: #1e293b; border-bottom: 1px solid #334155;" />
+              </div>
+              <p class="text-sm font-medium" style="color: var(--text-primary);">Escuro</p>
+              <p class="text-xs" style="color: var(--text-faint);">Slate dark</p>
             </button>
 
-            <button
-              @click="themeStore.setTheme('light')"
-              class="p-4 rounded-xl border-2 transition-colors text-left"
-              :class="themeStore.theme === 'light'
-                ? 'border-amber-500 bg-slate-700'
-                : 'border-slate-700 hover:border-slate-500'"
-            >
-              <div class="w-full h-16 bg-slate-100 rounded-lg mb-3 border border-slate-200" />
-              <p class="text-sm font-medium text-slate-200">Claro</p>
-              <p class="text-xs text-slate-500">Em desenvolvimento</p>
+            <button @click="themeStore.setTheme('light')" class="p-4 rounded-xl border-2 transition-colors text-left"
+              :style="themeStore.theme === 'light'
+                ? 'border-color: #f59e0b; background-color: var(--bg-input);'
+                : 'border-color: var(--border);'">
+              <!-- Preview do light -->
+              <div class="w-full h-16 rounded-lg mb-3 border" style="background: #f8fafc; border-color: #e2e8f0;">
+                <div class="h-4 rounded-t-lg" style="background: #ffffff; border-bottom: 1px solid #e2e8f0;" />
+              </div>
+              <p class="text-sm font-medium" style="color: var(--text-primary);">Claro</p>
+              <p class="text-xs" style="color: var(--text-faint);">Slate light</p>
             </button>
+
           </div>
         </div>
       </div>
