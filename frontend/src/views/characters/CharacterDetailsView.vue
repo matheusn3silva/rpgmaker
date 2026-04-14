@@ -16,7 +16,7 @@
       <!-- Character header -->
       <div class="flex items-start justify-between mb-6">
         <div>
-          <h1 class="text-3xl font-bold text-slate-100">
+          <h1 class="text-3xl font-bold capitalize" style="color: var(--text-primary);">
             {{ store.currentCharacter.name }}
           </h1>
           <p class="text-slate-400 mt-1">

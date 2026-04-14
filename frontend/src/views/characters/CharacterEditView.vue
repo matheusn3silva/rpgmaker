@@ -11,7 +11,7 @@
           ←
         </RouterLink>
 
-        <h1 class="text-2xl font-bold text-slate-100">
+        <h1 class="text-2xl font-bold" style="color: var(--text-primary);">
           {{ isEditing ? 'Editar personagem' : 'Novo Personagem' }}
         </h1>
       </div>

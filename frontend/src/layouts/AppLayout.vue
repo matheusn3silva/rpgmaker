@@ -1,22 +1,37 @@
 <template>
-    <div class="min-h-screen bg-slate-900 text-slate-100">
-        <nav class="border-b border-slate-700 px-4 py-3 flex items-center justify-between">
-            <RouterLink to="/characters" class="text-amber-400 font-bold tracking-widest uppercase text-sm">
+    <div
+        class="min-h-screen transition-colors duration-200"
+        style="background-color: var(--bg-page); color: var(--text-primary);"
+    >
+        <nav 
+            class="px-4 py-3 flex items-center justify-between"
+            style="border-bottom: 1px solid var(--border);"
+        >
+            <RouterLink 
+                to="/characters"
+                style="color: #f59e0b;"
+                class="font-bold tracking-widest uppercase text-sm"
+            >
                 RPG Maker
             </RouterLink>
 
             <div class="flex items-center gap-4">
-                <span class="text-slate-500 text-sm hidden sm:block">
+                <span class="text-sm hidden sm:block" style="color: var(--text-faint);">
                     {{ authStore.user?.name }}
                 </span>
 
-                <RouterLink to="/settings" class="text-slate-400 hover:text-slate-100 text-sm transition-colors">
+                <RouterLink 
+                    to="/settings" 
+                    class="text-sm transition-colors"
+                    style="color: var(--text-muted);"
+                >
                     Configurações
                 </RouterLink>
 
                 <button 
                     @click="handleLogout"
-                    class="text-slate-400 hover:text-red-400 text-sm transition-colors"    
+                    class="text-sm transition-colors hover:text-red-400"
+                    style="color: var(--text-muted);"   
                 >
                     Desconectar
                 </button>
@@ -32,7 +47,6 @@
 <script setup lang="ts">
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/auth.store'
-
 
 const router = useRouter()
 const authStore = useAuthStore()
