@@ -88,6 +88,8 @@ model Character {
   status     CharacterStatus?
   proficiencies CharacterProficiency[]
 
+  history String?
+
   createdAt DateTime @default(now())
 }
 
