@@ -4,7 +4,7 @@ const prisma = require('../lib/prisma')
 const authMiddleware = require('../middlewares/auth.middleware')
 
 function buildCharacterData(body) {
-  const { name, age, personality, birthDate, birthPlace, residence, occupation, race, level, experience, classId } = body
+  const { name, age, personality, birthDate, birthPlace, residence, occupation, race, level, experience, classId, history } = body
 
   return { 
     name: name.trim(),
@@ -18,7 +18,8 @@ function buildCharacterData(body) {
     
     level: level,
     experience: experience,
-    classId: classId,    
+    classId: classId,
+    history: history?.trim() || null
    }
 }
 
