@@ -178,6 +178,33 @@
             </div>
           </div>
 
+          <!-- Tab 4: History -->
+          <div v-else-if="activeTab === 'history'" class="space-y-3">
+            <div class="flex items-center justify-between">
+              <p class="text-xs" style="color: var(--text-faint);">
+                Use Markdown para formatar: # Título, ## Subtítulo, **negrito**, *itálico*
+              </p>
+              <a
+              href="https://www.markdownguide.org/cheat-sheet/"
+              target="_blank"
+              class="text-xs"
+              style="color: #f59e0b;"
+              >
+              Guia →
+              </a>
+            </div>
+
+            <textarea v-model="form.history" rows="16" placeholder="Escreva a história do personagem aqui...
+
+# Origem
+Nascido em uma pequena vila...
+
+## Motivação
+Sua busca pela verdade..." class="w-full bg-slate-700 border border-slate-600 rounded-lg px-4 py-3
+           text-slate-100 text-sm focus:outline-none focus:border-amber-500
+           transition-colors resize-none font-mono leading-relaxed" />
+          </div>
+
         </div>
 
         <!-- Error message -->
@@ -201,11 +228,8 @@
         </div>
       </template>
 
-      <ClassDetailModal
-        v-if="showClassModal && selectedClass"
-        :rpg-class="selectedClass"
-        @close="showClassModal = false"
-      />
+      <ClassDetailModal v-if="showClassModal && selectedClass" :rpg-class="selectedClass"
+        @close="showClassModal = false" />
 
     </div>
   </AppLayout>
@@ -244,12 +268,13 @@ const submitAttempted = ref(false)
 const errorMessage = ref('')
 const classes = ref<RPGClass[]>([])
 
-type TabId = 'general' | 'attributes' | 'status'
+type TabId = 'general' | 'attributes' | 'status' | 'history'
 const activeTab = ref<TabId>('general')
 const tabs: { id: TabId; label: string }[] = [
   { id: 'general', label: 'Dados Gerais' },
   { id: 'attributes', label: 'Atributos' },
   { id: 'status', label: 'Status' },
+  { id: 'history', label: 'História' },
 ]
 
 // ── Formulário — estado único e flat ─────────────────────
@@ -284,6 +309,7 @@ const form = ref({
   luck: 0,
   movement: 1,
   typeEnergy: '',
+  history: '',
 })
 
 // ── Validação ─────────────────────────────────────────────
@@ -318,7 +344,6 @@ onMounted(async () => {
 
       form.value.birthDate = data.birthDate?.split('T')[0] ?? '';
 
-
       if (data.attributes) {
         form.value.strength = data.attributes.strength
         form.value.dexterity = data.attributes.dexterity
@@ -341,6 +366,8 @@ onMounted(async () => {
         form.value.movement = data.status.movement
         form.value.typeEnergy = data.status.typeEnergy ?? ''
       }
+
+      form.value.history = data.history ?? ''
 
     } catch {
       errorMessage.value = 'Erro ao carregar personagem.'
@@ -371,6 +398,7 @@ async function handleSubmit() {
       occupation: form.value.occupation || undefined,
       size: form.value.size || undefined,
       typeEnergy: form.value.typeEnergy || undefined,
+      history: form.value.history || undefined,
     }
 
     if (isEditing.value && characterId) {

@@ -29,6 +29,7 @@ export interface CharacterSummary {
     classId: number
     class_name: string
     createdAt: string
+    history: string | null
 }
 
 // Versão detalhada para exibição na página de detalhes
