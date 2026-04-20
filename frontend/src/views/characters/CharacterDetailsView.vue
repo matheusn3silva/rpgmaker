@@ -62,6 +62,7 @@
         />
         <TabHistory
           v-else-if="activeTab === 'history'"
+          :character="store.currentCharacter"
         />
       </div>
 
