@@ -1,7 +1,12 @@
-jest.mock('@sendgrid/mail', () => ({
-  setApiKey: jest.fn(),
-  send: jest.fn().mockResolvedValue(true)
-}))
+jest.mock('resend', () => {
+  return {
+    Resend: jest.fn().mockImplementation(() => ({
+      emails: {
+        send: jest.fn().mockResolvedValue(true)
+      }
+    }))
+  };
+});
 
 const request = require('supertest');
 const app = require('../app');
