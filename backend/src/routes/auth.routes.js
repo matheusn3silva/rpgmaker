@@ -34,24 +34,36 @@ router.get('/me', authMiddleware, async (req, res) => {
 })
 
 // Inicia autenticação com Google
-router.get('/google', passport.authenticate('google', { scope: ['profile', 'email'] }))
+router.get('/google', (req, res, next) => {
+  if (!process.env.GOOGLE_CLIENT_ID) {
+    return res.status(503).json({ message: 'Login com Google não configurado' })
+  }
+  passport.authenticate('google', { scope: ['profile', 'email'] })(req, res, next)
+})
 
 // Callback do Google
 router.get('/google/callback',
+  (req, res, next) => {
+    if (!process.env.GOOGLE_CLIENT_ID) {
+      return res.redirect(`${process.env.FRONTEND_URL}/login`)
+    }
+    next()
+  },
   passport.authenticate('google', { session: false, failureRedirect: '/login' }),
   (req, res) => {
-    const user = req.user
-    const token = jwt.sign({ id: user.id, email: user.email }, SECRET, { expiresIn: '1h' })
-
+    const jwt = require('jsonwebtoken')
+    const token = jwt.sign(
+      { id: req.user.id, email: req.user.email },
+      process.env.JWT_SECRET,
+      { expiresIn: '1h' }
+    )
     res.cookie('token', token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'lax',
       maxAge: 60 * 60 * 1000
     })
-
-    // redireciona para frontend sem token em query
-    res.redirect('http://localhost:5173/characters')
+    res.redirect(`${process.env.FRONTEND_URL}/characters`)
   }
 )
 
@@ -83,7 +95,11 @@ router.post('/register', async (req, res) => {
       }
     })
   } catch (err) {
-    return res.status(400).json({ message: err})
+    if (err.code === 'P2002') {
+      return res.status(400).json({ message: 'Este e-mail já está em uso.' })
+    }
+    console.error('Erro no prisma.user.create:', err)
+    return res.status(400).json({ message: 'Erro ao criar conta. Tente novamente mais tarde.' })
   }
 
   try {
