@@ -155,7 +155,21 @@ async function resendVerification() {
   }
 }
 
-function loginWithGoogle() {
-  window.location.href = `${import.meta.env.VITE_API_URL}/auth/google`
+async function loginWithGoogle() {
+    try {
+    const res = await fetch(`${import.meta.env.VITE_API_URL}/auth/google`, {
+      method: 'GET',
+      redirect: 'manual',
+    })
+
+    if (res.status === 503) {
+      toast.error('Login com Google não está configurado.')
+      return
+    }
+
+    window.location.href = `${import.meta.env.VITE_API_URL}/auth/google`
+  } catch {
+    window.location.href = `${import.meta.env.VITE_API_URL}/auth/google`
+  }
 }
 </script>
