@@ -11,8 +11,24 @@ const prisma = require('../lib/prisma')
 
 const SECRET = process.env.JWT_SECRET
 
+
 /**
  * VERIFICA SE O USUÁRIO ESTÁ LOGADO
+ */
+/**
+ * @swagger
+ * /auth/me:
+ *   get:
+ *     tags: [Auth]
+ *     summary: Retorna dados do usuário autenticado
+ *     responses:
+ *       200:
+ *         description: Dados do usuário
+ *         content:
+ *           application/json:
+ *             schema: { $ref: '#/components/schemas/User' }
+ *       401:
+ *         description: Não autenticado
  */
 router.get('/me', authMiddleware, async (req, res) => {
   const userId = req.user.id
@@ -69,6 +85,39 @@ router.get('/google/callback',
 
 /**
  * CADASTRO
+ */
+/**
+ * @swagger
+ * /auth/register:
+ *   post:
+ *     tags: [Auth]
+ *     summary: Cadastro de novo usuário
+ *     security: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required: [name, email, password]
+ *             properties:
+ *               name:     { type: string, example: Manasi }
+ *               email:    { type: string, example: manasi@email.com }
+ *               password: { type: string, example: senha123 }
+ *     responses:
+ *       201:
+ *         description: Cadastro realizado
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message: { type: string, example: Cadastro realizado. Verifique seu email. }
+ *       400:
+ *         description: Dados inválidos
+ *         content:
+ *           application/json:
+ *             schema: { $ref: '#/components/schemas/Error' }
  */
 const crypto = require('crypto')
 const sendMail = require('../services/mail')
@@ -192,10 +241,41 @@ router.get('/verify-email', async (req, res) => {
   return res.send('Email verificado com sucesso. Você já pode fazer login.')
 })
 
-
-
 /**
  * LOGIN
+ */
+/**
+ * @swagger
+ * /auth/login:
+ *   post:
+ *     tags: [Auth]
+ *     summary: Login com email e senha
+ *     security: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required: [email, password]
+ *             properties:
+ *               email:    { type: string, example: manasi@email.com }
+ *               password: { type: string, example: senha123 }
+ *     responses:
+ *       200:
+ *         description: Login realizado — seta cookie HttpOnly
+ *         headers:
+ *           Set-Cookie:
+ *             schema:
+ *               type: string
+ *               example: token=abc123; HttpOnly; SameSite=Lax
+ *       401:
+ *         description: Credenciais inválidas
+ *         content:
+ *           application/json:
+ *             schema: { $ref: '#/components/schemas/Error' }
+ *       403:
+ *         description: Email não verificado
  */
 router.post('/login', async (req, res) => {
   const { email, password } = req.body
@@ -238,8 +318,19 @@ router.post('/login', async (req, res) => {
 })
 
 
+
 /**
  * LOGOUT
+ */
+/**
+ * @swagger
+ * /auth/logout:
+ *   post:
+ *     tags: [Auth]
+ *     summary: Logout — remove o cookie
+ *     responses:
+ *       200:
+ *         description: Logout realizado
  */
 router.post('/logout', (req, res) => {
   res.clearCookie('token', {

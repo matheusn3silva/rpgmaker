@@ -4,7 +4,14 @@ const cookieParser = require('cookie-parser')
 const passport = require('passport')
 const routes = require('./routes/routes')
 
+const swaggerUi = require('swagger-ui-express')
+const swaggerSpec = require('./config/swagger')
+
 const app = express()
+
+app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec, {
+  customSiteTitle: 'RPG Maker API Docs',
+}))
 
 app.use([
   cors({
