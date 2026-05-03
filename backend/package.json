@@ -35,7 +35,9 @@
     "passport": "^0.7.0",
     "passport-google-oauth20": "^2.0.0",
     "prisma": "^6.19.2",
-    "resend": "^6.12.2"
+    "resend": "^6.12.2",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.1"
   },
   "devDependencies": {
     "@types/jest": "^30.0.0",
