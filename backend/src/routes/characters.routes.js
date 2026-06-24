@@ -4,7 +4,7 @@ const prisma = require('../lib/prisma')
 const authMiddleware = require('../middlewares/auth.middleware')
 
 function buildCharacterData(body) {
-  const { name, age, personality, birthDate, birthPlace, residence, occupation, race, level, experience, classId, history } = body
+  const { name, age, personality, birthDate, birthPlace, residence, occupation, race, level, experience, classId, history, coins } = body
 
   return { 
     name: name.trim(),
@@ -16,23 +16,39 @@ function buildCharacterData(body) {
     occupation: occupation?.trim(),
     race: race.trim(),
     
-    level: level,
-    experience: experience,
-    classId: classId,
-    history: history?.trim() || null
+    level,
+    experience,
+    classId,
+    history: history?.trim() || null,
+    coins: coins || 0
    }
 }
 
 function buildAttributesData(body) {
-  const { strength, dexterity, constitution, intelligence, education, presence, power, size } = body
+  const { strength, dexterity, constitution, intelligence, education, presence, power, size, height, weight } = body
 
-  return { strength, dexterity, constitution, intelligence, education, presence, power, size }
+  return { 
+    strength, dexterity, constitution, intelligence, education, presence, power, 
+    size: size ?? null, 
+    height: height ?? null, 
+    weight: weight ?? null
+  }
 }
 
 function buildStatusData(body) {
-  const { lifePoints, effortPoints, energyPoints, exposureLevel, initiative, luck, movement, typeEnergy } = body
+  const { vitality, spark, embers, soul, exposureLevel, initiative, luck, movement, energyType } = body
 
-  return { lifePoints, effortPoints, energyPoints, exposureLevel, initiative, luck, movement, typeEnergy }
+  return { 
+    vitality:       vitality      ?? 20, 
+    spark:          spark         ?? 1, 
+    embers:         embers        ?? 1, 
+    soul:           soul          ?? 0, 
+    exposureLevel:  exposureLevel ?? 5, 
+    initiative:     initiative    ?? 0, 
+    luck:           luck          ?? 0, 
+    movement:       movement      ?? 1, 
+    energyType:     energyType    ?? null
+  }
 }
 
 
@@ -356,13 +372,11 @@ router.get('/:id', authMiddleware, async (req, res) => {
 
   try {
     const character = await prisma.character.findFirst({
-      where: { 
-        id: characterId,
-        userId: userId 
-      },
+      where: { id: characterId, userId: userId },
       include: {
         attributes: true,
         status: true,
+        skills: true,
         class: {
           select: {
             name: true
@@ -455,6 +469,5 @@ router.delete('/:id', authMiddleware, async (req, res) => {
     return res.status(500).json({ message: 'Erro ao deletar personagem' })
   }
 })
-
 
 module.exports = router

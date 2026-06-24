@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
@@ -12,6 +6,32 @@ datasource db {
 generator client {
   provider = "prisma-client-js"
 }
+
+// ── Enums ─────────────────────────────────────────────────
+
+enum SkillType {
+  PASSIVA
+  ATIVA_ACAO
+  ATIVA_BONUS
+  ATIVA_REACAO
+}
+
+enum ArchetypeType {
+  ASHEN  // Corpo a corpo — Spark: (FOR + POD) / 2
+  SHARD  // Velocistas    — Spark: (DES + POD) / 2
+  LUMEN  // Magos         — Spark: (INT + POD) / 2
+}
+
+enum ProficiencyCategory {
+  COMBATE
+  SOBRENATURAL
+  INVESTIGACAO
+  SOCIAL
+  PRATICA
+  ESPECIAL
+}
+
+// ── Models ────────────────────────────────────────────────
 
 model User {
   id       Int    @id @default(autoincrement())
@@ -32,19 +52,14 @@ model User {
 }
 
 model RPGClass {
-  id          Int    @id @default(autoincrement())
-  name        String @db.VarChar(50)
-  description String
+  id           Int    @id @default(autoincrement())
+  name         String @db.VarChar(50)
+  description  String
+  archetype    ArchetypeType @unique
+  sparkFormula String        @db.VarChar(50)
 
   skills     Skill[]
   characters Character[]
-}
-
-enum SkillType {
-  PASSIVA       
-  ATIVA_ACAO    
-  ATIVA_BONUS   
-  ATIVA_REACAO  
 }
 
 model Skill {
@@ -53,8 +68,12 @@ model Skill {
   type        SkillType
   description String
 
-  psCost Int @default(0)
-  peCost Int @default(0)
+  sparkCost Int @default(0)
+  emberCost Int @default(0)
+
+  upgradeDescription String?
+  upgradeCost        Int     @default(0)
+  upgradeType        String? @db.VarChar(20)
 
   classId Int
   class   RPGClass @relation(fields: [classId], references: [id])
@@ -63,33 +82,34 @@ model Skill {
 }
 
 model Character {
-  id           Int    @id @default(autoincrement())
-  name         String @db.VarChar(50)
-  age          Int @default(0)
-  personality  String? @db.VarChar(50)
+  id           Int       @id @default(autoincrement())
+  name         String    @db.VarChar(50)
+  age          Int       @default(0)
+  personality  String?   @db.VarChar(50)
   birthDate    DateTime?
-  birthPlace   String? @db.VarChar(50)
-  residence    String? @db.VarChar(50)
-  occupation   String? @db.VarChar(50)
-  race         String @db.VarChar(30)
+  birthPlace   String?   @db.VarChar(50)
+  residence    String?   @db.VarChar(50)
+  occupation   String?   @db.VarChar(50)
+  race         String    @db.VarChar(30)
+  coins        Int       @default(0)
+  history      String?
 
   level        Int @default(1)
   experience   Int @default(0)
 
   // Relação de Usuário
-  userId       Int
-  user  User     @relation(fields: [userId], references: [id])
+  userId  Int
+  user    User  @relation(fields: [userId], references: [id])
 
   // Relação de Classe
-  classId      Int
-  class RPGClass @relation(fields: [classId], references: [id])
+  classId Int
+  class   RPGClass @relation(fields: [classId], references: [id])
 
-  attributes CharacterAttributes?
-  status     CharacterStatus?
+  attributes    CharacterAttributes?
+  status        CharacterStatus?
   proficiencies CharacterProficiency[]
-
-  history String?
-
+  skills        CharacterSkill[]
+  
   createdAt DateTime @default(now())
 }
 
@@ -104,6 +124,8 @@ model CharacterAttributes {
   presence        Int      @default(10)
   power           Int      @default(10)
   size            String?  @db.VarChar(30)
+  height       Float?
+  weight       Float?
 
   characterId Int @unique
   character   Character @relation(fields: [characterId], references: [id], onDelete: Cascade)
@@ -111,23 +133,42 @@ model CharacterAttributes {
 
 model CharacterStatus {
   id Int @id @default(autoincrement())
-  // --- Atributos Secundários ---
-  lifePoints      Int      @default(20)
-  effortPoints    Int      @default(1)
-  energyPoints    Int      @default(1)
-  exposureLevel   Int      @default(5)
-  initiative      Int      @default(0)
-  luck            Int      @default(0)
-  movement        Int      @default(1)
-  typeEnergy      String?   @db.VarChar(20)
 
-  characterId Int @unique
+  vitality      Int     @default(20)
+  spark         Int     @default(1)
+  embers        Int     @default(1)
+  soul          Int     @default(0)
+  exposureLevel Int     @default(5)
+  initiative    Int     @default(0)
+  luck          Int     @default(0)
+  movement      Int     @default(1)
+  energyType    String? @db.VarChar(20)
+
+  characterId Int       @unique
+  character   Character @relation(fields: [characterId], references: [id], onDelete: Cascade)
+}
+
+model CharacterSkill {
+  id          Int       @id @default(autoincrement())
+  name        String    @db.VarChar(100)
+  type        SkillType @default(ATIVA_ACAO)
+  description String
+
+  sparkCost Int @default(0)
+  emberCost Int @default(0)
+
+  upgradeDescription String?
+  upgradeCost        Int     @default(0)
+  upgradeType        String? @db.VarChar(20)
+
+  characterId Int
   character   Character @relation(fields: [characterId], references: [id], onDelete: Cascade)
 }
 
 model Proficiency {
-  id   Int    @id @default(autoincrement())
-  name String @unique @db.VarChar(50)
+  id       Int    @id @default(autoincrement())
+  name     String @unique @db.VarChar(50)
+  category ProficiencyCategory
 
   characters CharacterProficiency[]
 }

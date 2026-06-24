@@ -18,4 +18,4 @@ COPY . .
 EXPOSE 3000
 
 # START
-CMD ["sh", "-c", "npx prisma migrate deploy && node server.js"]
+CMD ["sh", "-c", "npx prisma migrate deploy && npx prisma db seed && node server.js"]
