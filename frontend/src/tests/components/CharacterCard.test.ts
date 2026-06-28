@@ -15,7 +15,8 @@ const mockCharacter: CharacterSummary = {
   race: 'Elfo',
   level: 10,
   classId: 1,
-  class_name: 'Arquimago',
+  class_name: 'Lumen',
+  archetype: 'LUMEN',
   createdAt: '2024-01-01',
   history: null,
 }

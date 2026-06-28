@@ -22,5 +22,17 @@ export const charactersApi = {
 
     update(id: number, payload: Record<string, unknown>) {
         return api.put(`/characters/${id}`, payload)
+    },
+
+    createSkill(characterId: number, payload: Record<string, unknown>) {
+        return api.post(`/characters/${characterId}/skills`, payload)
+    },
+    
+    updateSkill(characterId: number, skillId: number, payload: Record<string, unknown>) {
+        return api.put(`/characters/${characterId}/skills/${skillId}`, payload)
+    },
+
+    deleteSkill(characterId: number, skillId: number) {
+        return api.delete(`/characters/${characterId}/skills/${skillId}`)
     }
 }

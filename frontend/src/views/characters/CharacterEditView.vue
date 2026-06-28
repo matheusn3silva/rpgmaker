@@ -162,9 +162,9 @@
           <div v-else-if="activeTab === 'status'" class="space-y-4">
 
             <div class="grid grid-cols-2 gap-4">
-              <NumberField label="Pontos de Vida" v-model="form.lifePoints" />
-              <NumberField label="Pontos de Esforço" v-model="form.effortPoints" />
-              <NumberField label="Pontos de Energia" v-model="form.energyPoints" />
+              <NumberField label="Pontos de Vida" v-model="form.vitality" />
+              <NumberField label="Pontos de Esforço" v-model="form.spark" />
+              <NumberField label="Pontos de Energia" v-model="form.ember" />
               <NumberField label="Nível de Exposição" v-model="form.exposureLevel" />
               <NumberField label="Iniciativa" v-model="form.initiative" />
               <NumberField label="Sorte" v-model="form.luck" />
@@ -291,6 +291,9 @@ const form = ref({
   birthPlace: '',
   residence: '',
   occupation: '',
+  height: null,
+  weight: null,
+  coins: 0,
   // Atributos
   strength: 10,
   dexterity: 10,
@@ -301,9 +304,10 @@ const form = ref({
   power: 10,
   size: '',
   // Status
-  lifePoints: 20,
-  effortPoints: 1,
-  energyPoints: 1,
+  vitality: 20,
+  spark: 1,
+  ember: 1,
+  soul: 0,
   exposureLevel: 5,
   initiative: 0,
   luck: 0,
@@ -357,14 +361,15 @@ onMounted(async () => {
 
       // Status
       if (data.status) {
-        form.value.lifePoints = data.status.lifePoints
-        form.value.effortPoints = data.status.effortPoints
-        form.value.energyPoints = data.status.energyPoints
+        form.value.vitality = data.status.vitality
+        form.value.spark = data.status.spark
+        form.value.ember = data.status.ember
+        form.value.soul = data.status.soul
         form.value.exposureLevel = data.status.exposureLevel
         form.value.initiative = data.status.initiative
         form.value.luck = data.status.luck
         form.value.movement = data.status.movement
-        form.value.typeEnergy = data.status.typeEnergy ?? ''
+        form.value.typeEnergy = data.status.energyType ?? ''
       }
 
       form.value.history = data.history ?? ''
