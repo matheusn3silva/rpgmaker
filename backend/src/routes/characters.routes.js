@@ -271,7 +271,8 @@ router.get('/', authMiddleware, async (req, res) => {
         include: {
           class: {
             select: {
-              name: true
+              name: true,
+              archetype: true
             }
           }
         },
@@ -292,7 +293,9 @@ router.get('/', authMiddleware, async (req, res) => {
       level: c.level,
       classId: c.classId,
       class_name: c.class.name,
-      createdAt: c.createdAt
+      archetype: c.class.archetype,
+      createdAt: c.createdAt,
+      history: c.history
     }))
 
     return res.json({
@@ -375,7 +378,9 @@ router.get('/:id', authMiddleware, async (req, res) => {
         skills: true,
         class: {
           select: {
-            name: true
+            name: true,
+            archetype: true,
+            sparkFormula: true,
           }
         }
       }
@@ -385,7 +390,7 @@ router.get('/:id', authMiddleware, async (req, res) => {
       return res.status(404).json({ message: 'Personagem não encontrado' })
     }
 
-    return res.json({ ...character, class_name: character.class.name })
+    return res.json({ ...character, class_name: character.class.name, archetype: character.class.archetype, sparkFormula: character.class.sparkFormula })
   } catch (error) {
     console.error(error)
     return res.status(500).json({ message: 'Erro no servidor' })
