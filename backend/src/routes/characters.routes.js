@@ -4,7 +4,7 @@ const prisma = require('../lib/prisma')
 const authMiddleware = require('../middlewares/auth.middleware')
 
 function buildCharacterData(body) {
-  const { name, age, personality, birthDate, birthPlace, residence, occupation, race, level, experience, classId, history, coins } = body
+  const { name, age, personality, birthDate, birthPlace, residence, occupation, race, level, experience, classId, history, coins, height, weight } = body
 
   return { 
     name: name.trim(),
@@ -20,30 +20,26 @@ function buildCharacterData(body) {
     experience,
     classId,
     history: history?.trim() || null,
-    coins: coins || 0
+    coins: coins || 0,
+    height: height || 0,
+    weight: weight || 0
    }
 }
 
 function buildAttributesData(body) {
-  const { strength, dexterity, constitution, intelligence, education, presence, power, size, height, weight } = body
+  const { strength, dexterity, constitution, intelligence, education, presence, power } = body
 
-  return { 
-    strength, dexterity, constitution, intelligence, education, presence, power, 
-    size: size ?? null, 
-    height: height ?? null, 
-    weight: weight ?? null
-  }
+  return { strength, dexterity, constitution, intelligence, education, presence, power }
 }
 
 function buildStatusData(body) {
-  const { vitality, spark, embers, soul, exposureLevel, initiative, luck, movement, energyType } = body
+  const { vitality, spark, embers, soul, initiative, luck, movement, energyType } = body
 
   return { 
     vitality:       vitality      ?? 20, 
     spark:          spark         ?? 1, 
     embers:         embers        ?? 1, 
     soul:           soul          ?? 0, 
-    exposureLevel:  exposureLevel ?? 5, 
     initiative:     initiative    ?? 0, 
     luck:           luck          ?? 0, 
     movement:       movement      ?? 1, 

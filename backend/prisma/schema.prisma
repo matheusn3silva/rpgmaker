@@ -93,6 +93,8 @@ model Character {
   race         String    @db.VarChar(30)
   coins        Int       @default(0)
   history      String?
+  height       Float?    @default(0)
+  weight       Float?    @default(0)
 
   level        Int @default(1)
   experience   Int @default(0)
@@ -123,9 +125,6 @@ model CharacterAttributes {
   education       Int      @default(10)
   presence        Int      @default(10)
   power           Int      @default(10)
-  size            String?  @db.VarChar(30)
-  height       Float?
-  weight       Float?
 
   characterId Int @unique
   character   Character @relation(fields: [characterId], references: [id], onDelete: Cascade)
@@ -138,7 +137,6 @@ model CharacterStatus {
   spark         Int     @default(1)
   embers        Int     @default(1)
   soul          Int     @default(0)
-  exposureLevel Int     @default(5)
   initiative    Int     @default(0)
   luck          Int     @default(0)
   movement      Int     @default(1)

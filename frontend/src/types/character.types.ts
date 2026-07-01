@@ -42,17 +42,13 @@ export interface CharacterAttributes {
     education: number
     presence: number
     power: number
-    size: string | null
-    height: number | null
-    weight: number | null
 }
 
 export interface CharacterStatus {
     vitality: number
     spark: number
-    ember: number
+    embers: number
     soul: number
-    exposureLevel: number
     initiative: number
     luck: number
     movement: number
@@ -62,7 +58,7 @@ export interface CharacterStatus {
 export type ProficiencyCategory =
     | 'COMBATE'
     | 'SOBRENATURAL'
-    | 'INVESTICACAO'
+    | 'INVESTIGACAO'
     | 'SOCIAL'
     | 'PRATICA'
     | 'ESPECIAL'
@@ -103,6 +99,8 @@ export interface Character extends CharacterSummary {
     occupation: string | null
     coins: number
     experience: number
+    height: number | null
+    weight: number | null
     attributes: CharacterAttributes | null
     status: CharacterStatus | null
     proficiencies: CharacterProficiency[]

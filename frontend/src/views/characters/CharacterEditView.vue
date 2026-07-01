@@ -135,6 +135,28 @@
                        text-slate-100 text-sm focus:outline-none focus:border-amber-500 transition-colors" />
             </div>
 
+            <!-- Coins -->
+            <div>
+              <label class="block text-sm text-slate-400 mb-1">Moedas (Luminar)</label>
+              <input v-model.number="form.coins" type="number" min="0" class="w-full bg-slate-700 border border-slate-600 rounded-lg px-4 py-2.5
+                       text-slate-100 text-sm focus:outline-none focus:border-amber-500 transition-colors" />
+            </div>
+
+            <!-- Height and Weight -->
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                <label class="block text-sm text-slate-400 mb-1">Altura (m)</label>
+                <input v-model.number="form.height" type="number" step="0.01" min="0" placeholder="Ex: 1.75" class="w-full bg-slate-700 border border-slate-600 rounded-lg px-4 py-2.5
+                          text-slate-100 text-sm focus:outline-none focus:border-amber-500 transition-colors" />
+              </div>
+
+              <div>
+                <label class="block text-sm text-slate-400 mb-1">Peso (kg)</label>
+                <input v-model.number="form.weight" type="number" step="0.1" min="0" placeholder="Ex: 70.5" class="w-full bg-slate-700 border border-slate-600 rounded-lg px-4 py-2.5
+                          text-slate-100 text-sm focus:outline-none focus:border-amber-500 transition-colors" />
+              </div>
+            </div>
+
           </div>
 
           <!-- Tab 2: Attributes -->
@@ -151,11 +173,6 @@
               <NumberField label="Poder" v-model="form.power" />
             </div>
 
-            <div>
-              <label class="block text-sm text-slate-400 mb-1">Tamanho</label>
-              <input v-model="form.size" type="text" placeholder="Ex: Médio, Grande" class="w-full bg-slate-700 border border-slate-600 rounded-lg px-4 py-2.5
-                       text-slate-100 text-sm focus:outline-none focus:border-amber-500 transition-colors" />
-            </div>
           </div>
 
           <!-- Tab 3: Status -->
@@ -163,17 +180,17 @@
 
             <div class="grid grid-cols-2 gap-4">
               <NumberField label="Pontos de Vida" v-model="form.vitality" />
-              <NumberField label="Pontos de Esforço" v-model="form.spark" />
-              <NumberField label="Pontos de Energia" v-model="form.ember" />
-              <NumberField label="Nível de Exposição" v-model="form.exposureLevel" />
+              <NumberField label="Pontos de Centelha" v-model="form.spark" />
+              <NumberField label="Pontos de Brasa" v-model="form.embers" />
               <NumberField label="Iniciativa" v-model="form.initiative" />
               <NumberField label="Sorte" v-model="form.luck" />
               <NumberField label="Movimento" v-model="form.movement" />
+              <NumberField label="Alma" v-model="form.soul" />
             </div>
 
             <div>
               <label class="block text-sm text-slate-400 mb-1">Tipo de Energia</label>
-              <input v-model="form.typeEnergy" type="text" placeholder="Ex: Arcana, Divina" class="w-full bg-slate-700 border border-slate-600 rounded-lg px-4 py-2.5
+              <input v-model="form.energyType" type="text" placeholder="Ex: Arcana, Divina" class="w-full bg-slate-700 border border-slate-600 rounded-lg px-4 py-2.5
                        text-slate-100 text-sm focus:outline-none focus:border-amber-500 transition-colors" />
             </div>
           </div>
@@ -184,25 +201,20 @@
               <p class="text-xs" style="color: var(--text-faint);">
                 Use Markdown para formatar: # Título, ## Subtítulo, **negrito**, *itálico*
               </p>
-              <a
-              href="https://www.markdownguide.org/cheat-sheet/"
-              target="_blank"
-              class="text-xs"
-              style="color: #f59e0b;"
-              >
-              Guia →
+              <a href="https://www.markdownguide.org/cheat-sheet/" target="_blank" class="text-xs"
+                style="color: #f59e0b;">
+                Guia →
               </a>
             </div>
 
             <textarea v-model="form.history" rows="16" placeholder="Escreva a história do personagem aqui...
-
-# Origem
-Nascido em uma pequena vila...
-
-## Motivação
-Sua busca pela verdade..." class="w-full bg-slate-700 border border-slate-600 rounded-lg px-4 py-3
-           text-slate-100 text-sm focus:outline-none focus:border-amber-500
-           transition-colors resize-none font-mono leading-relaxed" />
+            # Origem
+            Nascido em uma pequena vila...
+            
+            ## Motivação
+            Sua busca pela verdade..." class="w-full bg-slate-700 border border-slate-600 rounded-lg px-4 py-3
+            text-slate-100 text-sm focus:outline-none focus:border-amber-500
+            transition-colors resize-none font-mono leading-relaxed" />
           </div>
 
         </div>
@@ -291,8 +303,8 @@ const form = ref({
   birthPlace: '',
   residence: '',
   occupation: '',
-  height: null,
-  weight: null,
+  height: 0,
+  weight: 0,
   coins: 0,
   // Atributos
   strength: 10,
@@ -302,17 +314,15 @@ const form = ref({
   education: 10,
   presence: 10,
   power: 10,
-  size: '',
   // Status
   vitality: 20,
   spark: 1,
-  ember: 1,
+  embers: 1,
   soul: 0,
-  exposureLevel: 5,
   initiative: 0,
   luck: 0,
   movement: 1,
-  typeEnergy: '',
+  energyType: '',
   history: '',
 })
 
@@ -320,6 +330,18 @@ const form = ref({
 const hasGeneralErrors = computed(() =>
   !form.value.name || !form.value.race || !form.value.classId
 )
+
+const sparkFormulaLabel = computed(() => {
+  if (!selectedClass.value) return ''
+
+  const formulas: Record<string, string> = {
+    ASHEN: 'FOR + POD ÷ 2',
+    SHARD: 'DES + POD ÷ 2',
+    LUMEN: 'INT + POD ÷ 2'
+  }
+
+  return formulas[selectedClass.value.archetype] ?? ''
+})
 
 // ── Inicialização ─────────────────────────────────────────
 onMounted(async () => {
@@ -345,6 +367,9 @@ onMounted(async () => {
       form.value.birthPlace = data.birthPlace ?? ''
       form.value.residence = data.residence ?? ''
       form.value.occupation = data.occupation ?? ''
+      form.value.coins = data.coins ?? 0
+      form.value.height = data.height ?? 0
+      form.value.weight = data.weight ?? 0
 
       form.value.birthDate = data.birthDate?.split('T')[0] ?? '';
 
@@ -356,20 +381,19 @@ onMounted(async () => {
         form.value.education = data.attributes.education
         form.value.presence = data.attributes.presence
         form.value.power = data.attributes.power
-        form.value.size = data.attributes.size ?? ''
       }
 
       // Status
       if (data.status) {
         form.value.vitality = data.status.vitality
         form.value.spark = data.status.spark
-        form.value.ember = data.status.ember
+        form.value.embers = data.status.embers
         form.value.soul = data.status.soul
-        form.value.exposureLevel = data.status.exposureLevel
         form.value.initiative = data.status.initiative
         form.value.luck = data.status.luck
         form.value.movement = data.status.movement
-        form.value.typeEnergy = data.status.energyType ?? ''
+        form.value.energyType = data.status.energyType ?? ''
+        form.value.soul = data.status.soul
       }
 
       form.value.history = data.history ?? ''
@@ -401,8 +425,7 @@ async function handleSubmit() {
       birthPlace: form.value.birthPlace || undefined,
       residence: form.value.residence || undefined,
       occupation: form.value.occupation || undefined,
-      size: form.value.size || undefined,
-      typeEnergy: form.value.typeEnergy || undefined,
+      typeEnergy: form.value.energyType || undefined,
       history: form.value.history || undefined,
     }
 
