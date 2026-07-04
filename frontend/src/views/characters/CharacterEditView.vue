@@ -180,6 +180,21 @@
 
             <div class="grid grid-cols-2 gap-4">
               <NumberField label="Pontos de Vida" v-model="form.vitality" />
+
+              <div>
+                <div class="flex items-center justify-between mb-1">
+                  <label class="text-sm text-slate-400">Centelha</label>
+                  <span class="text-xs text-amber-400/70">{{ sparkFormulaLabel }}</span>
+                </div>
+                <input
+                  v-model.number="form.spark"
+                  type="number"
+                  min="0"
+                  class="w-full bg-slate-700 border border-slate-600 rounded-lg px-4 py-2.5
+                        text-slate-100 text-sm focus:outline-none focus:border-amber-500 transition-colors"
+                />
+              </div>
+
               <NumberField label="Pontos de Centelha" v-model="form.spark" />
               <NumberField label="Pontos de Brasa" v-model="form.embers" />
               <NumberField label="Iniciativa" v-model="form.initiative" />
@@ -195,7 +210,41 @@
             </div>
           </div>
 
-          <!-- Tab 4: Skills -->
+          <!-- Tab 4: Proficiencies -->
+          <div v-else-if="activeTab === 'proficiencies'" class="space-y-6">
+            <p class="text-xs text-slate-500">
+              Distribua os pontos conforme a ficha. Máximo recomendado: 18 por perícia.
+            </p>
+
+            <div v-for="group in groupedProficiencies" :key="group.category">
+              <h3 class="text-xs uppercase tracking-wider mb-3 text-slate-500">
+                {{ group.label }}
+              </h3>
+
+              <div class="grid grid-cols-2 gap-2">
+                <div
+                  v-for="prof in group.items"
+                  :key="prof.id"
+                  class="flex items-center gap-2 px-3 py-2 rounded-lg"
+                  style="background-color: var(--bg-input); border: 1px solid var(--border);"
+                >
+                  <span class="flex-1 text-sm text-slate-300 truncate">{{ prof.name }}</span>
+                  <input
+                    :value="proficiencyValues[prof.id] ?? 0"
+                    @input="proficiencyValues[prof.id] = Number(($event.target as HTMLInputElement).value)"
+                    type="number"
+                    min="0"
+                    max="18"
+                    class="w-16 bg-slate-700 border border-slate-600 rounded-lg px-2 py-1.5
+                          text-slate-100 text-sm text-center focus:outline-none
+                          focus:border-amber-500 transition-colors"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tab 5: Skills -->
           <div v-else-if="activeTab === 'skills'" class="space-y-4">
 
             <p class="text-xs text-slate-500">
@@ -252,7 +301,7 @@
             
           </div>
 
-          <!-- Tab 5: History -->
+          <!-- Tab 6: History -->
           <div v-else-if="activeTab === 'history'" class="space-y-3">
             <div class="flex items-center justify-between">
               <p class="text-xs" style="color: var(--text-faint);">
@@ -314,6 +363,8 @@ import { charactersApi } from '@/api/characters.api'
 import { classesApi } from '@/api/classes.api'
 import type { RPGClass } from '@/types/character.types'
 import { useToast } from '@/composables/useToast'
+import { proficienciesApi } from '@/api/proficiencies.api'
+import type { Proficiency, ProficiencyCategory } from '@/types/character.types'
 
 const toast = useToast()
 
@@ -337,12 +388,13 @@ const submitAttempted = ref(false)
 const errorMessage = ref('')
 const classes = ref<RPGClass[]>([])
 
-type TabId = 'general' | 'attributes' | 'status' | 'skills' | 'history'
+type TabId = 'general' | 'attributes' | 'status' | 'skills' | 'history' | 'proficiencies'
 const activeTab = ref<TabId>('general')
 const tabs: { id: TabId; label: string }[] = [
   { id: 'general', label: 'Dados Gerais' },
   { id: 'attributes', label: 'Atributos' },
   { id: 'status', label: 'Status' },
+  { id: 'proficiencies', label: 'Proficiências' },
   { id: 'skills', label: 'Habilidades' },
   { id: 'history', label: 'História' },
 ]
@@ -396,6 +448,34 @@ const skillForm = ref({
   upgradeType: ''
 })
 
+// ── Proficiencies ──────────────────────────────────────────
+
+const allProficiencies = ref<Proficiency[]>([])
+const proficiencyValues = ref<Record<number, number>>({})  // { proficiencyId: value }
+
+const groupedProficiencies = computed(() => {
+  const order: ProficiencyCategory[] = [
+    'COMBATE', 'SOBRENATURAL', 'INVESTIGACAO', 'SOCIAL', 'PRATICA', 'ESPECIAL'
+  ]
+  return order.map(category => ({
+    category,
+    label: categoryLabel(category),
+    items: allProficiencies.value.filter(p => p.category === category)
+  })).filter(group => group.items.length > 0)
+})
+
+function categoryLabel(category: string) {
+  const labels: Record<string, string> = {
+    COMBATE: 'Combate',
+    SOBRENATURAL: 'Sobrenatural',
+    INVESTIGACAO: 'Investigação',
+    SOCIAL: 'Social',
+    PRATICA: 'Prática',
+    ESPECIAL: 'Especial'
+  }
+  return labels[category] ?? category
+}
+
 // ── Validation ─────────────────────────────────────────────
 const hasGeneralErrors = computed(() =>
   !form.value.name || !form.value.race || !form.value.classId
@@ -418,6 +498,13 @@ onMounted(async () => {
   try {
     const { data } = await classesApi.getAll()
     classes.value = data
+
+    const { data: profData } = await proficienciesApi.getAll()
+    allProficiencies.value = profData
+
+    profData.forEach(prof => {
+      proficiencyValues.value[prof.id] = 0
+    })
   } catch {
     errorMessage.value = 'Erro ao carregar classes.'
   }
@@ -443,6 +530,7 @@ onMounted(async () => {
 
       form.value.birthDate = data.birthDate?.split('T')[0] ?? '';
 
+      // Attributes
       if (data.attributes) {
         form.value.strength = data.attributes.strength
         form.value.dexterity = data.attributes.dexterity
@@ -465,6 +553,14 @@ onMounted(async () => {
         form.value.energyType = data.status.energyType ?? ''
       }
 
+      // Proficiencies
+      if (data.proficiencies) {
+        data.proficiencies.forEach((prof => {
+          proficiencyValues.value[prof.proficiencyId] = prof.value
+        }))
+      }
+
+      // History
       form.value.history = data.history ?? ''
 
       if (data.skills && data.skills.length > 0) {
@@ -514,6 +610,10 @@ async function handleSubmit() {
       occupation: form.value.occupation || undefined,
       typeEnergy: form.value.energyType || undefined,
       history: form.value.history || undefined,
+      proficiencies: Object.entries(proficiencyValues.value).map(([id, value]) => ({
+        proficiencyId: Number(id),
+        value
+      }))
     }
 
     if (isEditing.value && characterId) {

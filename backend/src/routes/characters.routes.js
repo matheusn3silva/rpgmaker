@@ -188,6 +188,8 @@ router.put('/:id', authMiddleware, async (req, res) => {
       where: { id: characterId, userId: userId }
     })
 
+    const { proficiencies } = req.body
+
     if (!existing) {
       return res.status(404).json({ message: 'Personagem não encontrado' })
     }
@@ -212,6 +214,27 @@ router.put('/:id', authMiddleware, async (req, res) => {
         }
       }
     })
+
+    if (proficiencies && Array.isArray(proficiencies)) {
+      await Promise.all(
+        proficiencies.map(p => 
+          prisma.characterProficiency.upsert({
+            where: {
+              characterId_proficiencyId: {
+                characterId,
+                proficiencyId: p.proficiencyId
+              }
+            },
+            update: { value: p.value },
+            create: {
+              characterId,
+              proficiencyId: p.proficiencyId,
+              value: p.value
+            }
+          })
+        )
+      )
+    }
 
     return res.json({ message: 'Personagem atualizado' })
   } catch {
@@ -376,6 +399,11 @@ router.get('/:id', authMiddleware, async (req, res) => {
         attributes: true,
         status: true,
         skills: true,
+        proficiencies: {
+          include: {
+            proficiency: true
+          }
+        },
         class: {
           select: {
             name: true,
@@ -578,6 +606,23 @@ router.delete('/:skillId', authMiddleware, async (req, res) => {
         return res.json({ message: 'Habilidade removida' })
     } catch {
         return res.status(500).json({ message: 'Erro ao remover habilidade' })
+    }
+})
+
+/* Proficiencies */
+router.get('/', authMiddleware, async (req,res) => {
+    try {
+        const proficiencies = await prisma.Proficiency.findMany({
+            orderBy: [
+                { category: 'asc' },
+                { name: 'asc' }
+
+            ]
+        })
+        res.json(proficiencies)
+    } catch (error) {
+        console.error(error)
+        res.status(500).json({ message: 'Erro ao buscar as proficiências' })
     }
 })
 
