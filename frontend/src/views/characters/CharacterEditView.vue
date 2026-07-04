@@ -195,7 +195,64 @@
             </div>
           </div>
 
-          <!-- Tab 4: History -->
+          <!-- Tab 4: Skills -->
+          <div v-else-if="activeTab === 'skills'" class="space-y-4">
+
+            <p class="text-xs text-slate-500">
+              Esta é a sua habilidade ativa exclusiva. Ela aparece na ficha junto às habilidades da classe
+            </p>
+
+            <div>
+              <label class="block text-sm text-slate-400 mb-1">Nome da Habilidade</label>
+              <input v-model="skillForm.name" type="text" placeholder="Ex: Golpe Fantasma" class="w-full bg-slate-700 border border-slate-600 rounded-lg px-4 py-2.5 text-slate-100 text-sm focus:outline-none focus:border-amber-500 transition-colors" />
+            </div>
+
+            <div>
+              <label class="block text-sm text-slate-400 mb-1">Descrição</label>
+                <textarea v-model="skillForm.description" rows="3" placeholder="Descreva o efeito da habilidade..." 
+                  class="w-full bg-slate-700 border border-slate-600 rounded-lg px-4 py-2.5
+                  text-slate-100 text-sm focus:outline-none focus:border-amber-500
+                  transition-colors resize-none" 
+              />
+            </div>
+
+            <div class="grid grid-cols-2 gap-4">
+              <NumberField label="Custo de Centelha" v-model="skillForm.sparkCost" />
+              <NumberField label="Custo de Brasa" v-model="skillForm.emberCost" />
+            </div>
+
+            <!-- Upgrade -->
+            <div class="pt-2 border-t border-slate-700">
+              <p class="text-xs text-slate-500 mb-3">Aprimoramento (Opcional)</p>
+
+              <div class="space-y-3">
+                <div>
+                  <label class="block text-sm text-slate-400 mb-1">Descrição do aprimoramento</label>
+                  <textarea v-model="skillForm.upgradeDescription" rows="2" placeholder="Efeito melhorado ao gastar Brasas..." 
+                    class="w-full bg-slate-700 border border-slate-600 rounded-lg px-4 py-2.5
+                    text-slate-100 text-sm focus:outline-none focus:border-amber-500
+                    transition-colors resize-none"
+                  />
+                </div>
+
+                <div class="grid grid-cols-2 gap-3">
+                  <NumberField label="Custo do aprimoramento" v-model="skillForm.upgradeCost" />
+                  <div>
+                    <label class="block text-sm text-slate-400 mb-1">Tipo do aprimoramento</label>
+                    <select v-model="skillForm.upgradeType" class="w-full bg-slate-700 border border-slate-600 rounded-lg px-4 py-2.5
+                      text-slate-100 text-sm focus:outline-none focus:border-amber-500 transition-colors">
+                      <option value="">Nenhum</option>
+                      <option value="BRASA">Brasa</option>
+                      <option value="CENTELHA">Centelha</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+          </div>
+
+          <!-- Tab 5: History -->
           <div v-else-if="activeTab === 'history'" class="space-y-3">
             <div class="flex items-center justify-between">
               <p class="text-xs" style="color: var(--text-faint);">
@@ -269,27 +326,28 @@ const selectedClass = computed(() =>
   classes.value.find(c => c.id === form.value.classId) ?? null
 )
 
-// ── Modo da tela ──────────────────────────────────────────
+// ── View mode ──────────────────────────────────────────
 const characterId = route.params.id ? Number(route.params.id) : null
 const isEditing = computed(() => characterId !== null)
 
-// ── Estado ───────────────────────────────────────────────
+// ── State ───────────────────────────────────────────────
 const initialLoading = ref(false)
 const submitting = ref(false)
 const submitAttempted = ref(false)
 const errorMessage = ref('')
 const classes = ref<RPGClass[]>([])
 
-type TabId = 'general' | 'attributes' | 'status' | 'history'
+type TabId = 'general' | 'attributes' | 'status' | 'skills' | 'history'
 const activeTab = ref<TabId>('general')
 const tabs: { id: TabId; label: string }[] = [
   { id: 'general', label: 'Dados Gerais' },
   { id: 'attributes', label: 'Atributos' },
   { id: 'status', label: 'Status' },
+  { id: 'skills', label: 'Habilidades' },
   { id: 'history', label: 'História' },
 ]
 
-// ── Formulário — estado único e flat ─────────────────────
+// ── Form — unique state and flat ─────────────────────
 const form = ref({
   // Dados gerais
   name: '',
@@ -326,7 +384,19 @@ const form = ref({
   history: '',
 })
 
-// ── Validação ─────────────────────────────────────────────
+// ── Skills ─────────────────────────────────────────────
+const existingSkillId = ref<number | null>(null)
+const skillForm = ref({
+  name: '',
+  description: '',
+  sparkCost: 0,
+  emberCost: 0,
+  upgradeDescription: '',
+  upgradeCost: 0,
+  upgradeType: ''
+})
+
+// ── Validation ─────────────────────────────────────────────
 const hasGeneralErrors = computed(() =>
   !form.value.name || !form.value.race || !form.value.classId
 )
@@ -343,7 +413,7 @@ const sparkFormulaLabel = computed(() => {
   return formulas[selectedClass.value.archetype] ?? ''
 })
 
-// ── Inicialização ─────────────────────────────────────────
+// ── Initialize ─────────────────────────────────────────
 onMounted(async () => {
   try {
     const { data } = await classesApi.getAll()
@@ -393,17 +463,34 @@ onMounted(async () => {
         form.value.luck = data.status.luck
         form.value.movement = data.status.movement
         form.value.energyType = data.status.energyType ?? ''
-        form.value.soul = data.status.soul
       }
 
       form.value.history = data.history ?? ''
+
+      if (data.skills && data.skills.length > 0) {
+        const skill = data.skills[0]
+
+        if (!skill) return
+
+        existingSkillId.value = skill.id
+        skillForm.value.name = skill.name
+        skillForm.value.description = skill.description
+        skillForm.value.sparkCost = skill?.sparkCost ?? 0
+        skillForm.value.emberCost = skill?.emberCost ?? 0
+        skillForm.value.upgradeDescription = skill?.upgradeDescription ?? ''
+        skillForm.value.upgradeCost = skill?.upgradeCost ?? 0
+        skillForm.value.upgradeType = skill?.upgradeType ?? ''
+      }
 
     } catch {
       errorMessage.value = 'Erro ao carregar personagem.'
     } finally {
       initialLoading.value = false
     }
+
   }
+
+  
 })
 
 // ── Submit ────────────────────────────────────────────────
@@ -431,6 +518,16 @@ async function handleSubmit() {
 
     if (isEditing.value && characterId) {
       await charactersApi.update(characterId, payload)
+
+      // Update or create skill
+      if (skillForm.value.name && skillForm.value.description) {
+        if (existingSkillId.value) {
+          await charactersApi.updateSkill(characterId, existingSkillId.value, skillForm.value)
+        } else {
+          await charactersApi.createSkill(characterId, skillForm.value)
+        }
+      }
+
       router.push(`/characters/${characterId}`)
       toast.success('Personagem atualizado com sucesso!')
     } else {

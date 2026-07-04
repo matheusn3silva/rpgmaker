@@ -12,7 +12,7 @@
                         {{ characterSkill.name }}
                     </span>
 
-                    <span class="text-xs px-x py-0.5 rounded shrink-0"
+                    <span class="text-xs px-2 py-0.5 rounded shrink-0"
                         style="background-color: #3b1f0a; color: #fbbf24;">
                         Ação
                     </span>
