@@ -91,7 +91,7 @@ function buildStatusData(body) {
  */
 router.post('/', authMiddleware, async (req, res) => {
   const userId = req.user.id
-  const { name, race, classId } = req.body
+  const { name, race, classId, proficiencies } = req.body
 
   if (!name || !race || !classId) {
     return res.status(400).json({
@@ -100,6 +100,7 @@ router.post('/', authMiddleware, async (req, res) => {
   }
 
   try {
+
     const character = await prisma.character.create({
       data: {
         userId: userId,
@@ -114,6 +115,21 @@ router.post('/', authMiddleware, async (req, res) => {
         }
       }
     })
+
+    if (proficiencies && Array.isArray(proficiencies)) {
+
+      await Promise.all(
+        proficiencies.map(p => 
+          prisma.characterProficiency.create({
+            data: {
+              characterId: character.id,
+              proficiencyId: p.proficiencyId,
+              value: p.value
+            }
+          })
+        )
+      )
+    }
 
     return res.status(201).json({ id: character.id })
   } catch (error) {
@@ -526,7 +542,7 @@ router.post('/:characterId/skills', authMiddleware, async (req, res) => {
 
     const {
         name, description, sparkCost, emberCost,
-        upgradeDescription, upgradeCost, upgradeType
+        upgradeDescription
     } = req.body
 
     if (!name || !description) {
@@ -542,9 +558,7 @@ router.post('/:characterId/skills', authMiddleware, async (req, res) => {
                 description: description.trim(),
                 sparkCost: sparkCost ?? 0,
                 emberCost: emberCost ?? 0,
-                upgradeDescription: upgradeDescription?.trim() || null,
-                upgradeCost: upgradeCost ?? 0,
-                upgradeType: upgradeType?.trim() || null
+                upgradeDescription: upgradeDescription?.trim() || null
             }
         })
         res.status(201).json(skill)
@@ -566,7 +580,7 @@ router.put('/:skillId', authMiddleware, async (req, res) => {
 
     const {
         name, description, sparkCost, emberCost,
-        upgradeDescription, upgradeCost, upgradeType
+        upgradeDescription
     } = req.body
 
     try {
@@ -576,10 +590,8 @@ router.put('/:skillId', authMiddleware, async (req, res) => {
                 name: name?.trim(),
                 description: description?.trim(),
                 sparkCost: sparkCost ?? 0,
-                emberCost: emberCost ?? 0,
                 upgradeDescription: upgradeDescription?.trim() || null,
-                upgradeCost: upgradeCost ?? 0,
-                upgradeType: upgradeType?.trim() || null
+                emberCost: emberCost ?? 0
             }
         })
         return res.json(skill)

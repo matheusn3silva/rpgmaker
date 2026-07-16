@@ -16,10 +16,8 @@ export interface ClassSkill {
     type: 'PASSIVA' | 'ATIVA_ACAO' | 'ATIVA_BONUS' | 'ATIVA_REACAO',
     description: string
     sparkCost: number
-    emberCost: number
     upgradeDescription: string | null
-    upgradeCost: number
-    upgradeType: string | null
+    emberCost: number
 }
 
 export interface CharacterSkill {
@@ -28,10 +26,8 @@ export interface CharacterSkill {
     type: 'ATIVA_ACAO'
     description: string
     sparkCost: number
-    emberCost: number
     upgradeDescription: string | null
-    upgradeCost: number
-    upgradeType: string | null
+    emberCost: number
 }
 
 export interface CharacterAttributes {

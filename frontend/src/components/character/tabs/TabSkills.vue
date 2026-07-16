@@ -26,19 +26,16 @@
                     <span v-if="characterSkill.sparkCost > 0" class="text-xs" style="color: var(--text-faint);">
                         Centelhas: <span class="text-amber-400 font-medium">{{ characterSkill.sparkCost }}</span>
                     </span>
-                    <span v-if="characterSkill.emberCost > 0" class="text-xs" style="color: var(--text-faint)">
-                        Brasas: <span class="text-amber-400 font-medium">{{ characterSkill.emberCost }}</span>
-                    </span>
-                    <span v-if="characterSkill.sparkCost === 0 && characterSkill.emberCost === 0" class="text-xs" style="color: var(--text-faint);">
+                    <span v-if="characterSkill.sparkCost === 0" class="text-xs" style="color: var(--text-faint);">
                         Sem custo
                     </span>
                 </div>
 
                 <div v-if="characterSkill.upgradeDescription" class="mt-3 rounded-lg p-3" style="background-color: var(--bg-surface); border: 1px solid var(--border);">
                     <p class="text-xs font-medium uppercase tracking-wider mb-1" style="color: var(--text-faint);">
-                        Aprimoramento
-                        <span v-if="characterSkill.upgradeCost > 0" class="ml-1 text-amber-400">
-                        · {{ characterSkill.upgradeCost }} {{ characterSkill.upgradeType === 'BRASA' ? 'Brasas' : 'Centelhas' }}
+                        Aprimoramento com Barasa
+                        <span v-if="characterSkill.emberCost > 0" class="ml-1 text-amber-400">
+                        · {{ characterSkill.emberCost }} Brasa
                         </span>
                     </p>
                     <p class="text-xs" style="color: var(--text-muted);">{{ characterSkill.upgradeDescription }}</p>
@@ -103,10 +100,6 @@
                             Centelhas: <span class="text-amber-400 font-medium">{{ skill.sparkCost }}</span>
                         </span>
 
-                        <span v-if="skill.emberCost > 0" class="text-xs" style="color: var(--text-faint);">
-                            Brasas: <span class="text-amber-400 font-medium">{{ skill.emberCost }}</span>
-                        </span>
-
                         <span v-if="skill.sparkCost === 0 && skill.emberCost === 0" class="text-xs" style="color: var(--text-faint);">
                             Sem custo
                         </span>
@@ -116,8 +109,8 @@
                     <div v-if="skill.upgradeDescription" class="mt-3 rounded-lg p-3" style="background-color: var(--bg-surface); border: 1px solid var(--border);">
                         <p class="text-xs font-medium uppercase tracking-wider mb-1" style="color: var(--text-faint);">
                             Aprimoramento com Brasa
-                            <span v-if="skill.upgradeCost > 0" class="text-amber-400 ml-1">
-                                · {{ skill.upgradeCost }} {{ skill.upgradeType === 'BRASA' ? 'Brasas' : 'Centelhas' }}
+                            <span v-if="skill.emberCost > 0" class="text-amber-400 ml-1">
+                                · {{ skill.emberCost }} Brasa
                             </span>
                         </p>
                         <p class="text-xs italic" style="color: var(--text-muted);">

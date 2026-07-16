@@ -47,9 +47,7 @@ async function main() {
       description: 'Absorve parte do impacto dos golpes recebidos. Reduz todo dano físico recebido em 2.',
       sparkCost: 0,
       emberCost: 0,
-      upgradeDescription: 'Esta habilidade não pode ser aprimorada.',
-      upgradeCost: 0,
-      upgradeType: null,
+      upgradeDescription: 'Esta habilidade não pode ser aprimorada.'
     },
   })
 
@@ -63,9 +61,7 @@ async function main() {
       description: 'O usuário fortalece o corpo para reduzir o dano do golpe em sua direção. Reduz o dano sofrido em 3.',
       sparkCost: 0,
       emberCost: 0,
-      upgradeDescription: 'Reduz o dano sofrido em 5. Realiza um ataque padrão de resposta.',
-      upgradeCost: 2,
-      upgradeType: 'BRASA',
+      upgradeDescription: 'Reduz o dano sofrido em 5. Realiza um ataque padrão de resposta.'
     },
   })
 
@@ -80,9 +76,7 @@ async function main() {
       description: 'O corpo do usuário é naturalmente mais veloz. Move-se 2 metros a mais que o normal por turno.',
       sparkCost: 0,
       emberCost: 0,
-      upgradeDescription: 'Esta habilidade não pode ser aprimorada.',
-      upgradeCost: 0,
-      upgradeType: null,
+      upgradeDescription: 'Esta habilidade não pode ser aprimorada.'
     },
   })
 
@@ -96,9 +90,7 @@ async function main() {
       description: 'O usuário envolve seu corpo com sombras para reagir aos golpes em sua direção. Reduz o dano sofrido em 2. Move-se 2 metros de distância.',
       sparkCost: 0,
       emberCost: 0,
-      upgradeDescription: 'Reduz o dano sofrido em 3. Move-se 3 metros de distância.',
-      upgradeCost: 2,
-      upgradeType: 'BRASA',
+      upgradeDescription: 'Reduz o dano sofrido em 3. Move-se 3 metros de distância.'
     },
   })
 
@@ -113,9 +105,7 @@ async function main() {
       description: 'O usuário tem uma compreensão básica da Brasa que pulsa em si. Ataques básicos podem ser imbuídos de Brasa causando +2 de dano adicional. Cria um golpe básico focado em um elemento natural sem custo (Fogo, água, ar e terra). Dano 1d8. Recebe 2 de Centelha a mais na recuperação.',
       sparkCost: 0,
       emberCost: 0,
-      upgradeDescription: 'Esta habilidade não pode ser aprimorada.',
-      upgradeCost: 0,
-      upgradeType: null,
+      upgradeDescription: 'Esta habilidade não pode ser aprimorada.'
     },
   })
 
@@ -130,8 +120,6 @@ async function main() {
       sparkCost: 2,
       emberCost: 0,
       upgradeDescription: 'Reduz o dano em 3. Com a energia o usuário também cria um escudo em seu corpo que reduz o dano em 2 no próximo turno.',
-      upgradeCost: 2,
-      upgradeType: 'BRASA',
     },
   })
 

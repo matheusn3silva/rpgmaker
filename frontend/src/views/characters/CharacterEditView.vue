@@ -183,7 +183,7 @@
 
               <div>
                 <div class="flex items-center justify-between mb-1">
-                  <label class="text-sm text-slate-400">Centelha</label>
+                  <label class="text-sm text-slate-400">Pontos de Centelha</label>
                   <span class="text-xs text-amber-400/70">{{ sparkFormulaLabel }}</span>
                 </div>
                 <input
@@ -195,7 +195,6 @@
                 />
               </div>
 
-              <NumberField label="Pontos de Centelha" v-model="form.spark" />
               <NumberField label="Pontos de Brasa" v-model="form.embers" />
               <NumberField label="Iniciativa" v-model="form.initiative" />
               <NumberField label="Sorte" v-model="form.luck" />
@@ -267,12 +266,11 @@
 
             <div class="grid grid-cols-2 gap-4">
               <NumberField label="Custo de Centelha" v-model="skillForm.sparkCost" />
-              <NumberField label="Custo de Brasa" v-model="skillForm.emberCost" />
             </div>
 
             <!-- Upgrade -->
             <div class="pt-2 border-t border-slate-700">
-              <p class="text-xs text-slate-500 mb-3">Aprimoramento (Opcional)</p>
+              <p class="text-xs text-slate-500 mb-3">Aprimoramento com Brasa (Opcional)</p>
 
               <div class="space-y-3">
                 <div>
@@ -284,17 +282,10 @@
                   />
                 </div>
 
-                <div class="grid grid-cols-2 gap-3">
-                  <NumberField label="Custo do aprimoramento" v-model="skillForm.upgradeCost" />
-                  <div>
-                    <label class="block text-sm text-slate-400 mb-1">Tipo do aprimoramento</label>
-                    <select v-model="skillForm.upgradeType" class="w-full bg-slate-700 border border-slate-600 rounded-lg px-4 py-2.5
-                      text-slate-100 text-sm focus:outline-none focus:border-amber-500 transition-colors">
-                      <option value="">Nenhum</option>
-                      <option value="BRASA">Brasa</option>
-                      <option value="CENTELHA">Centelha</option>
-                    </select>
-                  </div>
+                <div>
+                  <label class="block text-sm text-slate-400 mb-1">Custo de Brasa</label>
+                  <input v-model.number="skillForm.upgradeCost" type="number" min="0" class="w-full bg-slate-700 border border-slate-600 rounded-lg px-4 py-2.5
+                    text-slate-100 text-sm focus:outline-none focus:border-amber-500 transition-colors" />
                 </div>
               </div>
             </div>
@@ -444,8 +435,7 @@ const skillForm = ref({
   sparkCost: 0,
   emberCost: 0,
   upgradeDescription: '',
-  upgradeCost: 0,
-  upgradeType: ''
+  upgradeCost: 0
 })
 
 // ── Proficiencies ──────────────────────────────────────────
@@ -574,8 +564,6 @@ onMounted(async () => {
         skillForm.value.sparkCost = skill?.sparkCost ?? 0
         skillForm.value.emberCost = skill?.emberCost ?? 0
         skillForm.value.upgradeDescription = skill?.upgradeDescription ?? ''
-        skillForm.value.upgradeCost = skill?.upgradeCost ?? 0
-        skillForm.value.upgradeType = skill?.upgradeType ?? ''
       }
 
     } catch {
@@ -632,6 +620,11 @@ async function handleSubmit() {
       toast.success('Personagem atualizado com sucesso!')
     } else {
       const { data } = await charactersApi.create(payload)
+
+      if (skillForm.value.name && skillForm.value.description) {
+        await charactersApi.createSkill(data.id, skillForm.value)
+      }
+
       router.push(`/characters/${data.id}`)
       toast.success('Personagem criado com sucesso!')
     }
