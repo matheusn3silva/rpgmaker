@@ -17,6 +17,9 @@
       "<rootDir>/src/tests/setup.js"
     ]
   },
+  "prisma": {
+    "seed": "node prisma/seed.js"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
@@ -43,7 +46,7 @@
     "@types/jest": "^30.0.0",
     "@types/supertest": "^7.2.0",
     "jest": "^30.3.0",
-    "nodemon": "^3.1.11",
+    "nodemon": "^3.1.14",
     "supertest": "^7.2.2"
   }
 }

@@ -25,9 +25,7 @@ router.get('/:id', authMiddleware, async (req, res) => {
   try {
     const classData = await prisma.RPGClass.findUnique({
       where : { id: classId },
-      include: {
-        skills: true
-      }
+      include: { skills: true}
     })
 
     return res.json(classData)

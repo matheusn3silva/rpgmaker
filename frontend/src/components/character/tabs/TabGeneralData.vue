@@ -10,6 +10,9 @@
       <InfoField label="Personalidade" :value="character.personality ?? '—'" />
       <InfoField label="Local de nascimento" :value="character.birthPlace ?? '—'" />
       <InfoField label="Residência" :value="character.residence ?? '—'" />
+      <InfoField label="Moedas Luminar" :value="String(character.coins ?? '—')" />
+      <InfoField label="Altura (Metros)" :value="String(character.height ?? '—')" />
+      <InfoField label="Peso (KG)" :value="String(character.weight ?? '—')" />
     </div>
   </div>
 </template>

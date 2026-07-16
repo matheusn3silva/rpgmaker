@@ -135,6 +135,28 @@
                        text-slate-100 text-sm focus:outline-none focus:border-amber-500 transition-colors" />
             </div>
 
+            <!-- Coins -->
+            <div>
+              <label class="block text-sm text-slate-400 mb-1">Moedas (Luminar)</label>
+              <input v-model.number="form.coins" type="number" min="0" class="w-full bg-slate-700 border border-slate-600 rounded-lg px-4 py-2.5
+                       text-slate-100 text-sm focus:outline-none focus:border-amber-500 transition-colors" />
+            </div>
+
+            <!-- Height and Weight -->
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                <label class="block text-sm text-slate-400 mb-1">Altura (m)</label>
+                <input v-model.number="form.height" type="number" step="0.01" min="0" placeholder="Ex: 1.75" class="w-full bg-slate-700 border border-slate-600 rounded-lg px-4 py-2.5
+                          text-slate-100 text-sm focus:outline-none focus:border-amber-500 transition-colors" />
+              </div>
+
+              <div>
+                <label class="block text-sm text-slate-400 mb-1">Peso (kg)</label>
+                <input v-model.number="form.weight" type="number" step="0.1" min="0" placeholder="Ex: 70.5" class="w-full bg-slate-700 border border-slate-600 rounded-lg px-4 py-2.5
+                          text-slate-100 text-sm focus:outline-none focus:border-amber-500 transition-colors" />
+              </div>
+            </div>
+
           </div>
 
           <!-- Tab 2: Attributes -->
@@ -151,58 +173,145 @@
               <NumberField label="Poder" v-model="form.power" />
             </div>
 
-            <div>
-              <label class="block text-sm text-slate-400 mb-1">Tamanho</label>
-              <input v-model="form.size" type="text" placeholder="Ex: Médio, Grande" class="w-full bg-slate-700 border border-slate-600 rounded-lg px-4 py-2.5
-                       text-slate-100 text-sm focus:outline-none focus:border-amber-500 transition-colors" />
-            </div>
           </div>
 
           <!-- Tab 3: Status -->
           <div v-else-if="activeTab === 'status'" class="space-y-4">
 
             <div class="grid grid-cols-2 gap-4">
-              <NumberField label="Pontos de Vida" v-model="form.lifePoints" />
-              <NumberField label="Pontos de Esforço" v-model="form.effortPoints" />
-              <NumberField label="Pontos de Energia" v-model="form.energyPoints" />
-              <NumberField label="Nível de Exposição" v-model="form.exposureLevel" />
+              <NumberField label="Pontos de Vida" v-model="form.vitality" />
+
+              <div>
+                <div class="flex items-center justify-between mb-1">
+                  <label class="text-sm text-slate-400">Pontos de Centelha</label>
+                  <span class="text-xs text-amber-400/70">{{ sparkFormulaLabel }}</span>
+                </div>
+                <input
+                  v-model.number="form.spark"
+                  type="number"
+                  min="0"
+                  class="w-full bg-slate-700 border border-slate-600 rounded-lg px-4 py-2.5
+                        text-slate-100 text-sm focus:outline-none focus:border-amber-500 transition-colors"
+                />
+              </div>
+
+              <NumberField label="Pontos de Brasa" v-model="form.embers" />
               <NumberField label="Iniciativa" v-model="form.initiative" />
               <NumberField label="Sorte" v-model="form.luck" />
               <NumberField label="Movimento" v-model="form.movement" />
+              <NumberField label="Alma" v-model="form.soul" />
             </div>
 
             <div>
               <label class="block text-sm text-slate-400 mb-1">Tipo de Energia</label>
-              <input v-model="form.typeEnergy" type="text" placeholder="Ex: Arcana, Divina" class="w-full bg-slate-700 border border-slate-600 rounded-lg px-4 py-2.5
+              <input v-model="form.energyType" type="text" placeholder="Ex: Arcana, Divina" class="w-full bg-slate-700 border border-slate-600 rounded-lg px-4 py-2.5
                        text-slate-100 text-sm focus:outline-none focus:border-amber-500 transition-colors" />
             </div>
           </div>
 
-          <!-- Tab 4: History -->
+          <!-- Tab 4: Proficiencies -->
+          <div v-else-if="activeTab === 'proficiencies'" class="space-y-6">
+            <p class="text-xs text-slate-500">
+              Distribua os pontos conforme a ficha. Máximo recomendado: 18 por perícia.
+            </p>
+
+            <div v-for="group in groupedProficiencies" :key="group.category">
+              <h3 class="text-xs uppercase tracking-wider mb-3 text-slate-500">
+                {{ group.label }}
+              </h3>
+
+              <div class="grid grid-cols-2 gap-2">
+                <div
+                  v-for="prof in group.items"
+                  :key="prof.id"
+                  class="flex items-center gap-2 px-3 py-2 rounded-lg"
+                  style="background-color: var(--bg-input); border: 1px solid var(--border);"
+                >
+                  <span class="flex-1 text-sm text-slate-300 truncate">{{ prof.name }}</span>
+                  <input
+                    :value="proficiencyValues[prof.id] ?? 0"
+                    @input="proficiencyValues[prof.id] = Number(($event.target as HTMLInputElement).value)"
+                    type="number"
+                    min="0"
+                    max="18"
+                    class="w-16 bg-slate-700 border border-slate-600 rounded-lg px-2 py-1.5
+                          text-slate-100 text-sm text-center focus:outline-none
+                          focus:border-amber-500 transition-colors"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tab 5: Skills -->
+          <div v-else-if="activeTab === 'skills'" class="space-y-4">
+
+            <p class="text-xs text-slate-500">
+              Esta é a sua habilidade ativa exclusiva. Ela aparece na ficha junto às habilidades da classe
+            </p>
+
+            <div>
+              <label class="block text-sm text-slate-400 mb-1">Nome da Habilidade</label>
+              <input v-model="skillForm.name" type="text" placeholder="Ex: Golpe Fantasma" class="w-full bg-slate-700 border border-slate-600 rounded-lg px-4 py-2.5 text-slate-100 text-sm focus:outline-none focus:border-amber-500 transition-colors" />
+            </div>
+
+            <div>
+              <label class="block text-sm text-slate-400 mb-1">Descrição</label>
+                <textarea v-model="skillForm.description" rows="3" placeholder="Descreva o efeito da habilidade..." 
+                  class="w-full bg-slate-700 border border-slate-600 rounded-lg px-4 py-2.5
+                  text-slate-100 text-sm focus:outline-none focus:border-amber-500
+                  transition-colors resize-none" 
+              />
+            </div>
+
+            <div class="grid grid-cols-2 gap-4">
+              <NumberField label="Custo de Centelha" v-model="skillForm.sparkCost" />
+            </div>
+
+            <!-- Upgrade -->
+            <div class="pt-2 border-t border-slate-700">
+              <p class="text-xs text-slate-500 mb-3">Aprimoramento com Brasa (Opcional)</p>
+
+              <div class="space-y-3">
+                <div>
+                  <label class="block text-sm text-slate-400 mb-1">Descrição do aprimoramento</label>
+                  <textarea v-model="skillForm.upgradeDescription" rows="2" placeholder="Efeito melhorado ao gastar Brasas..." 
+                    class="w-full bg-slate-700 border border-slate-600 rounded-lg px-4 py-2.5
+                    text-slate-100 text-sm focus:outline-none focus:border-amber-500
+                    transition-colors resize-none"
+                  />
+                </div>
+
+                <div>
+                  <label class="block text-sm text-slate-400 mb-1">Custo de Brasa</label>
+                  <input v-model.number="skillForm.upgradeCost" type="number" min="0" class="w-full bg-slate-700 border border-slate-600 rounded-lg px-4 py-2.5
+                    text-slate-100 text-sm focus:outline-none focus:border-amber-500 transition-colors" />
+                </div>
+              </div>
+            </div>
+            
+          </div>
+
+          <!-- Tab 6: History -->
           <div v-else-if="activeTab === 'history'" class="space-y-3">
             <div class="flex items-center justify-between">
               <p class="text-xs" style="color: var(--text-faint);">
                 Use Markdown para formatar: # Título, ## Subtítulo, **negrito**, *itálico*
               </p>
-              <a
-              href="https://www.markdownguide.org/cheat-sheet/"
-              target="_blank"
-              class="text-xs"
-              style="color: #f59e0b;"
-              >
-              Guia →
+              <a href="https://www.markdownguide.org/cheat-sheet/" target="_blank" class="text-xs"
+                style="color: #f59e0b;">
+                Guia →
               </a>
             </div>
 
             <textarea v-model="form.history" rows="16" placeholder="Escreva a história do personagem aqui...
-
-# Origem
-Nascido em uma pequena vila...
-
-## Motivação
-Sua busca pela verdade..." class="w-full bg-slate-700 border border-slate-600 rounded-lg px-4 py-3
-           text-slate-100 text-sm focus:outline-none focus:border-amber-500
-           transition-colors resize-none font-mono leading-relaxed" />
+            # Origem
+            Nascido em uma pequena vila...
+            
+            ## Motivação
+            Sua busca pela verdade..." class="w-full bg-slate-700 border border-slate-600 rounded-lg px-4 py-3
+            text-slate-100 text-sm focus:outline-none focus:border-amber-500
+            transition-colors resize-none font-mono leading-relaxed" />
           </div>
 
         </div>
@@ -245,6 +354,8 @@ import { charactersApi } from '@/api/characters.api'
 import { classesApi } from '@/api/classes.api'
 import type { RPGClass } from '@/types/character.types'
 import { useToast } from '@/composables/useToast'
+import { proficienciesApi } from '@/api/proficiencies.api'
+import type { Proficiency, ProficiencyCategory } from '@/types/character.types'
 
 const toast = useToast()
 
@@ -257,27 +368,29 @@ const selectedClass = computed(() =>
   classes.value.find(c => c.id === form.value.classId) ?? null
 )
 
-// ── Modo da tela ──────────────────────────────────────────
+// ── View mode ──────────────────────────────────────────
 const characterId = route.params.id ? Number(route.params.id) : null
 const isEditing = computed(() => characterId !== null)
 
-// ── Estado ───────────────────────────────────────────────
+// ── State ───────────────────────────────────────────────
 const initialLoading = ref(false)
 const submitting = ref(false)
 const submitAttempted = ref(false)
 const errorMessage = ref('')
 const classes = ref<RPGClass[]>([])
 
-type TabId = 'general' | 'attributes' | 'status' | 'history'
+type TabId = 'general' | 'attributes' | 'status' | 'skills' | 'history' | 'proficiencies'
 const activeTab = ref<TabId>('general')
 const tabs: { id: TabId; label: string }[] = [
   { id: 'general', label: 'Dados Gerais' },
   { id: 'attributes', label: 'Atributos' },
   { id: 'status', label: 'Status' },
+  { id: 'proficiencies', label: 'Proficiências' },
+  { id: 'skills', label: 'Habilidades' },
   { id: 'history', label: 'História' },
 ]
 
-// ── Formulário — estado único e flat ─────────────────────
+// ── Form — unique state and flat ─────────────────────
 const form = ref({
   // Dados gerais
   name: '',
@@ -291,6 +404,9 @@ const form = ref({
   birthPlace: '',
   residence: '',
   occupation: '',
+  height: 0,
+  weight: 0,
+  coins: 0,
   // Atributos
   strength: 10,
   dexterity: 10,
@@ -299,29 +415,86 @@ const form = ref({
   education: 10,
   presence: 10,
   power: 10,
-  size: '',
   // Status
-  lifePoints: 20,
-  effortPoints: 1,
-  energyPoints: 1,
-  exposureLevel: 5,
+  vitality: 20,
+  spark: 1,
+  embers: 1,
+  soul: 0,
   initiative: 0,
   luck: 0,
   movement: 1,
-  typeEnergy: '',
+  energyType: '',
   history: '',
 })
 
-// ── Validação ─────────────────────────────────────────────
+// ── Skills ─────────────────────────────────────────────
+const existingSkillId = ref<number | null>(null)
+const skillForm = ref({
+  name: '',
+  description: '',
+  sparkCost: 0,
+  emberCost: 0,
+  upgradeDescription: '',
+  upgradeCost: 0
+})
+
+// ── Proficiencies ──────────────────────────────────────────
+
+const allProficiencies = ref<Proficiency[]>([])
+const proficiencyValues = ref<Record<number, number>>({})  // { proficiencyId: value }
+
+const groupedProficiencies = computed(() => {
+  const order: ProficiencyCategory[] = [
+    'COMBATE', 'SOBRENATURAL', 'INVESTIGACAO', 'SOCIAL', 'PRATICA', 'ESPECIAL'
+  ]
+  return order.map(category => ({
+    category,
+    label: categoryLabel(category),
+    items: allProficiencies.value.filter(p => p.category === category)
+  })).filter(group => group.items.length > 0)
+})
+
+function categoryLabel(category: string) {
+  const labels: Record<string, string> = {
+    COMBATE: 'Combate',
+    SOBRENATURAL: 'Sobrenatural',
+    INVESTIGACAO: 'Investigação',
+    SOCIAL: 'Social',
+    PRATICA: 'Prática',
+    ESPECIAL: 'Especial'
+  }
+  return labels[category] ?? category
+}
+
+// ── Validation ─────────────────────────────────────────────
 const hasGeneralErrors = computed(() =>
   !form.value.name || !form.value.race || !form.value.classId
 )
 
-// ── Inicialização ─────────────────────────────────────────
+const sparkFormulaLabel = computed(() => {
+  if (!selectedClass.value) return ''
+
+  const formulas: Record<string, string> = {
+    ASHEN: 'FOR + POD ÷ 2',
+    SHARD: 'DES + POD ÷ 2',
+    LUMEN: 'INT + POD ÷ 2'
+  }
+
+  return formulas[selectedClass.value.archetype] ?? ''
+})
+
+// ── Initialize ─────────────────────────────────────────
 onMounted(async () => {
   try {
     const { data } = await classesApi.getAll()
     classes.value = data
+
+    const { data: profData } = await proficienciesApi.getAll()
+    allProficiencies.value = profData
+
+    profData.forEach(prof => {
+      proficiencyValues.value[prof.id] = 0
+    })
   } catch {
     errorMessage.value = 'Erro ao carregar classes.'
   }
@@ -341,9 +514,13 @@ onMounted(async () => {
       form.value.birthPlace = data.birthPlace ?? ''
       form.value.residence = data.residence ?? ''
       form.value.occupation = data.occupation ?? ''
+      form.value.coins = data.coins ?? 0
+      form.value.height = data.height ?? 0
+      form.value.weight = data.weight ?? 0
 
       form.value.birthDate = data.birthDate?.split('T')[0] ?? '';
 
+      // Attributes
       if (data.attributes) {
         form.value.strength = data.attributes.strength
         form.value.dexterity = data.attributes.dexterity
@@ -352,29 +529,52 @@ onMounted(async () => {
         form.value.education = data.attributes.education
         form.value.presence = data.attributes.presence
         form.value.power = data.attributes.power
-        form.value.size = data.attributes.size ?? ''
       }
 
       // Status
       if (data.status) {
-        form.value.lifePoints = data.status.lifePoints
-        form.value.effortPoints = data.status.effortPoints
-        form.value.energyPoints = data.status.energyPoints
-        form.value.exposureLevel = data.status.exposureLevel
+        form.value.vitality = data.status.vitality
+        form.value.spark = data.status.spark
+        form.value.embers = data.status.embers
+        form.value.soul = data.status.soul
         form.value.initiative = data.status.initiative
         form.value.luck = data.status.luck
         form.value.movement = data.status.movement
-        form.value.typeEnergy = data.status.typeEnergy ?? ''
+        form.value.energyType = data.status.energyType ?? ''
       }
 
+      // Proficiencies
+      if (data.proficiencies) {
+        data.proficiencies.forEach((prof => {
+          proficiencyValues.value[prof.proficiencyId] = prof.value
+        }))
+      }
+
+      // History
       form.value.history = data.history ?? ''
+
+      if (data.skills && data.skills.length > 0) {
+        const skill = data.skills[0]
+
+        if (!skill) return
+
+        existingSkillId.value = skill.id
+        skillForm.value.name = skill.name
+        skillForm.value.description = skill.description
+        skillForm.value.sparkCost = skill?.sparkCost ?? 0
+        skillForm.value.emberCost = skill?.emberCost ?? 0
+        skillForm.value.upgradeDescription = skill?.upgradeDescription ?? ''
+      }
 
     } catch {
       errorMessage.value = 'Erro ao carregar personagem.'
     } finally {
       initialLoading.value = false
     }
+
   }
+
+  
 })
 
 // ── Submit ────────────────────────────────────────────────
@@ -396,17 +596,35 @@ async function handleSubmit() {
       birthPlace: form.value.birthPlace || undefined,
       residence: form.value.residence || undefined,
       occupation: form.value.occupation || undefined,
-      size: form.value.size || undefined,
-      typeEnergy: form.value.typeEnergy || undefined,
+      typeEnergy: form.value.energyType || undefined,
       history: form.value.history || undefined,
+      proficiencies: Object.entries(proficiencyValues.value).map(([id, value]) => ({
+        proficiencyId: Number(id),
+        value
+      }))
     }
 
     if (isEditing.value && characterId) {
       await charactersApi.update(characterId, payload)
+
+      // Update or create skill
+      if (skillForm.value.name && skillForm.value.description) {
+        if (existingSkillId.value) {
+          await charactersApi.updateSkill(characterId, existingSkillId.value, skillForm.value)
+        } else {
+          await charactersApi.createSkill(characterId, skillForm.value)
+        }
+      }
+
       router.push(`/characters/${characterId}`)
       toast.success('Personagem atualizado com sucesso!')
     } else {
       const { data } = await charactersApi.create(payload)
+
+      if (skillForm.value.name && skillForm.value.description) {
+        await charactersApi.createSkill(data.id, skillForm.value)
+      }
+
       router.push(`/characters/${data.id}`)
       toast.success('Personagem criado com sucesso!')
     }

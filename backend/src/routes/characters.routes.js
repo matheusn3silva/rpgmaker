@@ -4,7 +4,7 @@ const prisma = require('../lib/prisma')
 const authMiddleware = require('../middlewares/auth.middleware')
 
 function buildCharacterData(body) {
-  const { name, age, personality, birthDate, birthPlace, residence, occupation, race, level, experience, classId, history } = body
+  const { name, age, personality, birthDate, birthPlace, residence, occupation, race, level, experience, classId, history, coins, height, weight } = body
 
   return { 
     name: name.trim(),
@@ -16,23 +16,35 @@ function buildCharacterData(body) {
     occupation: occupation?.trim(),
     race: race.trim(),
     
-    level: level,
-    experience: experience,
-    classId: classId,
-    history: history?.trim() || null
+    level,
+    experience,
+    classId,
+    history: history?.trim() || null,
+    coins: coins || 0,
+    height: height || 0,
+    weight: weight || 0
    }
 }
 
 function buildAttributesData(body) {
-  const { strength, dexterity, constitution, intelligence, education, presence, power, size } = body
+  const { strength, dexterity, constitution, intelligence, education, presence, power } = body
 
-  return { strength, dexterity, constitution, intelligence, education, presence, power, size }
+  return { strength, dexterity, constitution, intelligence, education, presence, power }
 }
 
 function buildStatusData(body) {
-  const { lifePoints, effortPoints, energyPoints, exposureLevel, initiative, luck, movement, typeEnergy } = body
+  const { vitality, spark, embers, soul, initiative, luck, movement, energyType } = body
 
-  return { lifePoints, effortPoints, energyPoints, exposureLevel, initiative, luck, movement, typeEnergy }
+  return { 
+    vitality:       vitality      ?? 20, 
+    spark:          spark         ?? 1, 
+    embers:         embers        ?? 1, 
+    soul:           soul          ?? 0, 
+    initiative:     initiative    ?? 0, 
+    luck:           luck          ?? 0, 
+    movement:       movement      ?? 1, 
+    energyType:     energyType    ?? null
+  }
 }
 
 
@@ -79,7 +91,7 @@ function buildStatusData(body) {
  */
 router.post('/', authMiddleware, async (req, res) => {
   const userId = req.user.id
-  const { name, race, classId } = req.body
+  const { name, race, classId, proficiencies } = req.body
 
   if (!name || !race || !classId) {
     return res.status(400).json({
@@ -88,6 +100,7 @@ router.post('/', authMiddleware, async (req, res) => {
   }
 
   try {
+
     const character = await prisma.character.create({
       data: {
         userId: userId,
@@ -102,6 +115,21 @@ router.post('/', authMiddleware, async (req, res) => {
         }
       }
     })
+
+    if (proficiencies && Array.isArray(proficiencies)) {
+
+      await Promise.all(
+        proficiencies.map(p => 
+          prisma.characterProficiency.create({
+            data: {
+              characterId: character.id,
+              proficiencyId: p.proficiencyId,
+              value: p.value
+            }
+          })
+        )
+      )
+    }
 
     return res.status(201).json({ id: character.id })
   } catch (error) {
@@ -176,6 +204,8 @@ router.put('/:id', authMiddleware, async (req, res) => {
       where: { id: characterId, userId: userId }
     })
 
+    const { proficiencies } = req.body
+
     if (!existing) {
       return res.status(404).json({ message: 'Personagem não encontrado' })
     }
@@ -200,6 +230,27 @@ router.put('/:id', authMiddleware, async (req, res) => {
         }
       }
     })
+
+    if (proficiencies && Array.isArray(proficiencies)) {
+      await Promise.all(
+        proficiencies.map(p => 
+          prisma.characterProficiency.upsert({
+            where: {
+              characterId_proficiencyId: {
+                characterId,
+                proficiencyId: p.proficiencyId
+              }
+            },
+            update: { value: p.value },
+            create: {
+              characterId,
+              proficiencyId: p.proficiencyId,
+              value: p.value
+            }
+          })
+        )
+      )
+    }
 
     return res.json({ message: 'Personagem atualizado' })
   } catch {
@@ -259,7 +310,8 @@ router.get('/', authMiddleware, async (req, res) => {
         include: {
           class: {
             select: {
-              name: true
+              name: true,
+              archetype: true
             }
           }
         },
@@ -280,7 +332,9 @@ router.get('/', authMiddleware, async (req, res) => {
       level: c.level,
       classId: c.classId,
       class_name: c.class.name,
-      createdAt: c.createdAt
+      archetype: c.class.archetype,
+      createdAt: c.createdAt,
+      history: c.history
     }))
 
     return res.json({
@@ -356,16 +410,21 @@ router.get('/:id', authMiddleware, async (req, res) => {
 
   try {
     const character = await prisma.character.findFirst({
-      where: { 
-        id: characterId,
-        userId: userId 
-      },
+      where: { id: characterId, userId: userId },
       include: {
         attributes: true,
         status: true,
+        skills: true,
+        proficiencies: {
+          include: {
+            proficiency: true
+          }
+        },
         class: {
           select: {
-            name: true
+            name: true,
+            archetype: true,
+            sparkFormula: true,
           }
         }
       }
@@ -375,7 +434,7 @@ router.get('/:id', authMiddleware, async (req, res) => {
       return res.status(404).json({ message: 'Personagem não encontrado' })
     }
 
-    return res.json({ ...character, class_name: character.class.name })
+    return res.json({ ...character, class_name: character.class.name, archetype: character.class.archetype, sparkFormula: character.class.sparkFormula })
   } catch (error) {
     console.error(error)
     return res.status(500).json({ message: 'Erro no servidor' })
@@ -456,5 +515,127 @@ router.delete('/:id', authMiddleware, async (req, res) => {
   }
 })
 
+
+
+async function verifyOwnership(characterId, userId, res) {
+    const character = await prisma.character.findFirst({
+        where: { id: characterId, userId: userId }
+    })
+
+    if (!character) {
+        res.status(404).json({ message: 'Personagem não encontrado' })
+        return false
+    }
+
+    return true
+}
+
+/**
+ * POST /characters/:characterId/skills
+ * Cria a habilidade ativa do personagem
+ */
+router.post('/:characterId/skills', authMiddleware, async (req, res) => {
+    const characterId = Number(req.params.characterId)
+    const userId = req.user.id
+
+    if (!(await verifyOwnership(characterId, userId, res))) return
+
+    const {
+        name, description, sparkCost, emberCost,
+        upgradeDescription
+    } = req.body
+
+    if (!name || !description) {
+        return res.status(400).json({ message: 'Nome e descrição são obrigatórios' })
+    }
+
+    try {
+        const skill = await prisma.characterSkill.create({
+            data: {
+                characterId,
+                name: name.trim(),
+                type: 'ATIVA_ACAO',
+                description: description.trim(),
+                sparkCost: sparkCost ?? 0,
+                emberCost: emberCost ?? 0,
+                upgradeDescription: upgradeDescription?.trim() || null
+            }
+        })
+        res.status(201).json(skill)
+    } catch (error) {
+        res.status(500).json({ message: 'Erro ao criar habilidade' })
+    }
+})
+
+/**
+ * PUT /characters/:characterId/skills/:skillId
+ * Atualiza a habilidade ativa do personagem
+ */
+router.put('/:skillId', authMiddleware, async (req, res) => {
+    const characterId = Number(req.params.characterId)
+    const skillId = Number(req.params.skillId)
+    const userId = req.user.id
+
+    if (!(await verifyOwnership(characterId, userId, res))) return
+
+    const {
+        name, description, sparkCost, emberCost,
+        upgradeDescription
+    } = req.body
+
+    try {
+        const skill = await prisma.characterSkill.update({
+            where: { id: skillId },
+            data: {
+                name: name?.trim(),
+                description: description?.trim(),
+                sparkCost: sparkCost ?? 0,
+                upgradeDescription: upgradeDescription?.trim() || null,
+                emberCost: emberCost ?? 0
+            }
+        })
+        return res.json(skill)
+    } catch {
+        return res.status(500).json({ message: 'Erro ao atualizar habilidade' })
+    }
+})
+
+/**
+ * DELETE /characters/:characterId/skills/:skillId
+ * Remove a habilidade ativa do personagem
+ */
+router.delete('/:skillId', authMiddleware, async (req, res) => {
+    const characterId = Number(req.params.characterId)
+    const skillId = Number(req.params.skillId)
+    const userId = req.user.id
+
+    if (!(await verifyOwnership(characterId, userId, res))) return
+
+    try {
+        await prisma.characterSkill.delete({
+            where: { id: skillId }
+        })
+        return res.json({ message: 'Habilidade removida' })
+    } catch {
+        return res.status(500).json({ message: 'Erro ao remover habilidade' })
+    }
+})
+
+/* Proficiencies */
+router.get('/', authMiddleware, async (req,res) => {
+    try {
+        const proficiencies = await prisma.Proficiency.findMany({
+            orderBy: [
+                { category: 'asc' },
+                { name: 'asc' }
+
+            ]
+        })
+        res.json(proficiencies)
+    } catch (error) {
+        console.error(error)
+        res.status(500).json({ message: 'Erro ao buscar as proficiências' })
+    }
+})
 
 module.exports = router

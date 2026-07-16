@@ -76,14 +76,14 @@
             </p>
 
             <div class="flex gap-3">
-              <span v-if="skill.psCost > 0" class="text-xs" style="color: var(--text-faint);">
-                PS: <span class="text-amber-400 font-medium">{{ skill.psCost }}</span>
+              <span v-if="skill.sparkCost > 0" class="text-xs" style="color: var(--text-faint);">
+                PS: <span class="text-amber-400 font-medium">{{ skill.sparkCost }}</span>
               </span>
-              <span v-if="skill.peCost > 0" class="text-xs" style="color: var(--text-faint);">
-                PE: <span class="text-amber-400 font-medium">{{ skill.peCost }}</span>
+              <span v-if="skill.emberCost > 0" class="text-xs" style="color: var(--text-faint);">
+                PE: <span class="text-amber-400 font-medium">{{ skill.emberCost }}</span>
               </span>
               <span
-                v-if="skill.psCost === 0 && skill.peCost === 0"
+                v-if="skill.sparkCost === 0 && skill.emberCost === 0"
                 class="text-xs"
                 style="color: var(--text-faint);"
               >
@@ -107,8 +107,8 @@ interface Skill {
     name: string
     type: string
     description: string
-    psCost: number
-    peCost: number
+    sparkCost: number
+    emberCost: number
 }
 
 const props = defineProps<{

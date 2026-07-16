@@ -60,6 +60,16 @@
           v-else-if="activeTab === 'attributes'"
           :character="store.currentCharacter"
         />
+        <TabProficiencies
+          v-else-if="activeTab === 'proficiencies'"
+          :proficiencies="store.currentCharacter.proficiencies"
+        />
+        <TabSkills
+          v-else-if="activeTab === 'skills'"
+          :character-id="store.currentCharacter.id"
+          :class-id="store.currentCharacter.classId"
+          :character-skill="store.currentCharacter.skills?.[0] ?? null" 
+        />
         <TabHistory
           v-else-if="activeTab === 'history'"
           :character="store.currentCharacter"
@@ -88,18 +98,22 @@ import { useCharacterStore } from '@/stores/character.store'
 import TabGeneralData from '@/components/character/tabs/TabGeneralData.vue'
 import TabAttributes from '@/components/character/tabs/TabAttributes.vue'
 import TabHistory from '@/components/character/tabs/TabHistory.vue'
+import TabSkills from '@/components/character/tabs/TabSkills.vue'
+import TabProficiencies from '@/components/character/tabs/TabProficiencies.vue'
 
 
 const route = useRoute()
 const store = useCharacterStore()
 
 // Active Tab — local state
-type TabId = 'general' | 'attributes' | 'history'
+type TabId = 'general' | 'attributes' | 'history' | 'skills' | 'proficiencies' 
 const activeTab = ref<TabId>('general')
 
 const tabs: { id: TabId; label: string }[] = [
   { id: 'general',    label: 'Dados Gerais' },
   { id: 'attributes', label: 'Atributos' },
+  { id: 'proficiencies', label: 'Proficiências' },
+  { id: 'skills',     label: 'Habilidades' },
   { id: 'history',    label: 'História' },
 ]
 

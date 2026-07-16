@@ -19,17 +19,17 @@
     <div v-if="character.status">
       <h3 class="text-xs text-slate-500 uppercase tracking-wider mb-3">Status</h3>
       <div class="grid grid-cols-2 gap-3">
-        <InfoField label="Pontos de Vida" :value="String(character.status.lifePoints)" />
-        <InfoField label="Pontos de Esforço" :value="String(character.status.effortPoints)" />
-        <InfoField label="Pontos de Energia" :value="String(character.status.energyPoints)" />
-        <InfoField label="Nível de Exposição" :value="String(character.status.exposureLevel)" />
+        <InfoField label="Pontos de Vida" :value="String(character.status.vitality)" />
+        <InfoField label="Pontos de Centelha" :value="String(character.status.spark)" />
+        <InfoField label="Pontos de Brasa" :value="String(character.status.embers)" />
+        <InfoField label="Pontos de Alma" :value="String(character.status.soul)" />
         <InfoField label="Iniciativa" :value="String(character.status.initiative)" />
         <InfoField label="Sorte" :value="String(character.status.luck)" />
         <InfoField label="Movimento" :value="String(character.status.movement)" />
         <InfoField
-          v-if="character.status.typeEnergy"
+          v-if="character.status.energyType"
           label="Tipo de Energia"
-          :value="character.status.typeEnergy"
+          :value="character.status.energyType"
         />
       </div>
     </div>
