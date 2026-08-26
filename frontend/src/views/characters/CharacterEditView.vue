@@ -20,9 +20,9 @@
 
       <template v-else>
         <!-- Tabs Navigation -->
-        <div class="flex border-b border-slate-700 mb-6">
+        <div class="overflow-x-auto overflow-y-hidden flex border-b border-slate-700 mb-6">
           <button v-for="tab in tabs" :key="tab.id" @click="activeTab = tab.id"
-            class="px-4 py-2.5 text-sm font-medium transition-colors border-b-2 -mb-px flex items-center gap-2" :class="activeTab === tab.id
+            class="px-4 py-2.5 text-sm font-medium transition-colors border-b-2 -mb-px flex items-center gap-2 shrink-0 whitespace-nowrap" :class="activeTab === tab.id
               ? 'text-amber-400 border-amber-400'
               : 'text-slate-400 border-transparent hover:text-slate-300'">
             {{ tab.label }}
