@@ -11,25 +11,10 @@ const prisma = require('../lib/prisma')
 
 const SECRET = process.env.JWT_SECRET
 
+const isProduction = process.env.NODE_ENV === 'production'
 
-/**
- * VERIFICA SE O USUÁRIO ESTÁ LOGADO
- */
-/**
- * @swagger
- * /auth/me:
- *   get:
- *     tags: [Auth]
- *     summary: Retorna dados do usuário autenticado
- *     responses:
- *       200:
- *         description: Dados do usuário
- *         content:
- *           application/json:
- *             schema: { $ref: '#/components/schemas/User' }
- *       401:
- *         description: Não autenticado
- */
+
+/* ======================= MIDDLEWARE QUE VERIFICA SE O USUÁRIO ESTÁ LOGADO ======================= */
 router.get('/me', authMiddleware, async (req, res) => {
   const userId = req.user.id
   
@@ -49,7 +34,7 @@ router.get('/me', authMiddleware, async (req, res) => {
   res.json(user)
 })
 
-// Inicia autenticação com Google
+/* ======================= INICIA LOGIN GOOGLE ======================= */
 router.get('/google', (req, res, next) => {
   if (!process.env.GOOGLE_CLIENT_ID) {
     return res.status(503).json({ message: 'Login com Google não configurado' })
@@ -57,7 +42,7 @@ router.get('/google', (req, res, next) => {
   passport.authenticate('google', { scope: ['profile', 'email'] })(req, res, next)
 })
 
-// Callback do Google
+/* ======================= CALLBACK GOOGLE ======================= */
 router.get('/google/callback',
   (req, res, next) => {
     if (!process.env.GOOGLE_CLIENT_ID) {
@@ -75,53 +60,19 @@ router.get('/google/callback',
     )
     res.cookie('token', token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
+      secure: isProduction,
       sameSite: 'lax',
+      domain: isProduction ? '.rpgmaker.net.br' : undefined,
       maxAge: 60 * 60 * 1000
     })
     res.redirect(`${process.env.FRONTEND_URL}/characters`)
   }
 )
 
-/**
- * CADASTRO
- */
-/**
- * @swagger
- * /auth/register:
- *   post:
- *     tags: [Auth]
- *     summary: Cadastro de novo usuário
- *     security: []
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             required: [name, email, password]
- *             properties:
- *               name:     { type: string, example: Manasi }
- *               email:    { type: string, example: manasi@email.com }
- *               password: { type: string, example: senha123 }
- *     responses:
- *       201:
- *         description: Cadastro realizado
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message: { type: string, example: Cadastro realizado. Verifique seu email. }
- *       400:
- *         description: Dados inválidos
- *         content:
- *           application/json:
- *             schema: { $ref: '#/components/schemas/Error' }
- */
 const crypto = require('crypto')
 const sendMail = require('../services/mail')
 
+/* ======================= REGISTRO ======================= */
 router.post('/register', async (req, res) => {
   const { name, email, password } = req.body
 
@@ -175,6 +126,7 @@ router.post('/register', async (req, res) => {
 })
 
 
+/* ======================= REENVIA EMAIL ======================= */
 router.post('/resend-verification', async (req, res) => {
   const { email } = req.body
   if (!email) return res.json({ message: 'Se o email existir, enviaremos a confirmação.' })
@@ -219,9 +171,7 @@ router.post('/resend-verification', async (req, res) => {
 
 
 
-/**
- * Verifica Email
- */
+/* ======================= EMAIL ======================= */
 router.get('/verify-email', async (req, res) => {
   const { token } = req.query
   if (!token) return res.status(400).send('Token ausente.')
@@ -241,42 +191,8 @@ router.get('/verify-email', async (req, res) => {
   return res.send('Email verificado com sucesso. Você já pode fazer login.')
 })
 
-/**
- * LOGIN
- */
-/**
- * @swagger
- * /auth/login:
- *   post:
- *     tags: [Auth]
- *     summary: Login com email e senha
- *     security: []
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             required: [email, password]
- *             properties:
- *               email:    { type: string, example: manasi@email.com }
- *               password: { type: string, example: senha123 }
- *     responses:
- *       200:
- *         description: Login realizado — seta cookie HttpOnly
- *         headers:
- *           Set-Cookie:
- *             schema:
- *               type: string
- *               example: token=abc123; HttpOnly; SameSite=Lax
- *       401:
- *         description: Credenciais inválidas
- *         content:
- *           application/json:
- *             schema: { $ref: '#/components/schemas/Error' }
- *       403:
- *         description: Email não verificado
- */
+
+/* ======================= LOGIN ======================= */
 router.post('/login', async (req, res) => {
   const { email, password } = req.body
 
@@ -309,8 +225,9 @@ router.post('/login', async (req, res) => {
 
   res.cookie('token', token, {
     httpOnly: true,
-    secure: process.env.NODE_ENV,
+    secure: isProduction,
     sameSite: 'lax',
+    domain: isProduction ? '.rpgmaker.net.br' : undefined,
     maxAge: 60 * 60 * 1000
   })
 
@@ -319,34 +236,21 @@ router.post('/login', async (req, res) => {
 
 
 
-/**
- * LOGOUT
- */
-/**
- * @swagger
- * /auth/logout:
- *   post:
- *     tags: [Auth]
- *     summary: Logout — remove o cookie
- *     responses:
- *       200:
- *         description: Logout realizado
- */
+/* ======================= LOGOUT ======================= */
 router.post('/logout', (req, res) => {
   res.clearCookie('token', {
     httpOnly: true,
     sameSite: 'lax',
-    secure: process.env.NODE_ENV
+    secure: isProduction,
+    domain: isProduction ? '.rpgmaker.net.br' : undefined
   })
 
   res.json({ message: 'Logout realizado' })
 })
 
 
-/**
- * ESQUECI MINHA SENHA
- */
 
+/* ======================= ESQUECI MINHA SENHA ======================= */
 router.post('/forgot-password', async (req, res) => {
   const { email } = req.body
 
@@ -397,6 +301,8 @@ router.post('/forgot-password', async (req, res) => {
   }
 })
 
+
+/* ======================= RESETA SENHA ======================= */
 router.post('/reset-password', async (req, res) => {
   const { token, password } = req.body
 
