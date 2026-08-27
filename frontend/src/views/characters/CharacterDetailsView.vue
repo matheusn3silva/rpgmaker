@@ -36,7 +36,7 @@
       </div>
 
       <!-- Tab navigation -->
-      <NavTabs ref="navTabsRef" />
+      <NavTabs ref="navTabsRef" :hide-status="true" />
 
       <!-- Active tab content -->
       <div class="bg-slate-800 border border-slate-700 rounded-xl p-6">
@@ -96,7 +96,7 @@ const store = useCharacterStore()
 
 const navTabsRef = ref<InstanceType<typeof NavTabs> | null>(null)
 
-const activeTab = computed(() => navTabsRef.value?.activeTab)
+const activeTab = computed(() => navTabsRef.value?.activeTab ?? 'general')
 
 onMounted(() => {
   // let ID and convert in number
