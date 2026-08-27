@@ -36,19 +36,7 @@
       </div>
 
       <!-- Tab navigation -->
-      <div class="flex border-b border-slate-700 mb-6">
-        <button
-          v-for="tab in tabs"
-          :key="tab.id"
-          @click="activeTab = tab.id"
-          class="px-4 py-2.5 text-sm font-medium transition-colors border-b-2 -mb-px"
-          :class="activeTab === tab.id
-            ? 'text-amber-400 border-amber-400'
-            : 'text-slate-400 border-transparent hover:text-slate-300'"
-        >
-          {{ tab.label }}
-        </button>
-      </div>
+      <NavTabs ref="navTabsRef" />
 
       <!-- Active tab content -->
       <div class="bg-slate-800 border border-slate-700 rounded-xl p-6">
@@ -91,7 +79,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import { useRoute } from 'vue-router'
 import AppLayout from '@/layouts/AppLayout.vue'
 import { useCharacterStore } from '@/stores/character.store'
@@ -100,22 +88,15 @@ import TabAttributes from '@/components/character/tabs/TabAttributes.vue'
 import TabHistory from '@/components/character/tabs/TabHistory.vue'
 import TabSkills from '@/components/character/tabs/TabSkills.vue'
 import TabProficiencies from '@/components/character/tabs/TabProficiencies.vue'
+import NavTabs from '@/components/character/NavTabs.vue'
 
 
 const route = useRoute()
 const store = useCharacterStore()
 
-// Active Tab — local state
-type TabId = 'general' | 'attributes' | 'history' | 'skills' | 'proficiencies' 
-const activeTab = ref<TabId>('general')
+const navTabsRef = ref<InstanceType<typeof NavTabs> | null>(null)
 
-const tabs: { id: TabId; label: string }[] = [
-  { id: 'general',    label: 'Dados Gerais' },
-  { id: 'attributes', label: 'Atributos' },
-  { id: 'proficiencies', label: 'Proficiências' },
-  { id: 'skills',     label: 'Habilidades' },
-  { id: 'history',    label: 'História' },
-]
+const activeTab = computed(() => navTabsRef.value?.activeTab)
 
 onMounted(() => {
   // let ID and convert in number
@@ -123,5 +104,6 @@ onMounted(() => {
   if (!isNaN(id)) {
     store.fetchCharacterById(id)
   }
+
 })
 </script>
