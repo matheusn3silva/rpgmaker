@@ -243,9 +243,7 @@ router.post('/login', async (req, res) => {
 router.post('/logout', (req, res) => {
   res.clearCookie('token', {
     httpOnly: true,
-    secure: true,
     sameSite: 'lax',
-    domain: '.rpgmaker.net.br',
     secure: isProduction,
     domain: isProduction ? '.rpgmaker.net.br' : undefined
   })
