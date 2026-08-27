@@ -569,8 +569,10 @@ async function handleSubmit() {
   errorMessage.value = ''
 
   if (hasGeneralErrors.value) {
-    activeTab.value = 'general'
-    return
+    if (navTabsRef.value) {
+    navTabsRef.value.activeTab = 'general'
+  }
+  return
   }
 
   submitting.value = true
