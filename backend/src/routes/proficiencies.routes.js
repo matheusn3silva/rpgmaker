@@ -3,6 +3,7 @@ const router = express.Router()
 const prisma = require('../lib/prisma')
 const authMiddleware = require('../middlewares/auth.middleware')
 
+/* ======================= GET PROFICIENCEIS ======================= */
 router.get('/', authMiddleware, async (req,res) => {
     try {
         const proficiencies = await prisma.Proficiency.findMany({

@@ -4,13 +4,13 @@
 
       <!-- Dinamic header -->
       <div class="flex items-center gap-4 mb-6">
-        <RouterLink to="/characters" class="px-2 py-1 font-extrabold text-slate-500 hover:text-slate-400 transition-colors text-sm">
-          <<<<
-        </RouterLink>
+        <RouterLink to="/characters"
+          class="px-2 py-1 font-extrabold text-slate-500 hover:text-slate-400 transition-colors text-sm">
+          <<<< </RouterLink>
 
-        <h1 class="text-2xl font-bold" style="color: var(--text-primary);">
-          {{ isEditing ? 'Editar personagem' : 'Novo Personagem' }}
-        </h1>
+            <h1 class="text-2xl font-bold" style="color: var(--text-primary);">
+              {{ isEditing ? 'Editar personagem' : 'Novo Personagem' }}
+            </h1>
       </div>
 
       <!-- Inicial loading edit character -->
@@ -55,7 +55,7 @@
                     Classe <span class="text-red-500">*</span>
                   </label>
                   <button v-if="selectedClass" type="button" @click="showClassModal = true"
-                    class="p-2 text-xs transition-colors" style="color: #f59e0b;">
+                    class="px-2 text-xs transition-colors" style="color: #f59e0b;">
                     Ver detalhes →
                   </button>
                 </div>
@@ -70,22 +70,14 @@
               </div>
             </div>
 
-            <!-- Level and Experience -->
-            <div class="grid grid-cols-2 gap-4">
-              <div>
-                <label class="block text-sm text-slate-400 mb-1">Nível</label>
-                <input v-model.number="form.level" type="number" min="1" class="w-full bg-slate-700 border border-slate-600 rounded-lg px-4 py-2.5
+            <!-- Level -->
+            <div>
+              <label class="block text-sm text-slate-400 mb-1">Grau de Força (Inicia com 0)</label>
+              <input v-model.number="form.level" type="number" min="0" class="w-full bg-slate-700 border border-slate-600 rounded-lg px-4 py-2.5
                          text-slate-100 text-sm focus:outline-none focus:border-amber-500 transition-colors" />
-              </div>
-              <div>
-                <label class="block text-sm text-slate-400 mb-1">Experiência</label>
-                <input v-model.number="form.experience" type="number" min="0" class="w-full bg-slate-700 border border-slate-600 rounded-lg px-4 py-2.5
-                         text-slate-100 text-sm focus:outline-none focus:border-amber-500 transition-colors" />
-              </div>
             </div>
 
-            <!-- Age and personality -->
-            <div class="grid grid-cols-2 gap-4">
+
               <div>
                 <label class="block text-sm text-slate-400 mb-1">Idade</label>
                 <input v-model.number="form.age" type="number" min="0" class="w-full bg-slate-700 border border-slate-600 rounded-lg px-4 py-2.5
@@ -96,28 +88,8 @@
                 <input v-model="form.personality" type="text" placeholder="Ex: Corajoso, Sarcástico" class="w-full bg-slate-700 border border-slate-600 rounded-lg px-4 py-2.5
                          text-slate-100 text-sm focus:outline-none focus:border-amber-500 transition-colors" />
               </div>
-            </div>
+            
 
-            <!-- BirthDate -->
-            <div>
-              <label class="block text-sm text-slate-400 mb-1">Data de nascimento</label>
-              <input v-model="form.birthDate" type="date" class="w-full bg-slate-700 border border-slate-600 rounded-lg px-4 py-2.5
-                       text-slate-100 text-sm focus:outline-none focus:border-amber-500 transition-colors" />
-            </div>
-
-            <!-- BirthPlace and Residence -->
-            <div class="grid grid-cols-2 gap-4">
-              <div>
-                <label class="block text-sm text-slate-400 mb-1">Local de nascimento</label>
-                <input v-model="form.birthPlace" type="text" placeholder="Ex: Vila dos Ventos" class="w-full bg-slate-700 border border-slate-600 rounded-lg px-4 py-2.5
-                         text-slate-100 text-sm focus:outline-none focus:border-amber-500 transition-colors" />
-              </div>
-              <div>
-                <label class="block text-sm text-slate-400 mb-1">Residência</label>
-                <input v-model="form.residence" type="text" placeholder="Ex: Capital do Reino" class="w-full bg-slate-700 border border-slate-600 rounded-lg px-4 py-2.5
-                         text-slate-100 text-sm focus:outline-none focus:border-amber-500 transition-colors" />
-              </div>
-            </div>
 
             <!-- Occupation -->
             <div>
@@ -177,27 +149,17 @@
                   <label class="text-sm text-slate-400">Pontos de Centelha</label>
                   <span class="text-xs text-amber-400/70">{{ sparkFormulaLabel }}</span>
                 </div>
-                <input
-                  v-model.number="form.spark"
-                  type="number"
-                  min="0"
-                  class="w-full bg-slate-700 border border-slate-600 rounded-lg px-4 py-2.5
-                        text-slate-100 text-sm focus:outline-none focus:border-amber-500 transition-colors"
-                />
+                <input v-model.number="form.spark" type="number" min="0" class="w-full bg-slate-700 border border-slate-600 rounded-lg px-4 py-2.5
+                        text-slate-100 text-sm focus:outline-none focus:border-amber-500 transition-colors" />
               </div>
 
               <NumberField label="Pontos de Brasa" v-model="form.embers" />
               <NumberField label="Iniciativa" v-model="form.initiative" />
-              <NumberField label="Sorte" v-model="form.luck" />
               <NumberField label="Movimento" v-model="form.movement" />
               <NumberField label="Alma" v-model="form.soul" />
             </div>
 
-            <div>
-              <label class="block text-sm text-slate-400 mb-1">Tipo de Energia</label>
-              <input v-model="form.energyType" type="text" placeholder="Ex: Arcana, Divina" class="w-full bg-slate-700 border border-slate-600 rounded-lg px-4 py-2.5
-                       text-slate-100 text-sm focus:outline-none focus:border-amber-500 transition-colors" />
-            </div>
+
           </div>
 
           <!-- Tab 4: Proficiencies -->
@@ -212,23 +174,14 @@
               </h3>
 
               <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                <div
-                  v-for="prof in group.items"
-                  :key="prof.id"
-                  class="flex items-center gap-2 px-3 py-2 rounded-lg"
-                  style="background-color: var(--bg-input); border: 1px solid var(--border);"
-                >
+                <div v-for="prof in group.items" :key="prof.id" class="flex items-center gap-2 px-3 py-2 rounded-lg"
+                  style="background-color: var(--bg-input); border: 1px solid var(--border);">
                   <span class="flex-1 text-sm text-slate-300 truncate">{{ prof.name }}</span>
-                  <input
-                    :value="proficiencyValues[prof.id] ?? 0"
+                  <input :value="proficiencyValues[prof.id] ?? 0"
                     @input="proficiencyValues[prof.id] = Number(($event.target as HTMLInputElement).value)"
-                    type="number"
-                    min="0"
-                    max="18"
-                    class="w-16 bg-slate-700 border border-slate-600 rounded-lg px-2 py-1.5
+                    type="number" min="0" max="18" class="w-16 bg-slate-700 border border-slate-600 rounded-lg px-2 py-1.5
                           text-slate-100 text-sm text-center focus:outline-none
-                          focus:border-amber-500 transition-colors"
-                  />
+                          focus:border-amber-500 transition-colors" />
                 </div>
               </div>
             </div>
@@ -243,21 +196,20 @@
 
             <div>
               <label class="block text-sm text-slate-400 font-semibold mb-1">Nome da Habilidade</label>
-              <input v-model="skillForm.name" type="text" placeholder="Ex: Golpe Fantasma" class="w-full bg-slate-700 border border-slate-600 rounded-lg px-4 py-2.5 text-slate-100 text-sm focus:outline-none focus:border-amber-500 transition-colors" />
+              <input v-model="skillForm.name" type="text" placeholder="Ex: Golpe Fantasma"
+                class="w-full bg-slate-700 border border-slate-600 rounded-lg px-4 py-2.5 text-slate-100 text-sm focus:outline-none focus:border-amber-500 transition-colors" />
             </div>
 
             <div>
               <label class="block text-sm text-slate-400 font-semibold mb-1">Descrição</label>
-                <textarea v-model="skillForm.description" rows="3" placeholder="Descreva o efeito da habilidade..." 
-                  class="w-full bg-slate-700 border border-slate-600 rounded-lg px-4 py-2.5
+              <textarea v-model="skillForm.description" rows="3" placeholder="Descreva o efeito da habilidade..." class="w-full bg-slate-700 border border-slate-600 rounded-lg px-4 py-2.5
                   text-slate-100 text-sm focus:outline-none focus:border-amber-500
-                  transition-colors resize-none" 
-              />
+                  transition-colors resize-none" />
             </div>
 
-            
-              <NumberField label="Custo de Centelha" v-model="skillForm.sparkCost" />
-            
+
+            <NumberField label="Custo de Centelha" v-model="skillForm.sparkCost" />
+
 
             <!-- Upgrade -->
             <div class="pt-2 border-t border-slate-700">
@@ -266,11 +218,10 @@
               <div class="space-y-3">
                 <div>
                   <label class="block text-sm text-slate-400 mb-1">Descrição do aprimoramento</label>
-                  <textarea v-model="skillForm.upgradeDescription" rows="2" placeholder="Efeito melhorado ao gastar Brasas..." 
-                    class="w-full bg-slate-700 border border-slate-600 rounded-lg px-4 py-2.5
+                  <textarea v-model="skillForm.upgradeDescription" rows="2"
+                    placeholder="Efeito melhorado ao gastar Brasas..." class="w-full bg-slate-700 border border-slate-600 rounded-lg px-4 py-2.5
                     text-slate-100 text-sm focus:outline-none focus:border-amber-500
-                    transition-colors resize-none"
-                  />
+                    transition-colors resize-none" />
                 </div>
 
                 <div>
@@ -280,7 +231,7 @@
                 </div>
               </div>
             </div>
-            
+
           </div>
 
           <!-- Tab 6: History -->
@@ -382,13 +333,9 @@ const form = ref({
   name: '',
   race: '',
   classId: 0,
-  level: 1,
-  experience: 0,
+  level: 0,
   age: 0,
   personality: '',
-  birthDate: '',
-  birthPlace: '',
-  residence: '',
   occupation: '',
   height: 0,
   weight: 0,
@@ -407,9 +354,7 @@ const form = ref({
   embers: 1,
   soul: 0,
   initiative: 0,
-  luck: 0,
   movement: 1,
-  energyType: '',
   history: '',
 })
 
@@ -494,17 +439,12 @@ onMounted(async () => {
       form.value.race = data.race
       form.value.classId = data.classId
       form.value.level = data.level
-      form.value.experience = data.experience
       form.value.age = data.age ?? 0
       form.value.personality = data.personality ?? ''
-      form.value.birthPlace = data.birthPlace ?? ''
-      form.value.residence = data.residence ?? ''
       form.value.occupation = data.occupation ?? ''
       form.value.coins = data.coins ?? 0
       form.value.height = data.height ?? 0
       form.value.weight = data.weight ?? 0
-
-      form.value.birthDate = data.birthDate?.split('T')[0] ?? '';
 
       // Attributes
       if (data.attributes) {
@@ -524,9 +464,7 @@ onMounted(async () => {
         form.value.embers = data.status.embers
         form.value.soul = data.status.soul
         form.value.initiative = data.status.initiative
-        form.value.luck = data.status.luck
         form.value.movement = data.status.movement
-        form.value.energyType = data.status.energyType ?? ''
       }
 
       // Proficiencies
@@ -560,7 +498,7 @@ onMounted(async () => {
 
   }
 
-  
+
 })
 
 // ── Submit ────────────────────────────────────────────────
@@ -580,11 +518,7 @@ async function handleSubmit() {
     const payload = {
       ...form.value,
       personality: form.value.personality || undefined,
-      birthDate: form.value.birthDate || undefined,
-      birthPlace: form.value.birthPlace || undefined,
-      residence: form.value.residence || undefined,
       occupation: form.value.occupation || undefined,
-      typeEnergy: form.value.energyType || undefined,
       history: form.value.history || undefined,
       proficiencies: Object.entries(proficiencyValues.value).map(([id, value]) => ({
         proficiencyId: Number(id),

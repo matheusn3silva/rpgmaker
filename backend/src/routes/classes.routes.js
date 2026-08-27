@@ -3,9 +3,7 @@ const router = express.Router()
 const prisma = require('../lib/prisma')
 const authMiddleware = require('../middlewares/auth.middleware')
 
-/**
- * LISTAR CLASSES
- */
+/* ======================= LIST CLASSES ======================= */
 router.get('/', authMiddleware, async (req, res) => {
   try {
     const classes = await prisma.RPGClass.findMany()
@@ -16,9 +14,7 @@ router.get('/', authMiddleware, async (req, res) => {
   }
 })
 
-/**
- * BUSCAR CLASSE + SKILLS
- */
+/* ======================= GET CLASS ======================= */
 router.get('/:id', authMiddleware, async (req, res) => {
   const classId = Number(req.params.id)
 
