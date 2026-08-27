@@ -3,7 +3,7 @@
 
     <!-- Main attributes -->
     <div v-if="character.attributes">
-      <h3 class="text-xs text-slate-500 uppercase tracking-wider mb-3">Atributos principais</h3>
+      <h3 class="text-xs flex gap-2 align-center uppercase tracking-wider mb-3 text-amber-500 font-bold">Atributos principais</h3>
       <div class="grid grid-cols-2 gap-3">
         <AttributeBar label="Força" :value="character.attributes.strength" />
         <AttributeBar label="Destreza" :value="character.attributes.dexterity" />
@@ -17,7 +17,7 @@
 
     <!-- Status -->
     <div v-if="character.status">
-      <h3 class="text-xs text-slate-500 uppercase tracking-wider mb-3">Status</h3>
+      <h3 class="text-xs flex gap-2 align-center uppercase tracking-wider mb-3 text-amber-500 font-bold">Status</h3>
       <div class="grid grid-cols-2 gap-3">
         <InfoField label="Pontos de Vida" :value="String(character.status.vitality)" />
         <InfoField label="Pontos de Centelha" :value="String(character.status.spark)" />

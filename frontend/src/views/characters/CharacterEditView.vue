@@ -4,8 +4,8 @@
 
       <!-- Dinamic header -->
       <div class="flex items-center gap-4 mb-6">
-        <RouterLink to="/characters" class="text-slate-500 hover:text-slate-400 transition-colors text-sm">
-          ←
+        <RouterLink to="/characters" class="px-2 py-1 font-extrabold text-slate-500 hover:text-slate-400 transition-colors text-sm">
+          <<<<
         </RouterLink>
 
         <h1 class="text-2xl font-bold" style="color: var(--text-primary);">
@@ -20,16 +20,7 @@
 
       <template v-else>
         <!-- Tabs Navigation -->
-        <div class="flex border-b border-slate-700 mb-6">
-          <button v-for="tab in tabs" :key="tab.id" @click="activeTab = tab.id"
-            class="px-4 py-2.5 text-sm font-medium transition-colors border-b-2 -mb-px flex items-center gap-2" :class="activeTab === tab.id
-              ? 'text-amber-400 border-amber-400'
-              : 'text-slate-400 border-transparent hover:text-slate-300'">
-            {{ tab.label }}
-            <!-- Required fields indicator -->
-            <span v-if="tab.id === 'general' && hasGeneralErrors" class="w-1.5 h-1.5 rounded-full bg-red-500" />
-          </button>
-        </div>
+        <NavTabs ref="navTabsRef" />
 
         <!-- Tabs Content -->
         <div class="bg-slate-800 border border-slate-700 rounded-xl p-6 mb-6">
@@ -48,7 +39,7 @@
             </div>
 
             <!-- Race and Class -->
-            <div class="grid grid-cols-2 gap-4">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <label class="block text-sm text-slate-400 mb-1">
                   Raça <span class="text-red-500">*</span>
@@ -64,7 +55,7 @@
                     Classe <span class="text-red-500">*</span>
                   </label>
                   <button v-if="selectedClass" type="button" @click="showClassModal = true"
-                    class="text-xs transition-colors" style="color: #f59e0b;">
+                    class="p-2 text-xs transition-colors" style="color: #f59e0b;">
                     Ver detalhes →
                   </button>
                 </div>
@@ -178,7 +169,7 @@
           <!-- Tab 3: Status -->
           <div v-else-if="activeTab === 'status'" class="space-y-4">
 
-            <div class="grid grid-cols-2 gap-4">
+            <div class="grid grid-cols-1 smgrid-cols-2 gap-4">
               <NumberField label="Pontos de Vida" v-model="form.vitality" />
 
               <div>
@@ -216,11 +207,11 @@
             </p>
 
             <div v-for="group in groupedProficiencies" :key="group.category">
-              <h3 class="text-xs uppercase tracking-wider mb-3 text-slate-500">
+              <h3 class="text-xs flex gap-2 align-center uppercase tracking-wider mb-3 text-amber-500 font-bold ">
                 {{ group.label }}
               </h3>
 
-              <div class="grid grid-cols-2 gap-2">
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
                 <div
                   v-for="prof in group.items"
                   :key="prof.id"
@@ -251,12 +242,12 @@
             </p>
 
             <div>
-              <label class="block text-sm text-slate-400 mb-1">Nome da Habilidade</label>
+              <label class="block text-sm text-slate-400 font-semibold mb-1">Nome da Habilidade</label>
               <input v-model="skillForm.name" type="text" placeholder="Ex: Golpe Fantasma" class="w-full bg-slate-700 border border-slate-600 rounded-lg px-4 py-2.5 text-slate-100 text-sm focus:outline-none focus:border-amber-500 transition-colors" />
             </div>
 
             <div>
-              <label class="block text-sm text-slate-400 mb-1">Descrição</label>
+              <label class="block text-sm text-slate-400 font-semibold mb-1">Descrição</label>
                 <textarea v-model="skillForm.description" rows="3" placeholder="Descreva o efeito da habilidade..." 
                   class="w-full bg-slate-700 border border-slate-600 rounded-lg px-4 py-2.5
                   text-slate-100 text-sm focus:outline-none focus:border-amber-500
@@ -264,9 +255,9 @@
               />
             </div>
 
-            <div class="grid grid-cols-2 gap-4">
+            
               <NumberField label="Custo de Centelha" v-model="skillForm.sparkCost" />
-            </div>
+            
 
             <!-- Upgrade -->
             <div class="pt-2 border-t border-slate-700">
@@ -305,13 +296,14 @@
             </div>
 
             <textarea v-model="form.history" rows="16" placeholder="Escreva a história do personagem aqui...
-            # Origem
-            Nascido em uma pequena vila...
+
+# Origem
+Nascido em uma pequena vila...
             
-            ## Motivação
-            Sua busca pela verdade..." class="w-full bg-slate-700 border border-slate-600 rounded-lg px-4 py-3
-            text-slate-100 text-sm focus:outline-none focus:border-amber-500
-            transition-colors resize-none font-mono leading-relaxed" />
+## Motivação
+Sua busca pela verdade..." class="w-full bg-slate-700 border border-slate-600 rounded-lg px-4 py-3
+text-slate-100 text-sm focus:outline-none focus:border-amber-500
+transition-colors resize-none font-mono leading-relaxed" />
           </div>
 
         </div>
@@ -356,6 +348,7 @@ import type { RPGClass } from '@/types/character.types'
 import { useToast } from '@/composables/useToast'
 import { proficienciesApi } from '@/api/proficiencies.api'
 import type { Proficiency, ProficiencyCategory } from '@/types/character.types'
+import NavTabs from '@/components/character/NavTabs.vue'
 
 const toast = useToast()
 
@@ -379,16 +372,9 @@ const submitAttempted = ref(false)
 const errorMessage = ref('')
 const classes = ref<RPGClass[]>([])
 
-type TabId = 'general' | 'attributes' | 'status' | 'skills' | 'history' | 'proficiencies'
-const activeTab = ref<TabId>('general')
-const tabs: { id: TabId; label: string }[] = [
-  { id: 'general', label: 'Dados Gerais' },
-  { id: 'attributes', label: 'Atributos' },
-  { id: 'status', label: 'Status' },
-  { id: 'proficiencies', label: 'Proficiências' },
-  { id: 'skills', label: 'Habilidades' },
-  { id: 'history', label: 'História' },
-]
+const navTabsRef = ref<InstanceType<typeof NavTabs> | null>(null)
+
+const activeTab = computed(() => navTabsRef.value?.activeTab)
 
 // ── Form — unique state and flat ─────────────────────
 const form = ref({

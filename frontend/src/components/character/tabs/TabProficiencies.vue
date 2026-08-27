@@ -7,11 +7,11 @@
 
         <!-- Grouped for category -->
         <div v-for="group in groupedProficiencies" :key="group.category">
-            <h3 class="text-xs uppercase tracking-wider mb-3" style="color: var(--text-faint);">
+            <h3 class="text-xs flex gap-2 align-center uppercase tracking-wider mb-3 text-amber-500 font-bold" >
                 {{ categoryLabel(group.category) }}
             </h3>
 
-            <div class="grid grid-cols-2 gap-2">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
                 <div
                     v-for="item in group.items"
                     :key="item.proficiencyId"

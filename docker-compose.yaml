@@ -59,8 +59,6 @@ services:
       dockerfile: Dockerfile
       args:
         VITE_API_URL: ${VITE_API_URL}
-    ports:
-      - "5173:80"
     depends_on:
       - backend
 

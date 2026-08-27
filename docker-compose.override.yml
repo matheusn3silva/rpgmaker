@@ -1,0 +1,13 @@
+# docker-compose.override.yml
+services:
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.dev   # sobrescreve só o dockerfile usado
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules          # protege node_modules do container
+    ports:
+      - "5173:5173"                # sobrescreve o mapeamento de porta (era 80)
+    environment:
+      VITE_API_URL: ${VITE_API_URL}
