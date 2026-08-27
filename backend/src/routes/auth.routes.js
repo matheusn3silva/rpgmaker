@@ -248,12 +248,9 @@ router.post('/logout', (req, res) => {
     httpOnly: true,
     secure: true,
     sameSite: 'lax',
-<<<<<<< HEAD
     domain: '.rpgmaker.net.br',
-=======
     secure: isProduction,
     domain: isProduction ? '.rpgmaker.net.br' : undefined
->>>>>>> develop
   })
 
   res.json({ message: 'Logout realizado' })
