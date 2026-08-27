@@ -60,9 +60,9 @@ router.get('/google/callback',
     )
     res.cookie('token', token, {
       httpOnly: true,
-      secure: true,
       sameSite: 'lax',
-      domain: '.rpgmaker.net.br',
+      secure: isProduction,
+      domain: isProduction ? '.rpgmaker.net.br' : undefined,
       maxAge: 60 * 60 * 1000
     })
     res.redirect(`${process.env.FRONTEND_URL}/characters`)
@@ -225,15 +225,9 @@ router.post('/login', async (req, res) => {
 
   res.cookie('token', token, {
     httpOnly: true,
-<<<<<<< HEAD
-    secure: true,
     sameSite: 'lax',
-    domain: '.rpgmaker.net.br',
-=======
     secure: isProduction,
-    sameSite: 'lax',
     domain: isProduction ? '.rpgmaker.net.br' : undefined,
->>>>>>> develop
     maxAge: 60 * 60 * 1000
   })
 
@@ -246,14 +240,9 @@ router.post('/login', async (req, res) => {
 router.post('/logout', (req, res) => {
   res.clearCookie('token', {
     httpOnly: true,
-    secure: true,
     sameSite: 'lax',
-<<<<<<< HEAD
-    domain: '.rpgmaker.net.br',
-=======
     secure: isProduction,
     domain: isProduction ? '.rpgmaker.net.br' : undefined
->>>>>>> develop
   })
 
   res.json({ message: 'Logout realizado' })

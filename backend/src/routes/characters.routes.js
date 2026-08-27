@@ -351,7 +351,7 @@ router.post('/:characterId/skills', authMiddleware, async (req, res) => {
 })
 
 /* ======================= UPDATE CHARACTER ACTIVE SKILL ======================= */
-router.put('/:skillId', authMiddleware, async (req, res) => {
+router.put('/:characterId/skills/:skillId', authMiddleware, async (req, res) => {
     const characterId = Number(req.params.characterId)
     const skillId = Number(req.params.skillId)
     const userId = req.user.id
@@ -381,7 +381,7 @@ router.put('/:skillId', authMiddleware, async (req, res) => {
 })
 
 /* ======================= REMOVE CHARACTER ACTIVE SKILL ======================= */
-router.delete('/:skillId', authMiddleware, async (req, res) => {
+router.delete('/:characterId/skills/:skillId', authMiddleware, async (req, res) => {
     const characterId = Number(req.params.characterId)
     const skillId = Number(req.params.skillId)
     const userId = req.user.id
