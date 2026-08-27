@@ -3,7 +3,7 @@
 
         <!-- Player Skill -->
         <div>
-            <h3 class="text-xs text-slate-500 uppercase tracking-wider mb-3">Habilidade Ativa (Personagem)</h3>
+            <h3 class="text-xs flex gap-2 align-center uppercase tracking-wider mb-3 text-amber-500 font-semibold">Habilidade Ativa (Personagem)</h3>
 
             <div v-if="characterSkill" class="rouded-lg p-4"
                 style="background-color: var(--bg-input); border: 1px solid var(--border);">
@@ -33,7 +33,7 @@
 
                 <div v-if="characterSkill.upgradeDescription" class="mt-3 rounded-lg p-3" style="background-color: var(--bg-surface); border: 1px solid var(--border);">
                     <p class="text-xs font-medium uppercase tracking-wider mb-1" style="color: var(--text-faint);">
-                        Aprimoramento com Barasa
+                        Aprimoramento com Brasa
                         <span v-if="characterSkill.emberCost > 0" class="ml-1 text-amber-400">
                         · {{ characterSkill.emberCost }} Brasa
                         </span>
@@ -59,7 +59,7 @@
 
         <!-- Classes Skills -->
         <div>
-            <h3 class="text-xs text-slate-500 uppercase tracing-wider mb-3">
+            <h3 class="text-xs flex gap-2 align-center uppercase tracking-wider mb-3 text-amber-500 font-semibold">
                 Habilidades de Classe
             </h3>
 
