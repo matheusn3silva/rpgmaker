@@ -225,13 +225,7 @@ router.post('/login', async (req, res) => {
 
   res.cookie('token', token, {
     httpOnly: true,
-<<<<<<< HEAD
     sameSite: 'lax',
-=======
-    secure: true,
-    sameSite: 'lax',
-    domain: '.rpgmaker.net.br',
->>>>>>> abf0ecc448bc7d0baf4b64a0308541439560d233
     secure: isProduction,
     domain: isProduction ? '.rpgmaker.net.br' : undefined,
     maxAge: 60 * 60 * 1000
