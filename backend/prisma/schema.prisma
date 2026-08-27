@@ -17,9 +17,9 @@ enum SkillType {
 }
 
 enum ArchetypeType {
-  ASHEN  // Corpo a corpo — Spark: (FOR + POD) / 2
-  SHARD  // Velocistas    — Spark: (DES + POD) / 2
-  LUMEN  // Magos         — Spark: (INT + POD) / 2
+  ASHEN  // Strength — Spark: (FOR + POD) / 2
+  SHARD  // Speed — Spark: (DES + POD) / 2
+  LUMEN  // Magic — Spark: (INT + POD) / 2
 }
 
 enum ProficiencyCategory {
@@ -83,9 +83,6 @@ model Character {
   name         String    @db.VarChar(50)
   age          Int       @default(0)
   personality  String?   @db.VarChar(50)
-  birthDate    DateTime?
-  birthPlace   String?   @db.VarChar(50)
-  residence    String?   @db.VarChar(50)
   occupation   String?   @db.VarChar(50)
   race         String    @db.VarChar(30)
   coins        Int       @default(0)
@@ -93,14 +90,11 @@ model Character {
   height       Float?    @default(0)
   weight       Float?    @default(0)
 
-  level        Int @default(1)
-  experience   Int @default(0)
+  level        Int @default(0)
 
-  // Relação de Usuário
   userId  Int
   user    User  @relation(fields: [userId], references: [id])
 
-  // Relação de Classe
   classId Int
   class   RPGClass @relation(fields: [classId], references: [id])
 
@@ -114,7 +108,7 @@ model Character {
 
 model CharacterAttributes {
   id Int @id @default(autoincrement())
-  // --- Atributos Principais ---
+  // --- ATTRIBUTES ---
   strength        Int      @default(10)
   dexterity       Int      @default(10)
   constitution    Int      @default(10)
@@ -135,9 +129,7 @@ model CharacterStatus {
   embers        Int     @default(1)
   soul          Int     @default(0)
   initiative    Int     @default(0)
-  luck          Int     @default(0)
   movement      Int     @default(1)
-  energyType    String? @db.VarChar(20)
 
   characterId Int       @unique
   character   Character @relation(fields: [characterId], references: [id], onDelete: Cascade)

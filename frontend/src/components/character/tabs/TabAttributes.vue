@@ -24,7 +24,6 @@
         <InfoField label="Pontos de Brasa" :value="String(character.status.embers)" />
         <InfoField label="Pontos de Alma" :value="String(character.status.soul)" />
         <InfoField label="Iniciativa" :value="String(character.status.initiative)" />
-        <InfoField label="Sorte" :value="String(character.status.luck)" />
         <InfoField label="Movimento" :value="String(character.status.movement)" />
         <InfoField
           v-if="character.status.energyType"

@@ -4,20 +4,16 @@ const prisma = require('../lib/prisma')
 const authMiddleware = require('../middlewares/auth.middleware')
 
 function buildCharacterData(body) {
-  const { name, age, personality, birthDate, birthPlace, residence, occupation, race, level, experience, classId, history, coins, height, weight } = body
+  const { name, age, personality, occupation, race, level, classId, history, coins, height, weight } = body
 
   return { 
     name: name.trim(),
     age: age,
     personality: personality?.trim(),
-    birthDate: birthDate ? new Date(birthDate) : undefined,
-    birthPlace: birthPlace?.trim(),
-    residence: residence?.trim(),
     occupation: occupation?.trim(),
     race: race.trim(),
     
     level,
-    experience,
     classId,
     history: history?.trim() || null,
     coins: coins || 0,
@@ -33,7 +29,7 @@ function buildAttributesData(body) {
 }
 
 function buildStatusData(body) {
-  const { vitality, spark, embers, soul, initiative, luck, movement, energyType } = body
+  const { vitality, spark, embers, soul, initiative, movement } = body
 
   return { 
     vitality:       vitality      ?? 20, 
@@ -41,54 +37,11 @@ function buildStatusData(body) {
     embers:         embers        ?? 1, 
     soul:           soul          ?? 0, 
     initiative:     initiative    ?? 0, 
-    luck:           luck          ?? 0, 
     movement:       movement      ?? 1, 
-    energyType:     energyType    ?? null
   }
 }
 
-
-
-/**
- * Criar personagem
- */
-/**
- * @swagger
- * /characters:
- *   post:
- *     tags: [Personagens]
- *     summary: Cria um novo personagem
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             required: [name, race, classId]
- *             properties:
- *               name:        { type: string,  example: Aragorn }
- *               race:        { type: string,  example: Humano }
- *               classId:     { type: integer, example: 1 }
- *               level:       { type: integer, example: 1 }
- *               experience:  { type: integer, example: 0 }
- *               age:         { type: integer, example: 25 }
- *               personality: { type: string,  example: Corajoso }
- *               history:     { type: string,  example: '# Origem\nNasceu em...' }
- *               strength:    { type: integer, example: 15 }
- *               dexterity:   { type: integer, example: 12 }
- *               lifePoints:  { type: integer, example: 20 }
- *     responses:
- *       201:
- *         description: Personagem criado
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 id: { type: integer, example: 1 }
- *       400:
- *         description: Campos obrigatórios ausentes
- */
+/* ======================= CREATE CHARACTER ======================= */
 router.post('/', authMiddleware, async (req, res) => {
   const userId = req.user.id
   const { name, race, classId, proficiencies } = req.body
@@ -138,52 +91,7 @@ router.post('/', authMiddleware, async (req, res) => {
   } 
 })
 
-/**
- * ENVIAR OS NOVOS DADOS DO PERSONAGEM EDITADO
- */
-/**
- * @swagger
- * /characters/{id}:
- *   get:
- *     tags: [Personagens]
- *     summary: Busca um personagem completo
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         schema: { type: integer }
- *     responses:
- *       200:
- *         description: Personagem com atributos e status
- *       404:
- *         description: Personagem não encontrado
- *   put:
- *     tags: [Personagens]
- *     summary: Atualiza um personagem
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         schema: { type: integer }
- *     responses:
- *       200:
- *         description: Personagem atualizado
- *       404:
- *         description: Personagem não encontrado
- *   delete:
- *     tags: [Personagens]
- *     summary: Remove um personagem
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         schema: { type: integer }
- *     responses:
- *       200:
- *         description: Personagem removido
- *       404:
- *         description: Personagem não encontrado
- */
+/* ======================= UPDATE CHARACTER ======================= */
 router.put('/:id', authMiddleware, async (req, res) => {
   const userId = req.user.id
   const characterId = Number(req.params.id)
@@ -259,39 +167,7 @@ router.put('/:id', authMiddleware, async (req, res) => {
 })
 
 
-/**
- * LISTAR PERSONAGENS DO USUÁRIO LOGADO
- */
-/**
- * @swagger
- * /characters:
- *   get:
- *     tags: [Personagens]
- *     summary: Lista personagens do usuário logado
- *     parameters:
- *       - in: query
- *         name: page
- *         schema: { type: integer, default: 1 }
- *         description: Página atual
- *       - in: query
- *         name: limit
- *         schema: { type: integer, default: 5 }
- *         description: Itens por página
- *     responses:
- *       200:
- *         description: Lista paginada de personagens
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 data:
- *                   type: array
- *                   items: { $ref: '#/components/schemas/Character' }
- *                 pagination: { $ref: '#/components/schemas/Pagination' }
- *       401:
- *         description: Não autenticado
- */
+/* ======================= LIST CHARACTERS ======================= */
 router.get('/', authMiddleware, async (req, res) => {
   const userId = req.user.id
 
@@ -354,52 +230,7 @@ router.get('/', authMiddleware, async (req, res) => {
 })
 
 
-/**
- * BUSCAR PERSONAGEM PARA EDITAR
- */
-/**
- * @swagger
- * /characters/{id}:
- *   get:
- *     tags: [Personagens]
- *     summary: Busca um personagem completo
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         schema: { type: integer }
- *     responses:
- *       200:
- *         description: Personagem com atributos e status
- *       404:
- *         description: Personagem não encontrado
- *   put:
- *     tags: [Personagens]
- *     summary: Atualiza um personagem
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         schema: { type: integer }
- *     responses:
- *       200:
- *         description: Personagem atualizado
- *       404:
- *         description: Personagem não encontrado
- *   delete:
- *     tags: [Personagens]
- *     summary: Remove um personagem
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         schema: { type: integer }
- *     responses:
- *       200:
- *         description: Personagem removido
- *       404:
- *         description: Personagem não encontrado
- */
+/* ======================= GET CHARACTER FOR EDIT ======================= */
 router.get('/:id', authMiddleware, async (req, res) => {
   const characterId = Number(req.params.id)
   const userId = req.user.id  
@@ -442,52 +273,7 @@ router.get('/:id', authMiddleware, async (req, res) => {
 })
 
 
-/**
- * DELETAR PERSONAGEM
- */
-/**
- * @swagger
- * /characters/{id}:
- *   get:
- *     tags: [Personagens]
- *     summary: Busca um personagem completo
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         schema: { type: integer }
- *     responses:
- *       200:
- *         description: Personagem com atributos e status
- *       404:
- *         description: Personagem não encontrado
- *   put:
- *     tags: [Personagens]
- *     summary: Atualiza um personagem
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         schema: { type: integer }
- *     responses:
- *       200:
- *         description: Personagem atualizado
- *       404:
- *         description: Personagem não encontrado
- *   delete:
- *     tags: [Personagens]
- *     summary: Remove um personagem
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         schema: { type: integer }
- *     responses:
- *       200:
- *         description: Personagem removido
- *       404:
- *         description: Personagem não encontrado
- */
+/* ======================= DELETE CHARACTER ======================= */
 router.delete('/:id', authMiddleware, async (req, res) => {
   try {
     const characterId = Number(req.params.id)
@@ -530,10 +316,7 @@ async function verifyOwnership(characterId, userId, res) {
     return true
 }
 
-/**
- * POST /characters/:characterId/skills
- * Cria a habilidade ativa do personagem
- */
+/* ======================= CREATE CHARACTER ACTIVE SKILL ======================= */
 router.post('/:characterId/skills', authMiddleware, async (req, res) => {
     const characterId = Number(req.params.characterId)
     const userId = req.user.id
@@ -567,10 +350,7 @@ router.post('/:characterId/skills', authMiddleware, async (req, res) => {
     }
 })
 
-/**
- * PUT /characters/:characterId/skills/:skillId
- * Atualiza a habilidade ativa do personagem
- */
+/* ======================= UPDATE CHARACTER ACTIVE SKILL ======================= */
 router.put('/:skillId', authMiddleware, async (req, res) => {
     const characterId = Number(req.params.characterId)
     const skillId = Number(req.params.skillId)
@@ -600,10 +380,7 @@ router.put('/:skillId', authMiddleware, async (req, res) => {
     }
 })
 
-/**
- * DELETE /characters/:characterId/skills/:skillId
- * Remove a habilidade ativa do personagem
- */
+/* ======================= REMOVE CHARACTER ACTIVE SKILL ======================= */
 router.delete('/:skillId', authMiddleware, async (req, res) => {
     const characterId = Number(req.params.characterId)
     const skillId = Number(req.params.skillId)
@@ -621,7 +398,7 @@ router.delete('/:skillId', authMiddleware, async (req, res) => {
     }
 })
 
-/* Proficiencies */
+/* ======================= PROFICIENCIES ======================= */
 router.get('/', authMiddleware, async (req,res) => {
     try {
         const proficiencies = await prisma.Proficiency.findMany({

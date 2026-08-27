@@ -24,7 +24,7 @@ const activeTab = ref<TabId>('general')
 const tabs: { id: TabId; label: string }[] = [
   { id: 'general',    label: 'Dados Gerais' },
   { id: 'attributes', label: 'Atributos' },
-  { id: 'proficiencies', label: 'Proficiências' },
+  { id: 'proficiencies', label: 'Perícias' },
   { id: 'skills',     label: 'Habilidades' },
   { id: 'history',    label: 'História' },
 ]
