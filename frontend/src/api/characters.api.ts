@@ -34,5 +34,16 @@ export const charactersApi = {
 
     deleteSkill(characterId: number, skillId: number) {
         return api.delete(`/characters/${characterId}/skills/${skillId}`)
+    },
+
+    uploadPhoto(characterId: number, file: File) {
+        const formData = new FormData()
+        formData.append('photo', file)
+
+        return api.post<{ photoUrl: string }>(
+            `characters/${characterId}/photo`,
+            formData,
+            { headers: { 'Content-Type': 'multipart/form-data' } }
+        )
     }
 }

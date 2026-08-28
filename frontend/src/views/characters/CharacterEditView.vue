@@ -28,6 +28,31 @@
           <!-- Tab 1: General Data -->
           <div v-if="activeTab === 'general'" class="space-y-4">
 
+            <div class="flex flex-col justify-center items-center">
+              <label class="block text-sm text-slate-400 mb-1">Foto do personagem</label>
+
+              <div class="w-32 h-32 rounded-lg border border-slate-600 overflow-hidden bg-slate-700
+                          flex items-center justify-center">
+                <img
+                  v-if="photoUpload.previewUrl.value || existingPhotoUrl"
+                  :src="photoUpload.previewUrl.value || existingPhotoUrl"
+                  class="w-full h-full object-cover m-auto"
+                />
+                <span v-else class="text-slate-500 text-xs">Sem foto</span>
+              </div>
+
+              <input
+                type="file"
+                accept="image/jpeg,image/png,image/webp"
+                @change="photoUpload.handleFileSelect"
+                class="mt-2 text-xs text-slate-300 border  rounded-xs p-2 cursor-pointer"
+              />
+
+              <p v-if="photoUpload.error.value" class="text-red-400 text-xs mt-1">
+                {{ photoUpload.error.value }}
+              </p>
+            </div>
+
             <!-- Name (Required) -->
             <div>
               <label class="block text-sm text-slate-400 mb-1">
@@ -300,8 +325,10 @@ import { useToast } from '@/composables/useToast'
 import { proficienciesApi } from '@/api/proficiencies.api'
 import type { Proficiency, ProficiencyCategory } from '@/types/character.types'
 import NavTabs from '@/components/character/NavTabs.vue'
+import { usePhotoUpload } from '@/composables/usePhotoUpload'
 
 const toast = useToast()
+const photoUpload = usePhotoUpload()
 
 const route = useRoute()
 const router = useRouter()
@@ -322,6 +349,7 @@ const submitting = ref(false)
 const submitAttempted = ref(false)
 const errorMessage = ref('')
 const classes = ref<RPGClass[]>([])
+const existingPhotoUrl = ref<string | null>(null)
 
 const navTabsRef = ref<InstanceType<typeof NavTabs> | null>(null)
 
@@ -445,6 +473,7 @@ onMounted(async () => {
       form.value.coins = data.coins ?? 0
       form.value.height = data.height ?? 0
       form.value.weight = data.weight ?? 0
+      existingPhotoUrl.value = data.photoUrl ?? null
 
       // Attributes
       if (data.attributes) {
@@ -506,9 +535,8 @@ async function handleSubmit() {
   submitAttempted.value = true
   errorMessage.value = ''
 
-  if (hasGeneralErrors.value) {
-    activeTab.value = 'general'
-    return
+  if (navTabsRef.value) {
+    navTabsRef.value.activeTab = 'general'
   }
 
   submitting.value = true
@@ -536,6 +564,10 @@ async function handleSubmit() {
         }
       }
 
+      if (photoUpload.previewUrl.value) {
+        await photoUpload.upload(characterId)
+      }
+
       router.push(`/characters/${characterId}`)
       toast.success('Personagem atualizado com sucesso!')
     } else {
@@ -543,6 +575,10 @@ async function handleSubmit() {
 
       if (skillForm.value.name && skillForm.value.description) {
         await charactersApi.createSkill(data.id, skillForm.value)
+      }
+
+      if (photoUpload.previewUrl.value) {
+        await photoUpload.upload(data.id)
       }
 
       router.push(`/characters/${data.id}`)
