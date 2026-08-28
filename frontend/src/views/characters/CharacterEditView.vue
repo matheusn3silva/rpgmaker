@@ -1,6 +1,6 @@
 <template>
   <AppLayout>
-    <div class="max-w-2xl">
+    <div class="max-w-2xl mx-auto">
 
       <!-- Dinamic header -->
       <div class="flex items-center gap-4 mb-6">
@@ -33,20 +33,13 @@
 
               <div class="w-32 h-32 rounded-lg border border-slate-600 overflow-hidden bg-slate-700
                           flex items-center justify-center">
-                <img
-                  v-if="photoUpload.previewUrl.value || existingPhotoUrl"
-                  :src="photoUpload.previewUrl.value || existingPhotoUrl"
-                  class="w-full h-full object-cover m-auto"
-                />
+                <img v-if="photoUpload.previewUrl.value || existingPhotoUrl"
+                  :src="photoUpload.previewUrl.value || existingPhotoUrl" class="w-full h-full object-cover m-auto" />
                 <span v-else class="text-slate-500 text-xs">Sem foto</span>
               </div>
 
-              <input
-                type="file"
-                accept="image/jpeg,image/png,image/webp"
-                @change="photoUpload.handleFileSelect"
-                class="mt-2 text-xs text-slate-300 border  rounded-xs p-2 cursor-pointer"
-              />
+              <input type="file" accept="image/jpeg,image/png,image/webp" @change="photoUpload.handleFileSelect"
+                class="mt-2 text-xs text-slate-300 border  rounded-xs p-2 cursor-pointer" />
 
               <p v-if="photoUpload.error.value" class="text-red-400 text-xs mt-1">
                 {{ photoUpload.error.value }}
@@ -103,17 +96,17 @@
             </div>
 
 
-              <div>
-                <label class="block text-sm text-slate-400 mb-1">Idade</label>
-                <input v-model.number="form.age" type="number" min="0" class="w-full bg-slate-700 border border-slate-600 rounded-lg px-4 py-2.5
+            <div>
+              <label class="block text-sm text-slate-400 mb-1">Idade</label>
+              <input v-model.number="form.age" type="number" min="0" class="w-full bg-slate-700 border border-slate-600 rounded-lg px-4 py-2.5
                          text-slate-100 text-sm focus:outline-none focus:border-amber-500 transition-colors" />
-              </div>
-              <div>
-                <label class="block text-sm text-slate-400 mb-1">Personalidade</label>
-                <input v-model="form.personality" type="text" placeholder="Ex: Corajoso, Sarcástico" class="w-full bg-slate-700 border border-slate-600 rounded-lg px-4 py-2.5
+            </div>
+            <div>
+              <label class="block text-sm text-slate-400 mb-1">Personalidade</label>
+              <input v-model="form.personality" type="text" placeholder="Ex: Corajoso, Sarcástico" class="w-full bg-slate-700 border border-slate-600 rounded-lg px-4 py-2.5
                          text-slate-100 text-sm focus:outline-none focus:border-amber-500 transition-colors" />
-              </div>
-            
+            </div>
+
 
 
             <!-- Occupation -->
@@ -213,50 +206,36 @@
           </div>
 
           <!-- Tab 5: Skills -->
-          <div v-else-if="activeTab === 'skills'" class="space-y-4">
-
+          <div v-else-if="activeTab === 'skills'" class="space-y-3">
             <p class="text-xs text-slate-500">
-              Esta é a sua habilidade ativa exclusiva. Ela aparece na ficha junto às habilidades da classe
+              Suas habilidades ativas exclusivas. Elas aparecem na ficha junto às habilidades da classe.
             </p>
 
-            <div>
-              <label class="block text-sm text-slate-400 font-semibold mb-1">Nome da Habilidade</label>
-              <input v-model="skillForm.name" type="text" placeholder="Ex: Golpe Fantasma"
-                class="w-full bg-slate-700 border border-slate-600 rounded-lg px-4 py-2.5 text-slate-100 text-sm focus:outline-none focus:border-amber-500 transition-colors" />
+            <div v-if="skills.length === 0"
+              class="text-center py-8 text-slate-500 text-sm border border-dashed border-slate-700 rounded-lg">
+              Nenhuma habilidade criada ainda.
             </div>
 
-            <div>
-              <label class="block text-sm text-slate-400 font-semibold mb-1">Descrição</label>
-              <textarea v-model="skillForm.description" rows="3" placeholder="Descreva o efeito da habilidade..." class="w-full bg-slate-700 border border-slate-600 rounded-lg px-4 py-2.5
-                  text-slate-100 text-sm focus:outline-none focus:border-amber-500
-                  transition-colors resize-none" />
-            </div>
-
-
-            <NumberField label="Custo de Centelha" v-model="skillForm.sparkCost" />
-
-
-            <!-- Upgrade -->
-            <div class="pt-2 border-t border-slate-700">
-              <p class="text-xs text-slate-500 mb-3">Aprimoramento com Brasa (Opcional)</p>
-
-              <div class="space-y-3">
-                <div>
-                  <label class="block text-sm text-slate-400 mb-1">Descrição do aprimoramento</label>
-                  <textarea v-model="skillForm.upgradeDescription" rows="2"
-                    placeholder="Efeito melhorado ao gastar Brasas..." class="w-full bg-slate-700 border border-slate-600 rounded-lg px-4 py-2.5
-                    text-slate-100 text-sm focus:outline-none focus:border-amber-500
-                    transition-colors resize-none" />
-                </div>
-
-                <div>
-                  <label class="block text-sm text-slate-400 mb-1">Custo de Brasa</label>
-                  <input v-model.number="skillForm.upgradeCost" type="number" min="0" class="w-full bg-slate-700 border border-slate-600 rounded-lg px-4 py-2.5
-                    text-slate-100 text-sm focus:outline-none focus:border-amber-500 transition-colors" />
-                </div>
+            <div v-for="skill in skills" :key="skill.tempId"
+              class="flex items-center justify-between gap-3 px-4 py-3 bg-slate-700/50 border border-slate-600 rounded-lg">
+              <div class="min-w-0">
+                <p class="text-sm font-medium text-slate-100 truncate">{{ skill.name }}</p>
+                <p class="text-xs text-slate-500 truncate">{{ skill.description }}</p>
+              </div>
+              <div class="flex gap-2 shrink-0">
+                <button @click="openEditSkill(skill)" type="button" class="text-xs text-amber-500 hover:text-amber-400">
+                  Editar
+                </button>
+                <button @click="handleRemoveSkill(skill)" type="button" class="text-xs text-red-400 hover:text-red-300">
+                  Remover
+                </button>
               </div>
             </div>
 
+            <button @click="openNewSkill" type="button" class="w-full py-2.5 text-sm border border-dashed border-slate-600
+           text-slate-400 hover:text-slate-100 hover:border-slate-400 rounded-lg transition-colors">
+              + Criar nova habilidade
+            </button>
           </div>
 
           <!-- Tab 6: History -->
@@ -308,6 +287,13 @@ transition-colors resize-none font-mono leading-relaxed" />
       <ClassDetailModal v-if="showClassModal && selectedClass" :rpg-class="selectedClass"
         @close="showClassModal = false" />
 
+      <SkillModal
+        v-if="showSkillModal"
+        :editing-skill="editingSkill"
+        @save="handleSaveSkill"
+        @close="showSkillModal = false"
+      />
+
     </div>
   </AppLayout>
 </template>
@@ -320,12 +306,13 @@ import NumberField from '@/components/ui/NumberField.vue'
 import ClassDetailModal from '@/components/character/ClassDetailModal.vue'
 import { charactersApi } from '@/api/characters.api'
 import { classesApi } from '@/api/classes.api'
-import type { RPGClass } from '@/types/character.types'
+import type { RPGClass, SkillDraft } from '@/types/character.types'
 import { useToast } from '@/composables/useToast'
 import { proficienciesApi } from '@/api/proficiencies.api'
 import type { Proficiency, ProficiencyCategory } from '@/types/character.types'
 import NavTabs from '@/components/character/NavTabs.vue'
 import { usePhotoUpload } from '@/composables/usePhotoUpload'
+import SkillModal from '@/components/character/SkillModal.vue'
 
 const toast = useToast()
 const photoUpload = usePhotoUpload()
@@ -387,15 +374,56 @@ const form = ref({
 })
 
 // ── Skills ─────────────────────────────────────────────
-const existingSkillId = ref<number | null>(null)
-const skillForm = ref({
-  name: '',
-  description: '',
-  sparkCost: 0,
-  emberCost: 0,
-  upgradeDescription: '',
-  upgradeCost: 0
-})
+const skills = ref<SkillDraft[]>([])
+const removedSkillIds = ref<number[]>([])
+const editingSkill = ref<SkillDraft | null>(null)
+const showSkillModal = ref(false)
+
+function openNewSkill() {
+  editingSkill.value = null
+  showSkillModal.value = true
+}
+
+function openEditSkill(skill: SkillDraft) {
+  editingSkill.value = skill
+  showSkillModal.value = true
+}
+
+function handleSaveSkill(skillData: Omit<SkillDraft, 'tempId'>) {
+  if (editingSkill.value) {
+    const target = skills.value.find(s => s.tempId === editingSkill.value!.tempId)
+    if (target) Object.assign(target, skillData)
+  } else {
+    skills.value.push({ ...skillData, tempId: crypto.randomUUID() })
+  }
+  showSkillModal.value = false
+}
+
+function handleRemoveSkill(skill: SkillDraft) {
+  if (skill.id) removedSkillIds.value.push(skill.id)
+  skills.value = skills.value.filter(s => s.tempId !== skill.tempId)
+}
+
+async function persistSkills(targetCharacterId: number) {
+  const created = skills.value.filter(s => !s.id)
+  const updated = skills.value.filter(s => s.id)
+
+  await Promise.all([
+    ...created.map(s => charactersApi.createSkill(targetCharacterId, toSkillPayload(s))),
+    ...updated.map(s => charactersApi.updateSkill(targetCharacterId, s.id!, toSkillPayload(s))),
+    ...removedSkillIds.value.map(id => charactersApi.deleteSkill(targetCharacterId, id)),
+  ])
+}
+
+function toSkillPayload(skill: SkillDraft) {
+  return {
+    name: skill.name,
+    description: skill.description,
+    sparkCost: skill.sparkCost,
+    emberCost: skill.emberCost,
+    upgradeDescription: skill.upgradeDescription,
+  }
+}
 
 // ── Proficiencies ──────────────────────────────────────────
 
@@ -507,16 +535,15 @@ onMounted(async () => {
       form.value.history = data.history ?? ''
 
       if (data.skills && data.skills.length > 0) {
-        const skill = data.skills[0]
-
-        if (!skill) return
-
-        existingSkillId.value = skill.id
-        skillForm.value.name = skill.name
-        skillForm.value.description = skill.description
-        skillForm.value.sparkCost = skill?.sparkCost ?? 0
-        skillForm.value.emberCost = skill?.emberCost ?? 0
-        skillForm.value.upgradeDescription = skill?.upgradeDescription ?? ''
+        skills.value = data.skills.map(skill => ({
+          tempId: crypto.randomUUID(),
+          id: skill.id,
+          name: skill.name,
+          description: skill.description,
+          sparkCost: skill.sparkCost ?? 0,
+          emberCost: skill.emberCost ?? 0,
+          upgradeDescription: skill.upgradeDescription ?? '',
+        }))
       }
 
     } catch {
@@ -554,15 +581,8 @@ async function handleSubmit() {
 
     if (isEditing.value && characterId) {
       await charactersApi.update(characterId, payload)
-
-      // Update or create skill
-      if (skillForm.value.name && skillForm.value.description) {
-        if (existingSkillId.value) {
-          await charactersApi.updateSkill(characterId, existingSkillId.value, skillForm.value)
-        } else {
-          await charactersApi.createSkill(characterId, skillForm.value)
-        }
-      }
+      await persistSkills(characterId)
+      if (photoUpload.previewUrl.value) await photoUpload.upload(characterId)
 
       if (photoUpload.previewUrl.value) {
         await photoUpload.upload(characterId)
@@ -572,10 +592,8 @@ async function handleSubmit() {
       toast.success('Personagem atualizado com sucesso!')
     } else {
       const { data } = await charactersApi.create(payload)
-
-      if (skillForm.value.name && skillForm.value.description) {
-        await charactersApi.createSkill(data.id, skillForm.value)
-      }
+      await persistSkills(data.id)
+      if (photoUpload.previewUrl.value) await photoUpload.upload(data.id)
 
       if (photoUpload.previewUrl.value) {
         await photoUpload.upload(data.id)

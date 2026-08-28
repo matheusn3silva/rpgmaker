@@ -5,44 +5,46 @@
         <div>
             <h3 class="text-xs flex gap-2 align-center uppercase tracking-wider mb-3 text-amber-500 font-semibold">Habilidade Ativa (Personagem)</h3>
 
-            <div v-if="characterSkill" class="rouded-lg p-4"
-                style="background-color: var(--bg-input); border: 1px solid var(--border);">
-                <div class="flex -items-start justify-between gap-3 mb-2">
-                    <span class="font-medium text-sm" style="color: var(--text-primary)">
-                        {{ characterSkill.name }}
-                    </span>
-
-                    <span class="text-xs px-2 py-0.5 rounded shrink-0"
-                        style="background-color: #3b1f0a; color: #fbbf24;">
-                        Ação
-                    </span>
-                </div>
-
-                <p class="text-xs mb-3" style="color: var(--text-muted)">
-                    {{ characterSkill.description }}
-                </p>
-
-                <div class="flex gap-3">
-                    <span v-if="characterSkill.sparkCost > 0" class="text-xs" style="color: var(--text-faint);">
-                        Centelhas: <span class="text-amber-400 font-medium">{{ characterSkill.sparkCost }}</span>
-                    </span>
-                    <span v-if="characterSkill.sparkCost === 0" class="text-xs" style="color: var(--text-faint);">
-                        Sem custo
-                    </span>
-                </div>
-
-                <div v-if="characterSkill.upgradeDescription" class="mt-3 rounded-lg p-3" style="background-color: var(--bg-surface); border: 1px solid var(--border);">
-                    <p class="text-xs font-medium uppercase tracking-wider mb-1" style="color: var(--text-faint);">
-                        Aprimoramento com Brasa
-                        <span v-if="characterSkill.emberCost > 0" class="ml-1 text-amber-400">
-                        · {{ characterSkill.emberCost }} Brasa
+            <div v-if="characterSkills.length > 0" class="space-y-3">
+                <div v-for="skill in characterSkills" :key="skill.id" class="rouded-lg p-4"
+                    style="background-color: var(--bg-input); border: 1px solid var(--border);">
+                    <div class="flex -items-start justify-between gap-3 mb-2">
+                        <span class="font-medium text-sm" style="color: var(--text-primary)">
+                            {{ skill.name }}
                         </span>
+
+                        <span class="text-xs px-2 py-0.5 rounded shrink-0"
+                            style="background-color: #3b1f0a; color: #fbbf24;">
+                            Ação
+                        </span>
+                    </div>
+
+                    <p class="text-xs mb-3" style="color: var(--text-muted)">
+                        {{ skill.description }}
                     </p>
-                    <p class="text-xs" style="color: var(--text-muted);">{{ characterSkill.upgradeDescription }}</p>
+
+                    <div class="flex gap-3">
+                        <span v-if="skill.sparkCost > 0" class="text-xs" style="color: var(--text-faint);">
+                            Centelhas: <span class="text-amber-400 font-medium">{{ skill.sparkCost }}</span>
+                        </span>
+                        <span v-if="skill.sparkCost === 0" class="text-xs" style="color: var(--text-faint);">
+                            Sem custo
+                        </span>
+                    </div>
+
+                    <div v-if="skill.upgradeDescription" class="mt-3 rounded-lg p-3" style="background-color: var(--bg-surface); border: 1px solid var(--border);">
+                        <p class="text-xs font-medium uppercase tracking-wider mb-1" style="color: var(--text-faint);">
+                            Aprimoramento com Brasa
+                            <span v-if="skill.emberCost > 0" class="ml-1 text-amber-400">
+                            · {{ skill.emberCost }} Brasa
+                            </span>
+                        </p>
+                        <p class="text-xs" style="color: var(--text-muted);">{{ skill.upgradeDescription }}</p>
+                    </div>
                 </div>
             </div>
 
-            <!-- No Skill Created -->
+            <!-- No Skills Created -->
             <div v-else class="rounded-lg p-4 text-center" style="background-color: var(--bg-input); border: 1px solid var(--border);">
                 <p class="text-xs" style="color: var(--text-faint);">
                     Nenhuma habilidade ativa criada.
@@ -131,7 +133,7 @@ import type { CharacterSkill, ClassSkill } from '@/types/character.types'
 const props = defineProps<{
     characterId: number
     classId: number
-    characterSkill: CharacterSkill | null
+    characterSkills: CharacterSkill[]
 }>()
 
 const classSkills = ref<ClassSkill[]>([])

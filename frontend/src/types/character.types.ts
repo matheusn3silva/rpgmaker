@@ -30,6 +30,16 @@ export interface CharacterSkill {
     emberCost: number
 }
 
+export interface SkillDraft {
+    tempId: string
+    id?: number
+    name: string
+    description: string
+    sparkCost: number
+    emberCost: number
+    upgradeDescription: string
+}
+
 export interface CharacterAttributes {
     strength: number
     dexterity: number
@@ -46,9 +56,7 @@ export interface CharacterStatus {
     embers: number
     soul: number
     initiative: number
-    luck: number
     movement: number
-    energyType: string | null
 }
 
 export type ProficiencyCategory =
@@ -89,14 +97,11 @@ export interface CharacterSummary {
 export interface Character extends CharacterSummary {
     age: number
     personality: string | null
-    birthDate: string | null
-    birthPlace: string | null
-    residence: string | null
     occupation: string | null
     coins: number
-    experience: number
     height: number | null
     weight: number | null
+    photoUrl: string | null
     attributes: CharacterAttributes | null
     status: CharacterStatus | null
     proficiencies: CharacterProficiency[]
