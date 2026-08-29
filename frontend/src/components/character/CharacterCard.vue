@@ -18,7 +18,7 @@
                 </p>
             </div>
             <span class="text-amber-400 text-sm font-medium bg-amber-950 px-2 py-0.5 rounded">
-                Nv. {{ character.level }}
+                Gr. {{ character.level }}
             </span>
         </div>
 

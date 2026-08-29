@@ -10,9 +10,10 @@
             <RouterLink 
                 to="/characters"
                 style="color: #f59e0b;"
-                class="font-bold tracking-widest uppercase text-sm"
+                class="flex gap-2 items-center font-bold tracking-widest uppercase text-sm"
             >
-                RPG Maker
+                <img class="w-5" src="../assets/images/logo.svg" alt=""> 
+                <span>RPG Maker</span>
             </RouterLink>
 
             <div class="flex items-center gap-4">

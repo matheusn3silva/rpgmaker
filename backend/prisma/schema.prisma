@@ -90,6 +90,7 @@ model Character {
   history      String?
   height       Float?    @default(0)
   weight       Float?    @default(0)
+  photoUrl     String?   @db.VarChar(500)
 
   level        Int @default(0)
 

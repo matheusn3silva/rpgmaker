@@ -56,7 +56,7 @@
           v-else-if="activeTab === 'skills'"
           :character-id="store.currentCharacter.id"
           :class-id="store.currentCharacter.classId"
-          :character-skill="store.currentCharacter.skills?.[0] ?? null" 
+          :character-skills="store.currentCharacter.skills ?? []" 
         />
         <TabHistory
           v-else-if="activeTab === 'history'"

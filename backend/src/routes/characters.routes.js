@@ -2,6 +2,8 @@ const express = require('express')
 const router = express.Router()
 const prisma = require('../lib/prisma')
 const authMiddleware = require('../middlewares/auth.middleware')
+const upload = require('../middlewares/upload.middleware')
+const supabase = require('../lib/supabase')
 
 function buildCharacterData(body) {
   const { name, age, personality, occupation, race, level, classId, history, coins, height, weight } = body
@@ -172,7 +174,7 @@ router.get('/', authMiddleware, async (req, res) => {
   const userId = req.user.id
 
   const page = Number(req.query.page) || 1
-  const limit = Number(req.query.limit) || 5
+  const limit = Number(req.query.limit) || 6
   const skip = (page - 1) * limit
 
   try {
@@ -413,6 +415,50 @@ router.get('/', authMiddleware, async (req,res) => {
         console.error(error)
         res.status(500).json({ message: 'Erro ao buscar as proficiências' })
     }
+})
+
+/* ======================= UPLOAD CHARACTER PHOTO ======================= */
+router.post('/:id/photo', authMiddleware, upload.single('photo'), async (req, res) => {
+  const characterId = Number(req.params.id)
+  const userId = req.user.id
+
+  if (isNaN(characterId)) {
+    return res.status(400).json({ message: 'ID inválido' })
+  }
+
+  if (!(await verifyOwnership(characterId, userId, res))) return
+
+  if (!req.file) {
+    return res.status(400).json({ message: 'Nenhuma imagem enviada' })
+  }
+
+  try {
+    const fileExt = req.file.mimetype.split('/')[1]
+    const filePath = `characters/${userId}/${characterId}/photo.${fileExt}`
+
+    const { error: uploadError } = await supabase.storage
+      .from('rpg-assets')
+      .upload(filePath, req.file.buffer, {
+        contentType: req.file.mimetype,
+        upsert: true
+      })
+
+      if (uploadError) throw uploadError
+
+      const { data: publicUrlData } = supabase.storage
+        .from('rpg-assets')
+        .getPublicUrl(filePath)
+
+      const character = await prisma.character.update({
+        where: { id: characterId },
+        data: { photoUrl: publicUrlData.publicUrl }
+      })
+
+      return res.json({ photoUrl: character.photoUrl })
+  } catch (error) {
+      console.error(error)
+      return res.status(500).json({ message: 'Erro ao enviar foto' })
+  }
 })
 
 module.exports = router
