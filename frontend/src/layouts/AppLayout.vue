@@ -39,7 +39,7 @@
             </div>
         </nav>
 
-        <main class="container mx-auto px-4 py-6 max-w-4xl">
+        <main class="container mx-auto px-4 py-6 max-w-3xl">
             <slot />
         </main>
     </div>
