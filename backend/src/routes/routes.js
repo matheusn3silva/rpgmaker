@@ -5,6 +5,7 @@ const characterRoutes = require('./characters.routes')
 const classesRoutes = require('./classes.routes')
 const userRoutes = require('./user.routes')
 const proficienciesRoutes = require('./proficiencies.routes')
+const sessionsRoutes = require('./sessions.routes')
 
 
 const router = express.Router()
@@ -14,6 +15,7 @@ router.use('/characters', characterRoutes)
 router.use('/classes', classesRoutes)
 router.use('/user', userRoutes)
 router.use('/proficiencies', proficienciesRoutes)
+router.use('/sessions', sessionsRoutes)
 
 
 module.exports = router

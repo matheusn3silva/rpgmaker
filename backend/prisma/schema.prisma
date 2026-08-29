@@ -32,6 +32,11 @@ enum ProficiencyCategory {
   ESPECIAL
 }
 
+enum SessionStatus {
+  ACTIVE
+  CLOSED
+}
+
 // ── Models ────────────────────────────────────────────────
 
 model User {
@@ -50,6 +55,7 @@ model User {
   updatedAt DateTime @updatedAt
 
   characters Character[]
+  session Session[]
 }
 
 model RPGClass {
@@ -173,4 +179,14 @@ model CharacterProficiency {
   @@unique([characterId, proficiencyId])
   @@index([characterId])
   @@index([proficiencyId])
+}
+
+model Session {
+  id        Int      @id @default(autoincrement())
+  code      String   @unique @db.VarChar(9)   // "A7K9-X2P4" = 9 chars
+  masterId  Int
+  status    SessionStatus @default(ACTIVE)
+  createdAt DateTime @default(now())
+
+  master    User     @relation(fields: [masterId], references: [id])
 }
