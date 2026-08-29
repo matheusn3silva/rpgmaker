@@ -40,13 +40,24 @@
 
     <!-- State data with list -->
      <template v-else>
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+        <div class="transition-all grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
           <CharacterCard 
             v-for="character in store.characters"
             :key="character.id"
             :character="character"
             @delete="handleDelete"
           />
+
+          <RouterLink
+            to="/characters/new"
+            class="flex flex-col items-center justify-center gap-2 min-h-[120px]
+                  border border-dashed border-slate-600 rounded-xl
+                  text-slate-500 hover:text-slate-300 hover:border-slate-400
+                  transition-colors"
+          >
+            <span class="text-2xl leading-none">+</span>
+            <span class="text-sm">Criar novo personagem</span>
+          </RouterLink>
         </div>
 
         <!-- Pagination -->
