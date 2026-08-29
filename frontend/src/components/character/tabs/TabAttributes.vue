@@ -25,11 +25,6 @@
         <InfoField label="Pontos de Alma" :value="String(character.status.soul)" />
         <InfoField label="Iniciativa" :value="String(character.status.initiative)" />
         <InfoField label="Movimento" :value="String(character.status.movement)" />
-        <InfoField
-          v-if="character.status.energyType"
-          label="Tipo de Energia"
-          :value="character.status.energyType"
-        />
       </div>
     </div>
 
