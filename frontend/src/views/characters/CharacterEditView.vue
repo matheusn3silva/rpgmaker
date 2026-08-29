@@ -34,7 +34,7 @@
               <div class="w-32 h-32 rounded-lg border border-slate-600 overflow-hidden bg-slate-700
                           flex items-center justify-center">
                 <img v-if="photoUpload.previewUrl.value || existingPhotoUrl"
-                  :src="photoUpload.previewUrl.value || existingPhotoUrl" class="w-full h-full object-cover m-auto" />
+                  :src="photoUpload.previewUrl.value || existingPhotoUrl || undefined" class="w-full h-full object-cover m-auto" />
                 <span v-else class="text-slate-500 text-xs">Sem foto</span>
               </div>
 
